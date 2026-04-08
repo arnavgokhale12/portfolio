@@ -1,0 +1,88 @@
+---
+title: "European Soccer Team Clustering"
+description: "Clustering analysis of European soccer teams using match statistics and performance metrics from Kaggle data."
+category: "data"
+tags: ["Python", "scikit-learn", "Clustering", "K-Means", "Pandas", "Data Analysis"]
+date: "2024-02-01"
+featured: false
+links:
+  github: "https://github.com/arnavgokhale12/euro-soccer-clustering"
+---
+
+## Overview
+
+An exploratory data analysis and clustering project that groups European soccer teams based on their playing styles and performance characteristics. Uses unsupervised learning to identify distinct team archetypes across major European leagues.
+
+## Problem
+
+Soccer analytics often focuses on individual player statistics or match outcomes, but understanding team-level patterns can reveal strategic insights:
+
+- Which teams share similar playing styles despite being in different leagues?
+- Can we identify distinct archetypes (defensive, possession-based, counter-attacking)?
+- How do team characteristics correlate with league standings?
+
+## Role & Context
+
+- Solo project for data analysis practice
+- Dataset: European Soccer Database from Kaggle
+- Focus on methodology and reproducible analysis
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| Language | Python |
+| Analysis | Pandas, NumPy |
+| ML | scikit-learn (K-Means, PCA) |
+| Visualization | Matplotlib, Seaborn |
+| Environment | Jupyter Notebook |
+
+## Approach
+
+### Data Preparation
+
+- Loaded match and team data from the Kaggle European Soccer Database
+- Aggregated match-level statistics to team-season level
+- Engineered features including:
+  - Goals scored/conceded per match
+  - Possession and passing metrics
+  - Shot accuracy and conversion rates
+  - Home vs away performance differential
+
+### Feature Engineering
+
+Created composite features to capture playing style:
+
+- **Offensive intensity**: Goals + shots on target normalized
+- **Defensive solidity**: Clean sheets ratio, goals conceded
+- **Possession dominance**: Average possession percentage
+- **Set piece reliance**: Goals from set pieces ratio
+
+### Clustering Methodology
+
+1. Standardized features using StandardScaler
+2. Applied PCA for dimensionality reduction and visualization
+3. Used elbow method and silhouette scores to determine optimal cluster count
+4. Ran K-Means clustering to group teams
+5. Analyzed cluster centroids to interpret team archetypes
+
+## Results
+
+Identified distinct team archetypes:
+
+- **Possession-dominant teams**: High pass completion, patient build-up
+- **Counter-attacking teams**: Lower possession but high shot conversion
+- **Balanced teams**: Middle-ground across most metrics
+- **Defensive teams**: Low goals scored/conceded, prioritize structure
+
+## Key Learnings
+
+1. **Feature selection matters more than algorithm choice** — Thoughtful feature engineering drove cluster interpretability
+2. **PCA aids interpretation** — Reducing to 2-3 components made clusters visually intuitive
+3. **Domain knowledge validates clusters** — Knowing soccer helped sanity-check that clusters made sense
+
+## Next Steps
+
+- TODO: Add interactive visualization with Plotly
+- TODO: Extend to player-level clustering
+- TODO: Add temporal analysis (how team styles evolve across seasons)

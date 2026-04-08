@@ -1,0 +1,71 @@
+---
+title: "Supply-Chain Stress Dashboard"
+description: "Real-time analytics dashboard tracking supply-chain stress indicators with automated data pipelines and interactive visualizations."
+category: "data"
+tags: ["Python", "FastAPI", "Streamlit", "SQLAlchemy", "Alembic", "PostgreSQL"]
+date: "2024-06-01"
+featured: true
+links:
+  github: "https://github.com/arnavgokhale/supply-chain-dashboard"
+---
+
+## Overview
+
+A full-stack analytics application that aggregates, processes, and visualizes supply-chain stress indicators in real-time. Built to help analysts monitor disruption risks across multiple data sources through a single interactive dashboard.
+
+## Problem
+
+Supply-chain analysts often juggle multiple data sources—shipping indices, port congestion metrics, commodity prices—spread across different tools and update schedules. This fragmentation makes it difficult to:
+
+- Get a unified view of current supply-chain health
+- Identify emerging stress signals before they cascade
+- Share consistent metrics across teams
+
+## Approach
+
+### Architecture
+
+Built a three-tier system:
+
+1. **Data Layer**: PostgreSQL database with SQLAlchemy ORM and Alembic migrations for schema versioning
+2. **API Layer**: FastAPI backend exposing RESTful endpoints for data ingestion and retrieval
+3. **Visualization Layer**: Streamlit dashboard with interactive charts and filtering
+
+### Data Pipeline
+
+The backend automatically:
+
+- Ingests data from multiple indicator sources on configurable schedules
+- Normalizes and validates incoming data against defined schemas
+- Computes derived stress metrics (rolling averages, z-scores, trend indicators)
+- Stores historical snapshots for time-series analysis
+
+### Dashboard Features
+
+The Streamlit frontend provides:
+
+- Real-time indicator cards showing current stress levels
+- Interactive time-series charts with adjustable date ranges
+- Drill-down views by region, commodity, or transport mode
+- Export functionality for reports and further analysis
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| Backend | FastAPI, Python |
+| Database | PostgreSQL, SQLAlchemy, Alembic |
+| Frontend | Streamlit, Plotly |
+| Data Processing | Pandas, NumPy |
+
+## Results
+
+- Consolidated 5+ data sources into a single unified dashboard
+- Reduced time-to-insight from hours of manual aggregation to real-time updates
+- Enabled consistent metric definitions across analysis workflows
+
+## Key Learnings
+
+1. **Schema migrations are essential** — Alembic saved significant headaches when indicator definitions evolved
+2. **API-first design pays off** — Decoupling data ingestion from visualization made both easier to iterate on
+3. **Streamlit is powerful for internal tools** — Rapid prototyping without frontend complexity, but requires careful state management

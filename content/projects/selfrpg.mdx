@@ -1,0 +1,107 @@
+---
+title: "SelfRPG"
+description: "A wellness 'Self RPG' mobile app MVP built for a Gemini hackathon—gamifying daily habits with quests, stats, and persistent progress."
+category: "engineering"
+tags: ["React Native", "TypeScript", "Expo", "Zustand", "Gemini", "Mobile App"]
+date: "2024-04-01"
+featured: false
+links:
+  github: "https://github.com/arnavgokhale12/selfrpg"
+---
+
+## Overview
+
+SelfRPG transforms personal wellness into a role-playing game. Complete daily wellness activities as "quests," track stats like energy and focus, and watch your character level up over time. Built as an MVP for a Gemini AI hackathon.
+
+## Problem
+
+Habit tracking apps often feel like chores—checkboxes without motivation. Gamification can help, but most implementations are superficial (badges that don't matter). SelfRPG aimed to create a more immersive experience:
+
+- Make daily wellness feel like progress in an RPG
+- Provide meaningful feedback loops (stats that reflect real activities)
+- Persist progress across days without losing momentum
+
+## Role & Context
+
+- Hackathon project (Gemini AI Hackathon)
+- Solo development, MVP scope
+- Built in a compressed timeline
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | React Native, Expo |
+| Language | TypeScript |
+| State Management | Zustand |
+| AI Integration | Gemini API |
+| Persistence | AsyncStorage via Zustand |
+
+## Architecture
+
+The app is structured around three core engines:
+
+### QuestEngine
+
+- Generates daily quests based on user goals and history
+- Integrates with Gemini for personalized quest suggestions
+- Tracks quest completion and rewards
+
+### StatsEngine
+
+- Manages RPG-style stats (Energy, Focus, Wellness, etc.)
+- Calculates stat changes based on completed activities
+- Handles leveling and progression logic
+
+### SchedulerService
+
+- Manages day rollovers and quest resets
+- Persists progress across app sessions
+- Handles notifications for pending quests
+
+## Approach
+
+### State Persistence
+
+Used Zustand with AsyncStorage middleware for offline-first persistence:
+
+- All state survives app closes and device restarts
+- Day rollover logic detects new days and refreshes quests
+- Historical data preserved for progress tracking
+
+### Quest Generation
+
+Quests are generated through a combination of:
+
+- User-defined goals and preferences
+- Gemini AI suggestions for variety and personalization
+- Difficulty scaling based on current stats and history
+
+### Daily Review
+
+End-of-day flow includes:
+
+- Summary of completed quests
+- Stat changes visualization
+- XP gained and level progress
+- Reflection prompt for journaling
+
+## Results
+
+- Functional MVP demonstrating core gameplay loop
+- Offline-capable with persistent state
+- Quest generation with AI assistance
+- Clean TypeScript architecture with separated concerns
+
+## Key Learnings
+
+1. **Zustand simplifies React Native state** — Much lighter than Redux for this scale, persistence middleware worked seamlessly
+2. **Offline-first is essential for mobile** — Users expect the app to work without connectivity
+3. **Hackathon scope discipline** — Focused on core loop rather than polish; shipped a working MVP
+
+## Next Steps
+
+- TODO: Add social features (friend challenges)
+- TODO: Expand quest variety and customization
+- TODO: Add detailed analytics dashboard
+- TODO: Polish UI/UX for App Store release

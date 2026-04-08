@@ -1,0 +1,83 @@
+---
+title: "LexiStack (Vocab-Phone)"
+description: "Mobile vocabulary learning app with spaced repetition algorithm and native iOS widget for daily review cards."
+category: "engineering"
+tags: ["React Native", "Expo", "TypeScript", "iOS Widget", "Spaced Repetition"]
+date: "2024-03-15"
+featured: true
+links:
+  github: "https://github.com/arnavgokhale/lexistack"
+---
+
+## Overview
+
+A React Native mobile app for vocabulary learning that implements spaced repetition to optimize retention. Features a native iOS widget that surfaces daily review cards directly on the home screen.
+
+## Problem
+
+Language learners face a common challenge: vocabulary apps are effective but require opening the app to review. This creates friction that leads to broken streaks and forgotten words. I wanted:
+
+- Passive exposure to review cards without opening an app
+- A scientifically-backed spacing algorithm for optimal retention
+- A clean, distraction-free interface focused on learning
+
+## Approach
+
+### Spaced Repetition System
+
+Implemented an SM-2 inspired algorithm that:
+
+- Tracks performance on each card (correct/incorrect, response time)
+- Calculates optimal review intervals based on historical accuracy
+- Prioritizes cards approaching their review deadline
+- Adjusts difficulty ratings based on repeated struggles
+
+### iOS Widget
+
+Built a native iOS widget using Expo's widget capabilities:
+
+- Displays the highest-priority review card on the home screen
+- Updates throughout the day as cards become due
+- Tapping the widget opens directly to that card in the app
+- Minimal battery impact through efficient update scheduling
+
+### App Architecture
+
+```
+src/
+├── components/     # Reusable UI components
+├── screens/        # Main app screens
+├── hooks/          # Custom React hooks
+├── utils/          # Spaced repetition logic
+├── storage/        # AsyncStorage persistence
+└── widget/         # iOS widget configuration
+```
+
+### Key Features
+
+- **Card Management**: Add, edit, and organize vocabulary cards into decks
+- **Review Sessions**: Swipe-based interface for quick card reviews
+- **Progress Tracking**: Statistics on retention rate and review streaks
+- **Import/Export**: Backup and restore card collections
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | React Native, Expo |
+| Language | TypeScript |
+| State | React Context, AsyncStorage |
+| Widget | Expo Widgets (iOS) |
+| UI | Custom components, React Native Reanimated |
+
+## Results
+
+- Reduced friction for daily vocabulary review through passive widget exposure
+- Achieved consistent daily usage through home screen visibility
+- Built a complete mobile app from concept to App Store-ready
+
+## Key Learnings
+
+1. **Widgets change behavior** — Home screen presence dramatically increased daily review frequency
+2. **TypeScript catches bugs early** — Strong typing prevented numerous runtime errors in spaced repetition calculations
+3. **Expo simplifies native features** — Widget integration was far easier than expected thanks to Expo's abstractions

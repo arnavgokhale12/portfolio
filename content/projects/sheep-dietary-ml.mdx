@@ -1,0 +1,81 @@
+---
+title: "Sheep Dietary Analysis ML System"
+description: "End-to-end ML pipeline for AgriLife Research analyzing microhistological samples to determine livestock diet composition."
+category: "ml"
+tags: ["Python", "scikit-learn", "Image Processing", "Research", "Agriculture"]
+date: "2024-09-01"
+featured: true
+links:
+  github: "https://github.com/arnavgokhale/sheep-dietary-ml"
+---
+
+## Overview
+
+An ML pipeline developed in collaboration with Texas A&M AgriLife Research (Dr. Walker's lab) that automates the analysis of microhistological samples to determine sheep dietary composition. The system processes microscope imagery to identify plant species fragments in fecal samples.
+
+## Problem
+
+Understanding what livestock eat on rangelands is crucial for:
+
+- Optimizing grazing management strategies
+- Monitoring rangeland health over time
+- Studying animal nutrition and forage preferences
+
+Traditional microhistological analysis is labor-intensive: trained technicians manually examine hundreds of plant fragments under a microscope and identify species based on cellular structures. This process is:
+
+- Time-consuming (hours per sample)
+- Subject to inter-observer variability
+- Difficult to scale for large research studies
+
+## Approach
+
+### Data Pipeline
+
+Built an end-to-end pipeline that:
+
+1. **Image Preprocessing**: Standardizes microscope images (color normalization, noise reduction, segmentation)
+2. **Feature Extraction**: Extracts relevant visual features from plant fragment images
+3. **Classification**: Identifies plant species using trained ML models
+4. **Aggregation**: Computes dietary composition percentages across sample sets
+
+### Model Development
+
+Experimented with multiple approaches:
+
+- Traditional ML with handcrafted features (texture, shape, color histograms)
+- Transfer learning from pretrained image models
+- Ensemble methods combining multiple feature types
+
+The final system uses an ensemble approach that balances accuracy with interpretability—important for research applications where understanding model decisions matters.
+
+### Validation Strategy
+
+- Cross-validation against expert-labeled reference samples
+- Comparison with traditional manual analysis results
+- Sensitivity analysis across different image quality conditions
+
+## Stack
+
+| Component | Technology |
+|-----------|------------|
+| Language | Python |
+| ML | scikit-learn, XGBoost |
+| Image Processing | OpenCV, scikit-image |
+| Data | Pandas, NumPy |
+| Visualization | Matplotlib, seaborn |
+
+## Results
+
+- Automated species identification for common rangeland plant fragments
+- Reduced analysis time compared to fully manual methods
+- Provided consistent, reproducible classifications across samples
+
+## Key Learnings
+
+1. **Domain expertise is essential** — Close collaboration with researchers ensured the model solved the right problem and outputs were interpretable
+2. **Data quality trumps model complexity** — Clean, well-labeled training data mattered more than sophisticated architectures
+3. **Research applications need explainability** — Black-box predictions weren't enough; researchers needed to understand and validate model decisions
+
+## Context
+
+This project is part of ongoing research at Texas A&M AgriLife Research under Dr. Walker's supervision. The system supports studies on livestock grazing behavior and rangeland ecology.
