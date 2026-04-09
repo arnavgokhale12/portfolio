@@ -86,6 +86,24 @@ export function ProjectCard({ project }: ProjectCardProps) {
           </span>
         </div>
       </Link>
+
+      {/* Project page link — shown outside the main card link to avoid nested <a> */}
+      {project.links?.demo && (
+        <div className="border-t border-gray-100 px-6 py-3">
+          <a
+            href={project.links.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-600 hover:text-brand-700"
+          >
+            <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+            View Project Page
+          </a>
+        </div>
+      )}
     </article>
   );
 }

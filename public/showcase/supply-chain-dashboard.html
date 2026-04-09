@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supply Chain Dashboard — Macro Stress Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a14;
+      --surface: #10101e;
+      --surface2: #16162a;
+      --border: #1e1e3a;
+      --accent: #a78bfa;
+      --accent2: #f97316;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --green: #34d399;
+      --red: #f87171;
+      --yellow: #facc15;
+      --radius: 12px;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero {
+      background: linear-gradient(135deg, #0a0a1a 0%, #0f0f20 60%, #0a0a1a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(167,139,250,0.1) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.3);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f1f5f9 30%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-tagline { font-size: 1.15rem; color: var(--accent); font-weight: 500; margin-bottom: 16px; }
+    .hero-summary { max-width: 660px; margin: 0 auto; color: var(--muted); font-size: 1.05rem; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 28px; }
+    .chip { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; padding: 4px 12px; border-radius: 999px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; }
+    .prose { color: var(--muted); max-width: 720px; }
+    .prose p + p { margin-top: 12px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stack-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; }
+    .stack-tag span { color: var(--accent2); margin-right: 6px; font-size: 0.75rem; }
+
+    .bullets-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .bullets-list li { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: var(--radius); padding: 16px 20px; color: var(--text); font-size: 0.9rem; line-height: 1.5; }
+
+    .links-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #0a0a14; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+
+    /* Regime indicator */
+    .regime-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+    .regime-badge {
+      padding: 10px 20px; border-radius: 8px; font-size: 0.85rem; font-weight: 700;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .regime-low { background: rgba(52,211,153,0.12); border: 1px solid rgba(52,211,153,0.4); color: var(--green); }
+    .regime-normal { background: rgba(167,139,250,0.12); border: 1px solid rgba(167,139,250,0.4); color: var(--accent); }
+    .regime-elevated { background: rgba(250,204,21,0.12); border: 1px solid rgba(250,204,21,0.4); color: var(--yellow); }
+    .regime-crisis { background: rgba(248,113,113,0.12); border: 1px solid rgba(248,113,113,0.4); color: var(--red); }
+
+    .indicator-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .indicator-table th, .indicator-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .indicator-table th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .indicator-table td { color: var(--text); }
+    .source-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; font-size: 0.75rem; color: var(--muted); }
+
+    .pipeline-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .pipeline-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 0.82rem; font-weight: 500; }
+    .pipeline-arrow { color: var(--accent); font-size: 1.1rem; }
+
+    .visual-placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 24px; text-align: center; color: var(--muted); }
+    .visual-placeholder .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .visual-placeholder p { font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="container" style="position:relative">
+      <div class="hero-badge">Macroeconomics · FinTech · Data Engineering</div>
+      <h1>Supply Chain Dashboard</h1>
+      <p class="hero-tagline">Composite stress index + regime-conditional market overlay for supply chain risk</p>
+      <p class="hero-summary">
+        A full-stack macro intelligence tool that aggregates 7 economic indicators into a composite
+        supply chain stress index, classifies the current market regime, and shows how equities and
+        ETFs historically perform under each regime — connecting macro signals to portfolio decisions.
+      </p>
+      <div class="hero-chips">
+        <span class="chip">FastAPI</span>
+        <span class="chip">SQLAlchemy + Alembic</span>
+        <span class="chip">Streamlit</span>
+        <span class="chip">FRED API</span>
+        <span class="chip">NY Fed GSCPI</span>
+        <span class="chip">yfinance</span>
+        <span class="chip">SQLite</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <section class="section">
+      <p class="section-label">Overview</p>
+      <h2 class="section-title">What it does &amp; who it's for</h2>
+      <div class="prose">
+        <p>
+          The Supply Chain Dashboard ingests 7 macroeconomic indicators from authoritative sources
+          (NY Fed, FRED, Cass Freight, Baltic Dry Index) into a local SQLite database, normalizes each
+          using a 36-month rolling z-score, and combines them into a single weighted composite index.
+          The composite is classified into four regimes: low, normal, elevated, crisis.
+        </p>
+        <p>
+          A market overlay pulls equity price data via yfinance and computes regime-conditional return
+          statistics for major indices, sector ETFs, and key stocks — letting a user see "when supply
+          chain stress is elevated, how does XLI (Industrials ETF) historically perform?"
+        </p>
+        <p>
+          Built for macro analysts, portfolio managers, finance students, and anyone tracking
+          supply chain disruption risk with market implications.
+        </p>
+      </div>
+      <div class="regime-row">
+        <div class="regime-badge regime-low">● Low (&lt;−0.5)</div>
+        <div class="regime-badge regime-normal">● Normal (−0.5 to 0.5)</div>
+        <div class="regime-badge regime-elevated">● Elevated (0.5 to 1.5)</div>
+        <div class="regime-badge regime-crisis">● Crisis (≥1.5)</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Tech Stack</p>
+      <h2 class="section-title">Technologies used</h2>
+      <div class="stack-grid">
+        <div class="stack-tag"><span>⚡</span>FastAPI (REST API backend)</div>
+        <div class="stack-tag"><span>🗃</span>SQLAlchemy ORM + Alembic migrations</div>
+        <div class="stack-tag"><span>🎨</span>Streamlit (frontend dashboard)</div>
+        <div class="stack-tag"><span>📡</span>FRED API (Federal Reserve economic data)</div>
+        <div class="stack-tag"><span>🏦</span>NY Fed GSCPI (Global Supply Chain Pressure Index)</div>
+        <div class="stack-tag"><span>📈</span>yfinance (equity and ETF price data)</div>
+        <div class="stack-tag"><span>🗄</span>SQLite (local time series storage)</div>
+        <div class="stack-tag"><span>🐍</span>Python (Pandas, Pydantic settings)</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Data Sources &amp; Indicators</p>
+      <h2 class="section-title">7 indicators, 4 data sources</h2>
+      <table class="indicator-table">
+        <thead>
+          <tr><th>Indicator</th><th>Source</th><th>What it measures</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Global Supply Chain Pressure Index (GSCPI)</td><td><span class="source-tag">NY Fed</span></td><td>Aggregate global supply chain stress</td></tr>
+          <tr><td>Retail Inventories/Sales Ratio</td><td><span class="source-tag">FRED</span></td><td>Inventory buildup signal</td></tr>
+          <tr><td>Cass Freight Index</td><td><span class="source-tag">FRED</span></td><td>North American freight volume</td></tr>
+          <tr><td>ISM Manufacturing Employment</td><td><span class="source-tag">FRED</span></td><td>Manufacturing sector health</td></tr>
+          <tr><td>Manufacturing New Orders</td><td><span class="source-tag">FRED</span></td><td>Forward demand indicator</td></tr>
+          <tr><td>Wholesale Inventories/Sales</td><td><span class="source-tag">FRED</span></td><td>Wholesale pipeline congestion</td></tr>
+          <tr><td>Baltic Dry Index</td><td><span class="source-tag">Quandl</span></td><td>Global shipping cost benchmark</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Feature Highlights</p>
+      <h2 class="section-title">Core capabilities</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Dynamic Composite Index</h3>
+          <p>Configurable N-indicator composite: each indicator has weight, invert_sign, and include_in_composite flags stored in DB. Z-score normalization over a 36-month rolling window. Weighted average with regime thresholds.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <h3>Regime-Conditional Market Returns</h3>
+          <p>Pre-computes avg monthly return, std dev, and sample count for SPY, sector ETFs (XLI, XLY, XLK, SMH), and key stocks (NVDA, AMZN, COST) under each of the 4 supply chain regimes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏗</div>
+          <h3>Full REST API</h3>
+          <p>FastAPI backend with typed Pydantic schemas: composite latest/history/indicators, market series, price history, regime returns, and current prices — all fully documented at <code>/docs</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗄</div>
+          <h3>Persistent Time Series DB</h3>
+          <p>SQLAlchemy models with Alembic migrations store economic observations, market prices, and pre-computed regime return statistics — enabling fast dashboard load without live API calls.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌐</div>
+          <h3>Streamlit Dashboard</h3>
+          <p>Status banner showing current regime + composite score. Left panel: composite score history chart + all indicators. Right panel: market impact with S&P 500, ETFs, and regime context. Bottom: key stocks by theme.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <h3>Modular Ingestion Scripts</h3>
+          <p>Separate ingestion scripts per data source (GSCPI, Cass, FRED, Baltic Dry, yfinance) allow selective re-ingestion without touching other indicators. Regime analyzer runs as a separate post-processing step.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Why It Matters</p>
+      <h2 class="section-title">Business value &amp; technical depth</h2>
+      <div class="prose">
+        <p>
+          Supply chain disruptions have had measurable equity market impact — COVID-era port congestion,
+          chip shortages, and freight cost spikes all corresponded with sector-specific equity drawdowns.
+          This tool operationalizes that relationship: rather than monitoring each indicator separately,
+          it synthesizes them into a single actionable regime signal, then surfaces which equities have
+          historically responded most to that regime.
+        </p>
+        <p>
+          The composite index formula mirrors how institutional analysts think about macro risk
+          aggregation — z-score normalization removes unit differences between indicators, rolling
+          windows adapt to structural shifts, and configurable weights allow analyst judgment to be
+          baked into the model rather than hard-coded.
+        </p>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-box">7 Indicators<br><small style="color:var(--muted)">FRED · NY Fed · Quandl</small></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-box">Z-Score Normalization<br><small style="color:var(--muted)">36-month rolling window</small></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-box">Composite Index<br><small style="color:var(--muted)">weighted average</small></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-box">Regime Classification<br><small style="color:var(--muted)">low · normal · elevated · crisis</small></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-box">Market Overlay<br><small style="color:var(--muted)">regime-conditional returns</small></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">My Work</p>
+      <h2 class="section-title">What I built</h2>
+      <div class="prose">
+        <p>
+          Designed the full-stack architecture: FastAPI backend with SQLAlchemy models and Alembic migrations,
+          individual ingestion services for each data source, the composite index calculator with configurable
+          indicator weights, and the regime analyzer that pre-computes market return statistics.
+        </p>
+        <p>
+          Built the Streamlit dashboard connecting to the REST API, the regime-conditional equity overlay,
+          and the modular router structure separating supply chain and market data concerns. Wrote all
+          SQLAlchemy models, Pydantic schemas, and the dynamic composite calculation logic.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Resume-Ready Bullets</p>
+      <h2 class="section-title">Copy-paste for your resume</h2>
+      <ul class="bullets-list">
+        <li>Built a full-stack macro intelligence dashboard (FastAPI + Streamlit) aggregating 7 supply chain indicators from FRED, NY Fed, and Cass Freight into a composite stress index with 4-regime classification and regime-conditional equity return overlays</li>
+        <li>Designed a configurable composite index pipeline with z-score normalization (36-month rolling window), dynamic indicator weights/signs stored in SQLite via SQLAlchemy ORM, and pre-computed regime return statistics for SPY, sector ETFs, and key stocks</li>
+        <li>Engineered modular data ingestion services (GSCPI, FRED multi-series, Cass, Baltic Dry, yfinance) with Alembic migrations, enabling selective re-ingestion and clean separation between supply chain and market data</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Links</p>
+      <h2 class="section-title">Find the project</h2>
+      <div class="links-row">
+        <a href="https://github.com/arnavgokhale/supply-chain-dashboard" class="btn btn-primary">⬡ GitHub Repo</a>
+        <a href="#" class="btn btn-secondary">🌐 Live Demo (add link)</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Visuals</p>
+      <h2 class="section-title">Dashboard layout</h2>
+      <div class="grid-2">
+        <div class="visual-placeholder">
+          <div class="icon">📊</div>
+          <p><strong>Composite Index View</strong><br>Status banner with current regime · composite score history · all 7 indicators panel</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">📈</div>
+          <p><strong>Market Impact Panel</strong><br>S&amp;P 500 + sector ETF performance · regime context · key stocks by theme (chips, retail, logistics)</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LexiStack — Vocabulary Learning App</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0e0e1a;
+      --surface: #14142a;
+      --surface2: #1a1a35;
+      --border: #24244a;
+      --accent: #9966ff;
+      --accent2: #6699ff;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --green: #34d399;
+      --yellow: #facc15;
+      --radius: 12px;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero {
+      background: linear-gradient(135deg, #0e0e1a 0%, #14143a 50%, #0e0e1a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(153,102,255,0.12) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(153,102,255,0.1);
+      border: 1px solid rgba(153,102,255,0.35);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f1f5f9 30%, var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-tagline { font-size: 1.15rem; color: var(--accent); font-weight: 500; margin-bottom: 16px; }
+    .hero-summary { max-width: 660px; margin: 0 auto; color: var(--muted); font-size: 1.05rem; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 28px; }
+    .chip { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; padding: 4px 12px; border-radius: 999px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; }
+    .prose { color: var(--muted); max-width: 720px; }
+    .prose p + p { margin-top: 12px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stack-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; }
+    .stack-tag span { color: var(--accent2); margin-right: 6px; font-size: 0.75rem; }
+
+    .bullets-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .bullets-list li { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: var(--radius); padding: 16px 20px; color: var(--text); font-size: 0.9rem; line-height: 1.5; }
+
+    .links-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: white; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+
+    .visual-placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 24px; text-align: center; color: var(--muted); }
+    .visual-placeholder .icon { font-size: 2.5rem; margin-bottom: 12px; }
+
+    .version-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .version-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 4px 10px; font-size: 0.78rem; color: var(--muted); }
+    .version-badge strong { color: var(--text); }
+
+    .arch-flow { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .arch-step { display: flex; align-items: flex-start; gap: 14px; }
+    .arch-num { min-width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; flex-shrink: 0; }
+    .arch-text { font-size: 0.88rem; color: var(--muted); padding-top: 4px; }
+    .arch-text strong { color: var(--text); }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="container" style="position:relative">
+      <div class="hero-badge">React Native · iOS WidgetKit · TypeScript</div>
+      <h1>LexiStack</h1>
+      <p class="hero-tagline">Vocabulary learning app with iOS home screen + lock screen widget integration</p>
+      <p class="hero-summary">
+        A full-featured React Native vocabulary app with a premium dark glassmorphism UI, spaced repetition
+        mastery tracking, daily quizzes, gamified level progression, and real-time iOS WidgetKit widgets
+        that sync instantly as you learn — bridged via Swift App Groups.
+      </p>
+      <div class="hero-chips">
+        <span class="chip">React Native 0.81</span>
+        <span class="chip">Expo 54</span>
+        <span class="chip">TypeScript (strict)</span>
+        <span class="chip">iOS WidgetKit</span>
+        <span class="chip">Swift + App Intents</span>
+        <span class="chip">MMKV</span>
+        <span class="chip">React Navigation 7</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <section class="section">
+      <p class="section-label">Overview</p>
+      <h2 class="section-title">What it does &amp; who it's for</h2>
+      <div class="prose">
+        <p>
+          LexiStack presents a daily set of vocabulary words, deterministically selected using an
+          FNV-1a seeded hash so the same date produces the same words across all devices. Users
+          navigate a learn → quiz → review cycle, with each answer recorded against a three-level
+          mastery system (new → learning → mastered) and a numeric 0–3 mastery level.
+        </p>
+        <p>
+          The app's standout feature is deep iOS integration: home screen and lock screen widgets
+          display the current word and update in real-time as the user navigates through their daily
+          session. Widget interactions (Got It / Repeat buttons) trigger iOS 17 App Intents that
+          update progress in shared App Groups UserDefaults and reload the widget timeline.
+        </p>
+        <p>
+          Built for vocabulary learners who want passive reinforcement throughout the day — seeing
+          a word on their home screen multiple times per day without opening the app.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Tech Stack</p>
+      <h2 class="section-title">Technologies used</h2>
+      <div class="stack-grid">
+        <div class="stack-tag"><span>📱</span>React Native 0.81.5 (New Arch)</div>
+        <div class="stack-tag"><span>⚡</span>Expo 54 + EAS Build</div>
+        <div class="stack-tag"><span>🔷</span>TypeScript 5.9 (strict mode)</div>
+        <div class="stack-tag"><span>🍎</span>iOS WidgetKit (systemMedium + systemLarge)</div>
+        <div class="stack-tag"><span>🔗</span>Swift App Groups (UserDefaults bridge)</div>
+        <div class="stack-tag"><span>⚙️</span>iOS 17 App Intents (interactive widget buttons)</div>
+        <div class="stack-tag"><span>💾</span>MMKV v4 (high-perf persistent storage)</div>
+        <div class="stack-tag"><span>🧭</span>React Navigation 7 (native-stack)</div>
+        <div class="stack-tag"><span>🎨</span>NativeWind (Tailwind CSS for React Native)</div>
+        <div class="stack-tag"><span>🔊</span>expo-speech (TTS pronunciation)</div>
+        <div class="stack-tag"><span>✨</span>expo-haptics (tactile feedback)</div>
+        <div class="stack-tag"><span>🧪</span>Jest + 37 tests</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Feature Highlights</p>
+      <h2 class="section-title">Core capabilities</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">🍎</div>
+          <h3>Real-Time iOS Widget Sync</h3>
+          <p>Home screen and lock screen widgets update <em>instantly</em> when the user navigates to a new word — via a React Native → Swift native module bridge writing to App Groups UserDefaults, followed by <code>WidgetCenter.reloadAllTimelines()</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎮</div>
+          <h3>Interactive Widget Buttons (iOS 17)</h3>
+          <p>Widget buttons trigger Swift App Intents (<code>GotItIntent</code>, <code>RepeatIntent</code>) that update progress in shared storage and load the next word — all without opening the app.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <h3>Spaced Repetition + Mastery Tracking</h3>
+          <p>Three-level string mastery (new → learning → mastered) plus a numeric 0–3 level updated by a simple clamp rule. Daily sessions mix new words with review words prioritized by age and mastery.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <h3>Placement Test + Difficulty Bias</h3>
+          <p>Onboarding placement quiz estimates user vocabulary level (1–5). Daily word selection is then biased 70% toward the user's comfort zone, 20% stretch words, 10% other — using deterministic seeded selection.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏆</div>
+          <h3>Lexi Levels Gamification</h3>
+          <p>Five progression levels (Bronze → Diamond) based on total mastered words. Progress bar, level badge, and weekly goal calendar displayed on the home screen, updating immediately after each session.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📚</div>
+          <h3>Custom Lists</h3>
+          <p>Users can create custom word lists (up to 20 words each) and mix them into their daily session. Mix count is configurable (0–5 custom words per day), blended deterministically with the seeded word selection.</p>
+        </div>
+      </div>
+      <div class="version-row">
+        <div class="version-badge"><strong>v2.0</strong> Mastery system</div>
+        <div class="version-badge"><strong>v2.3</strong> Daily quiz + Fisher-Yates shuffle</div>
+        <div class="version-badge"><strong>v2.7</strong> Placement test + difficulty bias</div>
+        <div class="version-badge"><strong>v2.8</strong> Lexi Levels gamification</div>
+        <div class="version-badge"><strong>v2.10</strong> Push notifications</div>
+        <div class="version-badge"><strong>v2.12</strong> Custom lists</div>
+        <div class="version-badge"><strong>v2.14</strong> Home screen refactor</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Why It Matters</p>
+      <h2 class="section-title">Technical depth &amp; iOS engineering</h2>
+      <div class="prose">
+        <p>
+          The iOS widget integration is non-trivial: it requires a native Swift WidgetKit extension,
+          a React Native native module bridge in Swift, App Groups entitlements for shared storage,
+          and iOS 17 App Intents for interactive buttons — none of which are handled by Expo's managed
+          workflow and had to be manually configured in Xcode.
+        </p>
+        <p>
+          The widget target was added manually (Expo prebuild would delete it), worked around a
+          CocoaPods + Xcode 16 objectVersion incompatibility, resolved macOS extended attribute
+          code signing failures, and handled physical device widget quirks around Face ID lock screen
+          and containerBackground modifiers.
+        </p>
+      </div>
+      <div class="arch-flow">
+        <div class="arch-step">
+          <div class="arch-num">1</div>
+          <div class="arch-text"><strong>User navigates to new word</strong> in React Native LearnScreen</div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-num">2</div>
+          <div class="arch-text"><strong>Native module</strong> <code>AppGroupStore.swift</code> writes word JSON to App Groups UserDefaults</div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-num">3</div>
+          <div class="arch-text"><strong><code>WidgetCenter.reloadAllTimelines()</code></strong> triggers immediate widget refresh</div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-num">4</div>
+          <div class="arch-text"><strong>WidgetKit extension</strong> reads from shared UserDefaults and re-renders widget UI</div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-num">5</div>
+          <div class="arch-text"><strong>App Intents</strong> (iOS 17) handle widget button taps → update progress → reload timeline</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">My Work</p>
+      <h2 class="section-title">What I built</h2>
+      <div class="prose">
+        <p>
+          Designed and implemented the full application over 14 versioned iterations: the vocabulary
+          database, seeded selection algorithm, mastery service, quiz generation with Fisher-Yates
+          shuffle, spaced repetition review queue, Lexi Levels gamification, custom lists, push
+          notifications, placement test, session summaries, and the full Streamlit-style home screen.
+        </p>
+        <p>
+          Built the iOS integration from scratch: Swift native module bridge, WidgetKit extension,
+          App Groups shared storage, iOS 17 App Intents for interactive widget buttons, AVFoundation
+          audio session configuration for mute-switch override, and manual Xcode target configuration
+          not covered by Expo tooling.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Resume-Ready Bullets</p>
+      <h2 class="section-title">Copy-paste for your resume</h2>
+      <ul class="bullets-list">
+        <li>Built a React Native (Expo) vocabulary app with a real-time iOS WidgetKit integration that syncs the current word to home screen and lock screen widgets via a Swift native module bridge and App Groups UserDefaults</li>
+        <li>Implemented iOS 17 App Intents for interactive widget buttons (Got It / Repeat) that update mastery progress and reload widget timeline without opening the app</li>
+        <li>Designed a spaced repetition mastery system with difficulty-biased seeded word selection, placement test onboarding, daily quiz generation (Fisher-Yates shuffle), and gamified level progression — delivered across 14 versioned feature releases</li>
+        <li>Resolved non-trivial iOS build issues: CocoaPods + Xcode 16 objectVersion incompatibility, macOS extended attribute code signing failures, and manual Xcode WidgetKit target configuration outside Expo's managed workflow</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Links</p>
+      <h2 class="section-title">Find the project</h2>
+      <div class="links-row">
+        <a href="https://github.com/arnavgokhale/vocab-phone" class="btn btn-primary">⬡ GitHub Repo</a>
+        <a href="#" class="btn btn-secondary">📱 App Store (add link)</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Visuals</p>
+      <h2 class="section-title">Screenshots</h2>
+      <div class="grid-3">
+        <div class="visual-placeholder">
+          <div class="icon">🏠</div>
+          <p><strong>Home Screen</strong><br>Progress card · streak · weekly calendar · level badge</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">📖</div>
+          <p><strong>Learn Screen</strong><br>Word card · reveal flow · Got It / Review buttons · speaker</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">🍎</div>
+          <p><strong>iOS Widget</strong><br>Home screen widget showing current word, synced in real-time</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

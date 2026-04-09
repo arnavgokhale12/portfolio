@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Body Mechanics — Biomechanics Visualizer</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e1a;
+      --surface: #111827;
+      --surface2: #1a2235;
+      --border: #1e2d47;
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --green: #34d399;
+      --radius: 12px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, #0f172a 0%, #0c1a32 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(56,189,248,0.12) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(56,189,248,0.1);
+      border: 1px solid rgba(56,189,248,0.3);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f1f5f9 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-tagline {
+      font-size: 1.2rem;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+    .hero-summary {
+      max-width: 640px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .hero-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 28px;
+    }
+    .chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      letter-spacing: -0.01em;
+    }
+    .prose { color: var(--muted); max-width: 720px; }
+    .prose p + p { margin-top: 12px; }
+
+    /* ── GRID ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 640px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+    }
+    .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
+    }
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    /* ── TECH STACK ── */
+    .stack-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .stack-tag {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .stack-tag span { color: var(--accent2); margin-right: 6px; font-size: 0.75rem; }
+
+    /* ── RESUME BULLETS ── */
+    .bullets-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .bullets-list li {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--green);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* ── LINKS ── */
+    .links-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0e1a;
+    }
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+
+    /* ── VISUAL PLACEHOLDER ── */
+    .visual-placeholder {
+      background: var(--surface);
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 60px 24px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .visual-placeholder .icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .visual-placeholder p { font-size: 0.9rem; }
+
+    /* ── ARCH DIAGRAM ── */
+    .arch-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+    .arch-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 16px;
+      font-size: 0.82rem;
+      font-weight: 500;
+    }
+    .arch-arrow { color: var(--accent); font-size: 1.1rem; }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="container" style="position:relative">
+      <div class="hero-badge">Interactive 3D Visualization</div>
+      <h1>Body Mechanics</h1>
+      <p class="hero-tagline">Real-time 3D skeleton viewer for walking gait &amp; breathing education</p>
+      <p class="hero-summary">
+        An interactive, browser-native biomechanics visualizer that animates a full human skeleton
+        through procedural gait and breathing cycles — with kinetic chain highlighting, overlay controls,
+        and A/B preset comparison. No plugins. No install. Just <code>npm run dev</code>.
+      </p>
+      <div class="hero-chips">
+        <span class="chip">React 18</span>
+        <span class="chip">react-three-fiber</span>
+        <span class="chip">Three.js</span>
+        <span class="chip">Zustand</span>
+        <span class="chip">Vite + Vitest</span>
+        <span class="chip">Static Deploy</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- OVERVIEW -->
+    <section class="section">
+      <p class="section-label">Overview</p>
+      <h2 class="section-title">What it does &amp; who it's for</h2>
+      <div class="prose">
+        <p>
+          Body Mechanics renders an anatomically-structured skeleton in 3D and animates it through two
+          biomechanical modules: a walking gait cycle (with 10 configurable parameters — hip swing,
+          knee flexion, ankle range, overpronation, pelvic lateral sway, etc.) and a breathing cycle
+          (diaphragmatic vs. chest breathing, adjustable BPM).
+        </p>
+        <p>
+          The target audience includes physical therapists, biomechanics educators, movement coaches,
+          and allied health students who need a lightweight visual reference that runs in any browser
+          without clinical software licenses.
+        </p>
+        <p>
+          The problem it solves: explaining joint compensation patterns to patients or students is
+          difficult without a live, controllable reference. Existing tools either require Unity installs
+          or are locked behind expensive clinical platforms.
+        </p>
+      </div>
+    </section>
+
+    <!-- TECH STACK -->
+    <section class="section">
+      <p class="section-label">Tech Stack</p>
+      <h2 class="section-title">Technologies used</h2>
+      <div class="stack-grid">
+        <div class="stack-tag"><span>⚛</span>React 18 + react-three-fiber</div>
+        <div class="stack-tag"><span>🎨</span>Three.js (geometry, quaternions, materials)</div>
+        <div class="stack-tag"><span>🔧</span>@react-three/drei (OrbitControls, Text, Grid)</div>
+        <div class="stack-tag"><span>🗃</span>Zustand (global state)</div>
+        <div class="stack-tag"><span>⚡</span>Vite (build &amp; dev server)</div>
+        <div class="stack-tag"><span>🧪</span>Vitest (unit tests)</div>
+        <div class="stack-tag"><span>🌐</span>Static HTML deploy (no backend)</div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section">
+      <p class="section-label">Feature Highlights</p>
+      <h2 class="section-title">Core capabilities</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">🦴</div>
+          <h3>Procedural FK Animation</h3>
+          <p>Walking and breathing animations are computed as pure functions of time and parameters — no pre-baked clips. Every preset is just a different parameter set fed into the same FK pipeline.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🕸</div>
+          <h3>Kinetic Chain Graph Traversal</h3>
+          <p>The skeleton is an undirected adjacency graph. Clicking any joint triggers BFS to highlight the upstream path to root and downstream subtree — showing how forces propagate through the chain.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔀</div>
+          <h3>A/B Preset Comparison</h3>
+          <p>Side-by-side split view renders two different gait presets simultaneously (e.g. normal vs. overpronation), making compensation patterns immediately visible at a glance.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Physics Overlays</h3>
+          <p>Toggle-able overlays include: Centre of Pressure trail, Ground Reaction Force arrows, Rib Expansion directional arrows, and Joint Axes RGB triads — each driven by the animation data pipeline.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎛</div>
+          <h3>Configurable Gait Presets</h3>
+          <p>Presets (normal, overpronation, limited dorsiflexion, chest breathing, diaphragmatic) expose 10+ biomechanical parameters, with gait phase callouts synchronized to the timeline scrubber.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧪</div>
+          <h3>Tested Graph Module</h3>
+          <p>The graph traversal layer (BFS, DFS, path-finding, highlight set) is fully unit-tested with Vitest — 11 tests ensuring correctness of joint chain logic independent of Three.js rendering.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY IT MATTERS -->
+    <section class="section">
+      <p class="section-label">Why It Matters</p>
+      <h2 class="section-title">Technical depth &amp; practical value</h2>
+      <div class="prose">
+        <p>
+          The architecture deliberately separates concerns into three independent layers: pure-math
+          animation functions, a graph traversal module, and React/Three.js rendering. This means
+          the animation logic is fully testable without a browser, the graph logic is portable,
+          and the rendering layer could be swapped for Unity or a real GLTF rig without touching
+          the data model.
+        </p>
+        <p>
+          Pre-allocated THREE.js objects at module scope and a material cache prevent garbage
+          collection pressure inside the render loop — a common source of frame drops in browser 3D.
+          All animation values are computed each frame from a normalized time parameter, so scrubbing
+          is instant and deterministic.
+        </p>
+      </div>
+      <div class="arch-row">
+        <div class="arch-box">Zustand store<br><small style="color:var(--muted)">time, module, presets</small></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">animation/*.js<br><small style="color:var(--muted)">pure functions</small></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">Skeleton.jsx<br><small style="color:var(--muted)">R3F renderer</small></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-box">overlays/*.jsx<br><small style="color:var(--muted)">COP, GRF, Ribs</small></div>
+      </div>
+    </section>
+
+    <!-- MY WORK -->
+    <section class="section">
+      <p class="section-label">My Work</p>
+      <h2 class="section-title">What I built</h2>
+      <div class="prose">
+        <p>
+          Designed and implemented the full architecture from scratch: the joint registry and
+          parent/adjacency graph data model, the forward kinematics walking and breathing animation
+          pipelines, the Zustand state architecture, and all Three.js rendering including bone
+          cylinder deduplication, pre-allocated object reuse, and material caching.
+        </p>
+        <p>
+          Built the kinetic chain BFS/DFS graph module with full unit test coverage, the overlay
+          system (COP path, GRF arrows, rib expansion, joint axes), the A/B split compare view,
+          and the gait phase callout synchronization system.
+        </p>
+      </div>
+    </section>
+
+    <!-- RESUME BULLETS -->
+    <section class="section">
+      <p class="section-label">Resume-Ready Bullets</p>
+      <h2 class="section-title">Copy-paste for your resume</h2>
+      <ul class="bullets-list">
+        <li>Built a browser-native 3D biomechanics visualizer in React + react-three-fiber with procedural FK walking/breathing animations, configurable gait presets, and real-time A/B comparison mode</li>
+        <li>Modeled the human skeleton as a directed/undirected graph; implemented BFS kinetic chain traversal to highlight joint dependencies on click, fully unit-tested with Vitest</li>
+        <li>Engineered a layered architecture separating pure-math animation (framework-free, testable) from rendering, enabling future mocap or Unity swap-in without UI changes</li>
+        <li>Applied Three.js performance techniques (pre-allocated object pools, material caching) to eliminate GC pressure in the per-frame render loop</li>
+      </ul>
+    </section>
+
+    <!-- LINKS -->
+    <section class="section">
+      <p class="section-label">Links</p>
+      <h2 class="section-title">Find the project</h2>
+      <div class="links-row">
+        <a href="https://github.com/arnavgokhale/body-mechanics" class="btn btn-primary">⬡ GitHub Repo</a>
+        <a href="#" class="btn btn-secondary">🌐 Live Demo (add link)</a>
+      </div>
+    </section>
+
+    <!-- SCREENSHOTS -->
+    <section class="section">
+      <p class="section-label">Visuals</p>
+      <h2 class="section-title">Screenshots</h2>
+      <div class="grid-2">
+        <div class="visual-placeholder">
+          <div class="icon">🦴</div>
+          <p><strong>Walking Gait View</strong><br>3D skeleton animating through gait cycle with COP trail and GRF arrows</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">🫁</div>
+          <p><strong>Breathing Module</strong><br>Ribcage expansion overlay with directional arrows and adjustable BPM scrubber</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">🔀</div>
+          <p><strong>A/B Compare Mode</strong><br>Split view: normal gait vs. overpronation preset side-by-side</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">🕸</div>
+          <p><strong>Joint Click Highlight</strong><br>BFS kinetic chain traversal — upstream path + downstream subtree highlighted in pink</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

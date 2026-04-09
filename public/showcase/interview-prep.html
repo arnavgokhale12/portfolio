@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interview Prep — Spaced Repetition Flashcard System</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0e14;
+      --surface: #111520;
+      --surface2: #161c28;
+      --border: #1e2840;
+      --accent: #f59e0b;
+      --accent2: #38bdf8;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --green: #34d399;
+      --radius: 12px;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero {
+      background: linear-gradient(135deg, #0a0e14 0%, #0f1520 60%, #0a0e14 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245,158,11,0.1) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.35);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f1f5f9 30%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-tagline { font-size: 1.15rem; color: var(--accent); font-weight: 500; margin-bottom: 16px; }
+    .hero-summary { max-width: 640px; margin: 0 auto; color: var(--muted); font-size: 1.05rem; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 28px; }
+    .chip { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; padding: 4px 12px; border-radius: 999px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; }
+    .prose { color: var(--muted); max-width: 720px; }
+    .prose p + p { margin-top: 12px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 640px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stack-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; }
+    .stack-tag span { color: var(--accent); margin-right: 6px; font-size: 0.75rem; }
+
+    .bullets-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .bullets-list li { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: var(--radius); padding: 16px 20px; color: var(--text); font-size: 0.9rem; line-height: 1.5; }
+
+    .links-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #0a0e14; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+
+    .priority-table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+    .priority-table th, .priority-table td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    .priority-table th { color: var(--muted); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .priority-num { font-weight: 800; color: var(--accent2); }
+    .status-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: 0.75rem; font-weight: 600; }
+    .s-new { background: rgba(52,211,153,0.12); color: var(--green); }
+    .s-review { background: rgba(248,113,113,0.12); color: #f87171; }
+    .s-learning { background: rgba(56,189,248,0.12); color: var(--accent2); }
+    .s-mastered { background: rgba(245,158,11,0.12); color: var(--accent); }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    .mini-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 16px; text-align: center; }
+    .mini-card .num { font-size: 1.6rem; font-weight: 800; color: var(--accent); }
+    .mini-card .lbl { font-size: 0.75rem; color: var(--muted); margin-top: 4px; }
+    @media (max-width: 640px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="container" style="position:relative">
+      <div class="hero-badge">Python · CLI · Data Science · Finance</div>
+      <h1>Interview Prep</h1>
+      <p class="hero-tagline">Terminal-based Anki-style flashcard system for Data Science &amp; Quant Finance interviews</p>
+      <p class="hero-summary">
+        A zero-dependency Python CLI that implements a five-tier spaced repetition priority queue
+        for DS, ML, econometrics, and quantitative finance flashcards — so you always study the
+        gaps interviewers exploit, not the things you already know.
+      </p>
+      <div class="hero-chips">
+        <span class="chip">Python 3.10+</span>
+        <span class="chip">Zero external dependencies</span>
+        <span class="chip">Spaced Repetition</span>
+        <span class="chip">CLI / Terminal</span>
+        <span class="chip">JSON persistence</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <section class="section">
+      <p class="section-label">Overview</p>
+      <h2 class="section-title">What it does &amp; who it's for</h2>
+      <div class="prose">
+        <p>
+          Interview Prep is a terminal flashcard application that surfaces the right card at the right
+          time. Before every session, all cards are sorted into five priority tiers based on status
+          and accuracy — new cards first, then review (incorrect since last streak), then struggling
+          cards, then learning cards, and mastered cards last. Progress persists to JSON after every
+          card so you never lose a session.
+        </p>
+        <p>
+          The card database covers four categories tailored for Data Science and Financial Economics
+          interviews: machine learning (bias-variance tradeoff, regularization, gradient boosting,
+          transformers/attention), econometrics (OLS assumptions, IV, DiD, panel data, unit roots),
+          quantitative finance (ARIMA, GARCH, CAPM, BSM, Greeks, MPT), and quant brain teasers
+          (Jane Street / Citadel style probability and logic puzzles).
+        </p>
+        <p>
+          Built for any candidate preparing for roles at hedge funds, quant trading firms, data science
+          teams, or financial economics research positions.
+        </p>
+      </div>
+      <div class="cards-grid">
+        <div class="mini-card"><div class="num">10</div><div class="lbl">ML cards</div></div>
+        <div class="mini-card"><div class="num">10</div><div class="lbl">Econometrics cards</div></div>
+        <div class="mini-card"><div class="num">10</div><div class="lbl">Finance cards</div></div>
+        <div class="mini-card"><div class="num">5</div><div class="lbl">Quant brain teasers</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Tech Stack</p>
+      <h2 class="section-title">Technologies used</h2>
+      <div class="stack-grid">
+        <div class="stack-tag"><span>🐍</span>Python 3.10+ (stdlib only — no pip required)</div>
+        <div class="stack-tag"><span>📂</span>JSON persistence (progress.json)</div>
+        <div class="stack-tag"><span>🖥</span>Terminal / CLI interface</div>
+        <div class="stack-tag"><span>🧠</span>Spaced repetition algorithm (5-tier priority)</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Priority System</p>
+      <h2 class="section-title">Five-tier spaced repetition</h2>
+      <table class="priority-table">
+        <thead>
+          <tr><th>Priority</th><th>Status</th><th>Condition</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="priority-num">1 — First</td>
+            <td><span class="status-badge s-new">new</span></td>
+            <td>Never seen before</td>
+          </tr>
+          <tr>
+            <td class="priority-num">2</td>
+            <td><span class="status-badge s-review">review</span></td>
+            <td>Answered incorrectly since last correct streak</td>
+          </tr>
+          <tr>
+            <td class="priority-num">3</td>
+            <td><span class="status-badge s-learning">learning</span></td>
+            <td>Seen ≥1 time, accuracy &lt; 70%</td>
+          </tr>
+          <tr>
+            <td class="priority-num">4</td>
+            <td><span class="status-badge s-learning">learning</span></td>
+            <td>Seen ≥1 time, accuracy ≥ 70%</td>
+          </tr>
+          <tr>
+            <td class="priority-num">5 — Last</td>
+            <td><span class="status-badge s-mastered">mastered</span></td>
+            <td>Seen ≥3 times and accuracy ≥ 80%</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Feature Highlights</p>
+      <h2 class="section-title">Core capabilities</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">🧮</div>
+          <h3>Priority-Sorted Sessions</h3>
+          <p>Every session re-ranks all cards before starting. You always encounter your weakest cards first, not random order. Answering incorrectly immediately moves a card back to Priority 2.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <h3>Category Filtering</h3>
+          <p>Study all categories together, or target one specifically: <code>python3 study.py -c quants</code>. Perfect for the morning before an interview at a quant fund.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💾</div>
+          <h3>Mid-Session Persistence</h3>
+          <p>Progress is written to <code>progress.json</code> after every single card. Quit at any point without losing data. Tracks seen count, correct count, status, and last seen date per card.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <h3>Progress Dashboard</h3>
+          <p>Run <code>python3 study.py --stats</code> to see a session summary: cards by status, accuracy per category, total sessions, and mastery breakdown.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔧</div>
+          <h3>Zero Dependencies</h3>
+          <p>Pure Python 3.10+ stdlib only. No pip, no virtualenv, no setup. Clone the repo, run the script. New card categories are auto-discovered — just drop a JSON file in <code>data/</code>.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📝</div>
+          <h3>Easily Extensible</h3>
+          <p>Adding a new card requires only a unique <code>id</code>, <code>question</code>, and <code>answer</code> in the appropriate JSON file. No code changes. Auto-discovered by the script.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Why It Matters</p>
+      <h2 class="section-title">Practical value</h2>
+      <div class="prose">
+        <p>
+          The insight behind this tool is simple but important: cramming everything is less effective
+          than drilling the specific cards you're weakest on. The five-tier priority system operationalizes
+          that: your review queue (cards you've gotten wrong) gets all the attention, mastered cards
+          are pushed to the end, and new cards are always introduced before you waste time on things
+          you already know.
+        </p>
+        <p>
+          The domain coverage is deliberately narrow and curated — not a general-purpose flashcard app,
+          but a targeted tool for one specific interview preparation context where the gaps are known in
+          advance: OLS assumptions, IV, GARCH, Black-Scholes Greeks, Jane Street probability puzzles.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">My Work</p>
+      <h2 class="section-title">What I built</h2>
+      <div class="prose">
+        <p>
+          Designed and implemented the full application: the five-tier priority sorting algorithm,
+          JSON persistence with mid-session write, category discovery and filtering, session controls,
+          progress dashboard, and reset functionality. Curated the full card content across four
+          domains: machine learning, econometrics, finance, and quantitative brain teasers.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Resume-Ready Bullets</p>
+      <h2 class="section-title">Copy-paste for your resume</h2>
+      <ul class="bullets-list">
+        <li>Built a zero-dependency Python CLI implementing a five-tier spaced repetition algorithm for Data Science and Quant Finance interview prep, with per-card JSON persistence and category-targeted study sessions</li>
+        <li>Curated 35 flashcards across ML, econometrics, quantitative finance, and Jane Street / Citadel-style probability brain teasers, with a priority engine that surfaces weakest cards first based on accuracy and recency</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Links</p>
+      <h2 class="section-title">Find the project</h2>
+      <div class="links-row">
+        <a href="https://github.com/arnavgokhale/interviewPrep" class="btn btn-primary">⬡ GitHub Repo</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Visuals</p>
+      <h2 class="section-title">Terminal interface</h2>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:32px;font-family:monospace;font-size:0.88rem;line-height:1.8;color:var(--muted)">
+        <div style="color:#666;margin-bottom:16px">$ python3 study.py -c quants</div>
+        <div style="color:var(--accent);font-weight:700">Interview Prep — Quants</div>
+        <div style="color:#666">────────────────────────────────</div>
+        <div style="margin-top:12px"><span style="color:var(--accent2)">[Priority 2 — REVIEW]</span> Card 1 of 5</div>
+        <div style="margin-top:8px;color:var(--text)"><strong>Q:</strong> You pick 3 random numbers between 0 and 1. What is the probability that the largest is greater than 0.9?</div>
+        <div style="margin-top:12px;color:#666">Press Enter to reveal the answer...</div>
+        <div style="margin-top:12px;color:var(--text)"><strong>A:</strong> P(max &gt; 0.9) = 1 − P(all ≤ 0.9) = 1 − 0.9³ = 1 − 0.729 = <strong style="color:var(--green)">0.271</strong></div>
+        <div style="margin-top:16px;color:#666">[1] Got it   [2] Needs review   [3] Exit</div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

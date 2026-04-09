@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Euro Style Clusters — Soccer Analytics</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0f0a;
+      --surface: #0f1a0f;
+      --surface2: #172017;
+      --border: #1e301e;
+      --accent: #4ade80;
+      --accent2: #facc15;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --blue: #60a5fa;
+      --radius: 12px;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero {
+      background: linear-gradient(135deg, #0a1a0a 0%, #0f1f0f 60%, #0a1a0a 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(74,222,128,0.1) 0%, transparent 70%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(74,222,128,0.1);
+      border: 1px solid rgba(74,222,128,0.3);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f1f5f9 30%, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-tagline { font-size: 1.15rem; color: var(--accent); font-weight: 500; margin-bottom: 16px; }
+    .hero-summary { max-width: 660px; margin: 0 auto; color: var(--muted); font-size: 1.05rem; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 28px; }
+    .chip { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; padding: 4px 12px; border-radius: 999px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; letter-spacing: -0.01em; }
+    .prose { color: var(--muted); max-width: 720px; }
+    .prose p + p { margin-top: 12px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 640px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stack-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; }
+    .stack-tag span { color: var(--accent2); margin-right: 6px; font-size: 0.75rem; }
+
+    .bullets-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .bullets-list li { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 16px 20px; color: var(--text); font-size: 0.9rem; line-height: 1.5; }
+
+    .links-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #0a0f0a; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+
+    .insight-card { background: var(--surface2); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .insight-card .val { font-size: 1.6rem; font-weight: 800; color: var(--accent2); }
+    .insight-card .label { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+    .pipeline-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .pipeline-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; font-size: 0.82rem; font-weight: 500; }
+    .pipeline-arrow { color: var(--accent); font-size: 1.1rem; }
+
+    .screenshot-img { width: 100%; border-radius: var(--radius); border: 1px solid var(--border); display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="container" style="position:relative">
+      <div class="hero-badge">Machine Learning · Sports Analytics</div>
+      <h1>Euro Style Clusters</h1>
+      <p class="hero-tagline">Playing style classification + MoneyBall transfer efficiency for Europe's top 5 leagues</p>
+      <p class="hero-summary">
+        A full data science pipeline that clusters 16 years of European soccer teams into distinct playing
+        styles using k-means and hierarchical clustering, then cross-references spending data to rank
+        clubs by transfer market efficiency — like Moneyball, but for football.
+      </p>
+      <div class="hero-chips">
+        <span class="chip">Python</span>
+        <span class="chip">scikit-learn</span>
+        <span class="chip">Streamlit</span>
+        <span class="chip">Pandas</span>
+        <span class="chip">SQLite</span>
+        <span class="chip">K-Means / Hierarchical Clustering</span>
+        <span class="chip">PCA / t-SNE</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <section class="section">
+      <p class="section-label">Overview</p>
+      <h2 class="section-title">What it does &amp; who it's for</h2>
+      <div class="prose">
+        <p>
+          Euro Style Clusters ingests match statistics for the Premier League, La Liga, Serie A, Bundesliga,
+          and Ligue 1 from 2008–2024 and groups teams into named playing style clusters (e.g. "Possession
+          Attackers", "Direct Play", "Ball Controllers") using unsupervised machine learning.
+        </p>
+        <p>
+          A second MoneyBall module pulls transfer market data from TransferMarkt and computes efficiency
+          metrics — squad value per euro spent, net spend, ROI — to identify which clubs extract the most
+          value from their investment and which just throw money at the table.
+        </p>
+        <p>
+          Built for sports analysts, football researchers, data science portfolios, and anyone interested
+          in the intersection of tactical analysis and sports economics.
+        </p>
+      </div>
+      <div class="grid-3" style="margin-top:28px">
+        <div class="insight-card">
+          <div class="val">4.2×</div>
+          <div class="label">Athletic Bilbao value efficiency — highest in dataset, driven by their Basque-only policy</div>
+        </div>
+        <div class="insight-card">
+          <div class="val">5 Leagues</div>
+          <div class="label">PL, La Liga, Serie A, Bundesliga, Ligue 1 — 16 seasons of data</div>
+        </div>
+        <div class="insight-card">
+          <div class="val">3 Sources</div>
+          <div class="label">Kaggle SQLite, football-data.co.uk, TransferMarkt — merged across 11 years</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Tech Stack</p>
+      <h2 class="section-title">Technologies used</h2>
+      <div class="stack-grid">
+        <div class="stack-tag"><span>🐍</span>Python 3.8+</div>
+        <div class="stack-tag"><span>🔬</span>scikit-learn (KMeans, AgglomerativeClustering, silhouette score)</div>
+        <div class="stack-tag"><span>📊</span>Pandas (feature engineering, aggregation)</div>
+        <div class="stack-tag"><span>🎨</span>Streamlit (interactive dashboard)</div>
+        <div class="stack-tag"><span>🗃</span>SQLite (Kaggle European Soccer DB)</div>
+        <div class="stack-tag"><span>📉</span>PCA + t-SNE (dimensionality reduction for visualization)</div>
+        <div class="stack-tag"><span>📈</span>Matplotlib / Seaborn (cluster radar charts, projections)</div>
+        <div class="stack-tag"><span>⚽</span>TransferMarkt data (via salimt/football-datasets)</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Feature Highlights</p>
+      <h2 class="section-title">Core capabilities</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">🔬</div>
+          <h3>Unsupervised Style Clustering</h3>
+          <p>K-means with silhouette-score optimal k selection plus hierarchical (Ward linkage) clustering on team-season feature vectors. Supports k=3–8 clusters adjustable via the dashboard slider.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💰</div>
+          <h3>MoneyBall Transfer Efficiency</h3>
+          <p>Computes <code>value_efficiency = squad_value / total_spent</code> for every club in the dataset. Ranks smart spenders vs. big spenders and shows which clubs overachieve relative to outlay.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <h3>Team Style History Search</h3>
+          <p>Search any club to trace their style evolution across seasons — did Man City shift clusters when Guardiola arrived? Did Leicester's 2016 title team belong to a unique cluster?</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📐</div>
+          <h3>Multi-Source Feature Engineering</h3>
+          <p>Match-level stats are unpivoted from home/away format to team-centric, XML event columns parsed for shots/crosses/corners, then aggregated to team-season level across four feature groups: attack, possession, defense, game state.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗺</div>
+          <h3>PCA / t-SNE Visualizations</h3>
+          <p>Cluster projections in 2D PCA and t-SNE space with radar charts per cluster, enabling qualitative interpretation of what each cluster's playing style actually means.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📤</div>
+          <h3>Interactive Streamlit Dashboard</h3>
+          <p>6 tabs: Overview, Team Search, Timeline, Leagues, MoneyBall, Export. League and season filters, team financial profiles integrated with style cluster data, CSV export of cluster assignments.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Why It Matters</p>
+      <h2 class="section-title">Technical depth &amp; practical value</h2>
+      <div class="prose">
+        <p>
+          The pipeline handles real-world data quality challenges: three heterogeneous sources with
+          different team naming conventions (requiring a cross-dataset <code>team_mapping.py</code> module),
+          different available features across time periods (full features 2008–2016, reduced features 2016–2024),
+          and XML event columns embedded in the SQLite database that require parsing to extract shot/cross/corner counts.
+        </p>
+        <p>
+          The MoneyBall analysis operationalizes a genuine sports economics concept — identifying which clubs
+          are Moneyball-style over-achievers vs. which simply outspend rivals. Athletic Bilbao's 4.2× efficiency
+          emerges naturally from the model without being hand-coded, demonstrating that the features genuinely
+          capture what the analysis intends to measure.
+        </p>
+      </div>
+      <div class="pipeline-row">
+        <div class="pipeline-box">3 Data Sources<br><small style="color:var(--muted)">Kaggle · football-data · TransferMarkt</small></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-box">Feature Engineering<br><small style="color:var(--muted)">team-centric, normalized</small></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-box">Clustering<br><small style="color:var(--muted)">K-means + Hierarchical</small></div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-box">Streamlit Dashboard<br><small style="color:var(--muted)">6 tabs, interactive</small></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">My Work</p>
+      <h2 class="section-title">What I built</h2>
+      <div class="prose">
+        <p>
+          Designed and implemented the full pipeline: data loaders for SQLite (with XML column parsing),
+          football-data.co.uk CSVs, and TransferMarkt JSON; the feature engineering module that unpivots
+          home/away data to team-centric and aggregates across four feature groups; k-means and hierarchical
+          clustering with optimal k selection; and PCA/t-SNE visualizations.
+        </p>
+        <p>
+          Built the MoneyBall analysis module including transfer fee parsing, squad valuation normalization,
+          efficiency metric computation, and smart/big spender ranking. Integrated all analyses into a
+          6-tab Streamlit dashboard with cross-dataset team name matching.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Resume-Ready Bullets</p>
+      <h2 class="section-title">Copy-paste for your resume</h2>
+      <ul class="bullets-list">
+        <li>Built an end-to-end ML pipeline in Python to cluster 16 years of European soccer teams (5 leagues, 3 data sources) into playing style groups using k-means and hierarchical clustering, with PCA/t-SNE visualizations deployed as an interactive Streamlit dashboard</li>
+        <li>Engineered multi-source feature pipeline joining Kaggle SQLite match data, football-data.co.uk CSVs, and TransferMarkt transfer records, including XML event column parsing and cross-dataset team name normalization</li>
+        <li>Implemented a MoneyBall transfer efficiency analysis computing squad value ROI per club, identifying over- and under-spending clubs across 11 seasons of European transfer market data</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Links</p>
+      <h2 class="section-title">Find the project</h2>
+      <div class="links-row">
+        <a href="https://github.com/arnavgokhale/euro-style-clusters" class="btn btn-primary">⬡ GitHub Repo</a>
+        <a href="#" class="btn btn-secondary">🌐 Live Demo (add link)</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Visuals</p>
+      <h2 class="section-title">Screenshots</h2>
+      <div class="grid-3">
+        <div>
+          <img src="screenshots/overview.png" alt="Cluster Overview — PCA visualization of playing styles" class="screenshot-img" onerror="this.parentElement.innerHTML='<div style=\'background:var(--surface);border:2px dashed var(--border);border-radius:12px;padding:48px 24px;text-align:center;color:var(--muted)\'><div style=\'font-size:2rem;margin-bottom:8px\'>📊</div><p>Cluster Overview<br><small>PCA visualization of playing styles</small></p></div>'" />
+        </div>
+        <div>
+          <img src="screenshots/team-search.png" alt="Team Search — style history" class="screenshot-img" onerror="this.parentElement.innerHTML='<div style=\'background:var(--surface);border:2px dashed var(--border);border-radius:12px;padding:48px 24px;text-align:center;color:var(--muted)\'><div style=\'font-size:2rem;margin-bottom:8px\'>🔍</div><p>Team Search<br><small>Style history and cluster membership</small></p></div>'" />
+        </div>
+        <div>
+          <img src="screenshots/moneyball.png" alt="MoneyBall — transfer efficiency" class="screenshot-img" onerror="this.parentElement.innerHTML='<div style=\'background:var(--surface);border:2px dashed var(--border);border-radius:12px;padding:48px 24px;text-align:center;color:var(--muted)\'><div style=\'font-size:2rem;margin-bottom:8px\'>💰</div><p>MoneyBall Tab<br><small>Transfer efficiency rankings</small></p></div>'" />
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>

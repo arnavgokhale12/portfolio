@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SelfRPG — Gamified Life Habit Tracker</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #080b14;
+      --surface: #0f1420;
+      --surface2: #151c2e;
+      --border: #1c2540;
+      --accent: #f59e0b;
+      --accent2: #e879f9;
+      --accent3: #34d399;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --blue: #60a5fa;
+      --radius: 12px;
+    }
+
+    body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .hero {
+      background: linear-gradient(135deg, #080b14 0%, #0f1525 50%, #080b14 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 80px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(245,158,11,0.1) 0%, transparent 60%),
+                  radial-gradient(ellipse 40% 40% at 80% 80%, rgba(232,121,249,0.06) 0%, transparent 60%);
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(245,158,11,0.1);
+      border: 1px solid rgba(245,158,11,0.35);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.6rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #f1f5f9 20%, var(--accent) 60%, var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-tagline { font-size: 1.15rem; color: var(--accent); font-weight: 500; margin-bottom: 16px; }
+    .hero-summary { max-width: 660px; margin: 0 auto; color: var(--muted); font-size: 1.05rem; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 28px; }
+    .chip { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; padding: 4px 12px; border-radius: 999px; }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 56px 0; border-bottom: 1px solid var(--border); }
+    .section:last-child { border-bottom: none; }
+    .section-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+    .section-title { font-size: 1.75rem; font-weight: 700; margin-bottom: 20px; }
+    .prose { color: var(--muted); max-width: 720px; }
+    .prose p + p { margin-top: 12px; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } }
+
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+    .card p { color: var(--muted); font-size: 0.9rem; }
+
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .stack-tag { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 16px; font-size: 0.85rem; font-weight: 500; }
+    .stack-tag span { color: var(--accent2); margin-right: 6px; font-size: 0.75rem; }
+
+    .bullets-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+    .bullets-list li { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent3); border-radius: var(--radius); padding: 16px 20px; color: var(--text); font-size: 0.9rem; line-height: 1.5; }
+
+    .links-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #080b14; }
+    .btn-secondary { background: transparent; border: 1px solid var(--border); color: var(--text); }
+    .btn:hover { opacity: 0.85; text-decoration: none; }
+
+    .attr-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 16px; }
+    @media (max-width: 640px) { .attr-grid { grid-template-columns: repeat(2, 1fr); } }
+    .attr-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+    }
+    .attr-icon { font-size: 1.3rem; }
+    .attr-name { font-size: 0.78rem; font-weight: 600; margin-top: 4px; color: var(--text); }
+    .attr-decay { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+    .build-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .build-tag {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .visual-placeholder { background: var(--surface); border: 2px dashed var(--border); border-radius: var(--radius); padding: 60px 24px; text-align: center; color: var(--muted); }
+    .visual-placeholder .icon { font-size: 2.5rem; margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="container" style="position:relative">
+      <div class="hero-badge">React Native · Gamification · Hackathon Project</div>
+      <h1>SelfRPG</h1>
+      <p class="hero-tagline">Your life is the game. Complete quests. Level up. Don't let your stats decay.</p>
+      <p class="hero-summary">
+        A React Native habit tracker built as an RPG: complete daily quests, earn XP and coins,
+        build a character across 8 life attributes with daily decay mechanics, unlock talents,
+        and choose a build archetype. Your real-world habits are the gameplay.
+      </p>
+      <div class="hero-chips">
+        <span class="chip">React Native (Expo)</span>
+        <span class="chip">TypeScript</span>
+        <span class="chip">Zustand</span>
+        <span class="chip">expo-sqlite</span>
+        <span class="chip">NativeWind</span>
+        <span class="chip">React Navigation</span>
+        <span class="chip">Gemini Hackathon</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <section class="section">
+      <p class="section-label">Overview</p>
+      <h2 class="section-title">What it does &amp; who it's for</h2>
+      <div class="prose">
+        <p>
+          SelfRPG maps real-life habits onto RPG mechanics: you have a character with 8 attributes
+          (Vitality, Strength, Mind, Focus, Mood, Social, Order, Discipline), each with a current
+          value (0–100), a daily decay rate, and a floor. If you don't complete quests that feed
+          an attribute, its value drops toward the floor — just like a character in an RPG who
+          hasn't trained.
+        </p>
+        <p>
+          A Quest Engine generates a daily board of habit quests from a curated pool, each with
+          attribute effects, XP rewards, and coin rewards. Completing quests levels up your character,
+          earns skill points for the Upgrade Tree, and triggers achievement unlocks. A Stats Engine
+          applies daily decay on day rollover and computes status effects (buffs/debuffs) based on
+          current attribute levels — low Focus gives "Brain Fog" (-10% XP), high Vitality gives
+          "Well Rested" (+15% XP).
+        </p>
+        <p>
+          Built for people who find traditional habit trackers too austere. The RPG framing converts
+          abstract self-improvement goals into concrete daily quests with visible stat consequences.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Character Attributes</p>
+      <h2 class="section-title">8 life attributes with daily decay</h2>
+      <div class="attr-grid">
+        <div class="attr-card"><div class="attr-icon">⚡</div><div class="attr-name">Vitality</div><div class="attr-decay">sleep, hydration, sunlight</div></div>
+        <div class="attr-card"><div class="attr-icon">🛡</div><div class="attr-name">Strength</div><div class="attr-decay">exercise, training</div></div>
+        <div class="attr-card"><div class="attr-icon">🧠</div><div class="attr-name">Mind</div><div class="attr-decay">learning, reading, focus</div></div>
+        <div class="attr-card"><div class="attr-icon">🎯</div><div class="attr-name">Focus</div><div class="attr-decay">deep work, no distractions</div></div>
+        <div class="attr-card"><div class="attr-icon">☀️</div><div class="attr-name">Mood</div><div class="attr-decay">meditation, gratitude</div></div>
+        <div class="attr-card"><div class="attr-icon">🤝</div><div class="attr-name">Social</div><div class="attr-decay">connection, conversation</div></div>
+        <div class="attr-card"><div class="attr-icon">📦</div><div class="attr-name">Order</div><div class="attr-decay">tidiness, planning</div></div>
+        <div class="attr-card"><div class="attr-icon">⏰</div><div class="attr-name">Discipline</div><div class="attr-decay">consistency, routines</div></div>
+      </div>
+      <div style="margin-top:20px;color:var(--muted);font-size:0.9rem">
+        Each attribute decays daily toward its floor. Quests like "Morning Sunlight" (+3 Vitality, +2 Mood)
+        or "Quality Sleep" (+5 Vitality, +2 Mind, +2 Focus) are how you fight the decay.
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Tech Stack</p>
+      <h2 class="section-title">Technologies used</h2>
+      <div class="stack-grid">
+        <div class="stack-tag"><span>📱</span>React Native (Expo)</div>
+        <div class="stack-tag"><span>🔷</span>TypeScript (strict)</div>
+        <div class="stack-tag"><span>🗃</span>Zustand (global game state)</div>
+        <div class="stack-tag"><span>🗄</span>expo-sqlite (persistent storage)</div>
+        <div class="stack-tag"><span>🎨</span>NativeWind (Tailwind for RN)</div>
+        <div class="stack-tag"><span>🧭</span>React Navigation (native-stack)</div>
+        <div class="stack-tag"><span>✨</span>Lucide React Native (icons)</div>
+        <div class="stack-tag"><span>🔄</span>React Native Reanimated</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Feature Highlights</p>
+      <h2 class="section-title">Core capabilities</h2>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">⚔️</div>
+          <h3>Quest Engine</h3>
+          <p>A curated quest pool spans all 8 attributes with daily, weekly, one-off, and challenge types. Each quest specifies attribute effects, XP reward, coin reward, difficulty (1–5), and estimated duration. The Quest Engine populates each day's board deterministically.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📉</div>
+          <h3>Daily Attribute Decay</h3>
+          <p>The Stats Engine applies per-attribute decay rates on day rollover, clamped to each attribute's floor. Neglect an attribute for a few days and the stat consequences are visible — motivating consistent habit completion.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">✨</div>
+          <h3>Status Effects</h3>
+          <p>Attribute levels trigger dynamic buffs and debuffs: "Brain Fog" (Focus &lt;30, −10% XP), "Scattered" (Focus &lt;15), "Well Rested" (Vitality &gt;70, +15% XP), "In Flow" (Mind + Focus both high). Status effects affect XP gain and gameplay feel.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌳</div>
+          <h3>Upgrade Tree</h3>
+          <p>Skill points earned from leveling up can be spent in the Talent Upgrade Tree. Talents modify game mechanics — reducing decay rates, boosting XP multipliers, or unlocking passive bonuses tied to build archetypes.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏗</div>
+          <h3>Build Templates</h3>
+          <p>Choose a character archetype at start: Scholar, Athlete, Social Charisma, Order &amp; Productivity, or Custom. Each template pre-configures attribute priorities, decay rates, and starting talent suggestions.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏆</div>
+          <h3>Achievements &amp; History</h3>
+          <p>Four achievement categories (milestone, streak, attribute, special) with XP and coin rewards. A history screen tracks completed quests over time, letting users review their consistency across weeks.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Build Templates</p>
+      <h2 class="section-title">Character archetypes</h2>
+      <div class="build-row">
+        <div class="build-tag">🎓 Scholar</div>
+        <div class="build-tag">💪 Athlete</div>
+        <div class="build-tag">🤝 Social Charisma</div>
+        <div class="build-tag">📋 Order &amp; Productivity</div>
+        <div class="build-tag">⚙️ Custom</div>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Why It Matters</p>
+      <h2 class="section-title">Design thinking &amp; technical execution</h2>
+      <div class="prose">
+        <p>
+          The central design insight is that habit trackers fail because they're boring. By mapping
+          behavior change onto RPG mechanics — daily decay, status effects, level-up progression,
+          talent trees — SelfRPG makes the consequences of habits concrete and visible, and the
+          rewards immediate and satisfying.
+        </p>
+        <p>
+          The technical execution demonstrates a well-structured React Native app: strict TypeScript
+          interfaces for every game entity (Quest, Attribute, Character, Achievement, Talent), a clean
+          service layer (QuestEngine, StatsEngine, SchedulerService) separate from the UI, Zustand for
+          game state, and expo-sqlite for persistent storage. The day rollover service handles edge cases
+          like multi-day gaps in app usage (applying accumulated decay correctly).
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">My Work</p>
+      <h2 class="section-title">What I built</h2>
+      <div class="prose">
+        <p>
+          Designed and implemented the full game system from scratch as a Gemini Hackathon project:
+          the typed data model (Quest, Attribute, Character, Achievement, Talent, DailyBoard), the Quest
+          Engine with curated quest pool spanning all 8 attribute categories, the Stats Engine with
+          status effect computation, the SchedulerService for day rollover and decay application, and
+          the full 6-screen navigation flow (Home, Quest Board, Upgrade Tree, History, Achievements, Settings).
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Resume-Ready Bullets</p>
+      <h2 class="section-title">Copy-paste for your resume</h2>
+      <ul class="bullets-list">
+        <li>Built an RPG-gamified habit tracker in React Native (Expo) with TypeScript: 8 decaying character attributes, quest-based habit completion system, status effects engine (buffs/debuffs from attribute levels), talent upgrade tree, and 5 character build archetypes</li>
+        <li>Designed a clean service layer (QuestEngine, StatsEngine, SchedulerService) with strict TypeScript interfaces for all game entities — separating business logic from UI and handling multi-day decay accumulation on app resume</li>
+      </ul>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Links</p>
+      <h2 class="section-title">Find the project</h2>
+      <div class="links-row">
+        <a href="https://github.com/arnavgokhale/GeminiHackathon" class="btn btn-primary">⬡ GitHub Repo</a>
+        <a href="#" class="btn btn-secondary">📱 Demo (add link)</a>
+      </div>
+    </section>
+
+    <section class="section">
+      <p class="section-label">Visuals</p>
+      <h2 class="section-title">Screenshots</h2>
+      <div class="grid-3">
+        <div class="visual-placeholder">
+          <div class="icon">🏠</div>
+          <p><strong>Home Screen</strong><br>Character stats · 8 attribute bars · level/XP · status effects</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">⚔️</div>
+          <p><strong>Quest Board</strong><br>Daily quests with difficulty, duration, attribute effects, XP reward</p>
+        </div>
+        <div class="visual-placeholder">
+          <div class="icon">🌳</div>
+          <p><strong>Upgrade Tree</strong><br>Talent grid with unlock costs and mechanical effects</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</body>
+</html>
