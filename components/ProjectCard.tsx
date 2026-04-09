@@ -94,7 +94,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
             href={project.links.demo}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-400 hover:text-brand-300"
           >
             <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
