@@ -1,0 +1,49 @@
+---
+title: "ResConv — Resume Format Converter"
+description: "Streamlit app that converts resumes between DOCX and PDF formats instantly in the browser — no installs, no sign-up."
+category: "engineering"
+tags: ["Python", "Streamlit", "PDF", "DOCX", "Document Processing"]
+date: "2025-11-30"
+featured: false
+links:
+  github: "https://github.com/arnavgokhale12/ResConv"
+---
+
+## Overview
+
+A lightweight Streamlit utility that converts resume files between DOCX and PDF in one click. Upload a file, hit convert, download the result — no account, no server-side storage, no friction.
+
+## Problem
+
+Switching between DOCX and PDF resume formats requires either desktop software (Word, Adobe Acrobat) or uploading to a third-party service that stores your document. For a task this routine, both options are overkill. A simple stateless web tool that processes the file locally and returns the converted output covers 95% of use cases.
+
+## Approach
+
+The app auto-detects the uploaded file type and presents a single conversion path (DOCX → PDF or PDF → DOCX). Conversion runs in a server-side temp directory that is cleaned up immediately after the download is prepared — the file never persists beyond the request.
+
+### Conversion Logic
+
+- **DOCX → PDF**: renders via `python-docx` + a headless LibreOffice call to preserve formatting faithfully
+- **PDF → DOCX**: extracts content via `pdf2docx`, reconstructing layout into an editable document
+
+### UX Design
+
+- Single-screen interface: upload → detect → convert → download
+- No state between sessions; each upload is independent
+- Error handling surfaces conversion failures directly in the UI
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| UI | Streamlit |
+| Language | Python |
+| DOCX → PDF | python-docx, LibreOffice (headless) |
+| PDF → DOCX | pdf2docx |
+| Packaging | Docker (optional), requirements.txt |
+
+## Key Learnings
+
+1. **Stateless tools are easier to trust** — no stored files means no privacy concerns, which lowers the barrier to use
+2. **LibreOffice headless is the most faithful DOCX renderer available in Python** — alternatives drop formatting that matters in resumes
+3. **Streamlit's file uploader + download button covers the full user flow** in under 50 lines of UI code

@@ -1,0 +1,70 @@
+---
+title: "Production FastAPI Backend Template"
+description: "Reusable, production-ready FastAPI backend with JWT auth, SQLAlchemy ORM, Alembic migrations, a full test suite, and one-command deployment."
+category: "engineering"
+tags: ["Python", "FastAPI", "SQLAlchemy", "Alembic", "PostgreSQL", "Docker", "pytest"]
+date: "2025-12-14"
+featured: false
+links:
+  github: "https://github.com/arnavgokhale12/fastapi-backend"
+---
+
+## Overview
+
+A batteries-included FastAPI starter that collapses the boilerplate cost of standing up a new Python API. Covers authentication, database migrations, structured logging, health checks, and a CI-ready test suite — so a new service can skip straight to business logic.
+
+## Problem
+
+Every Python backend project restarts from the same checklist: wire up SQLAlchemy, write migration tooling, implement JWT auth, add health/readiness probes, configure structured logging, set up pytest. Doing this from scratch on each project wastes time and introduces subtle inconsistencies between services.
+
+## Approach
+
+### Auth Layer
+
+JWT-based authentication with a clean separation between token issuance and route protection. Auth middleware is applied per-router, not globally, so public endpoints (health, docs) stay unauthenticated without extra annotation.
+
+### Database Layer
+
+SQLAlchemy ORM with an Alembic migration setup. The `alembic.ini` is pre-configured; adding a new model and running `make migrate` is all that's required to version the schema change.
+
+### Configuration
+
+Settings are loaded from environment variables via Pydantic `BaseSettings`. No hard-coded config strings anywhere in the codebase — every value that differs between environments comes from `.env` or the shell.
+
+### Testing
+
+pytest suite with fixtures for a test database session. Tests run against a real (in-memory or test-schema) database — no mocks of the ORM layer — so migration and query logic is covered end-to-end.
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | FastAPI |
+| Language | Python |
+| ORM | SQLAlchemy |
+| Migrations | Alembic |
+| Auth | JWT (python-jose) |
+| Config | Pydantic BaseSettings |
+| Tests | pytest |
+| Deploy | Docker, `start.sh` |
+
+## Project Structure
+
+```
+app/
+├── api/          # Dependency injection helpers
+├── core/         # Config, logging, security
+├── crud/         # DB query functions
+├── models/       # SQLAlchemy models
+├── routers/      # Route handlers (items, health, ready)
+├── schemas/      # Pydantic request/response models
+└── db.py         # Engine and session factory
+alembic/          # Migration environment + versions
+tests/            # pytest suite
+```
+
+## Key Learnings
+
+1. **Separate routers from business logic** — keeping CRUD functions out of route handlers makes both easier to test and reuse
+2. **Pydantic settings eliminate config drift** — one source of truth for every environment variable, validated at startup
+3. **Real DB in tests catches migration bugs** — mock-free integration tests surfaced schema issues that unit tests would have missed
