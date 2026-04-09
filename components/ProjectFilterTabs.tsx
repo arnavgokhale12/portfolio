@@ -19,7 +19,7 @@ export function ProjectFilterTabs({
   onFilterChange,
 }: ProjectFilterTabsProps) {
   return (
-    <div className="mb-8 inline-flex rounded-xl bg-white p-1.5 shadow-sm border border-gray-200">
+    <div className="mb-8 inline-flex rounded-xl bg-gray-900 p-1.5 border border-gray-800">
       {filters.map((filter) => (
         <button
           key={filter.value}
@@ -28,7 +28,7 @@ export function ProjectFilterTabs({
             "rounded-lg px-4 py-2 text-sm font-medium transition-all",
             activeFilter === filter.value
               ? "bg-brand-600 text-white shadow-sm"
-              : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+              : "text-gray-400 hover:text-gray-100 hover:bg-gray-800"
           )}
         >
           {filter.label}

@@ -78,7 +78,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="name"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-300"
         >
           Name
         </label>
@@ -90,7 +90,7 @@ export function ContactForm() {
           disabled={isDisabled}
           value={formData.name}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+          className="mt-1 block w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-gray-100 placeholder-gray-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 disabled:cursor-not-allowed disabled:bg-gray-700"
           placeholder="Your name"
         />
       </div>
@@ -98,7 +98,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-300"
         >
           Email
         </label>
@@ -110,7 +110,7 @@ export function ContactForm() {
           disabled={isDisabled}
           value={formData.email}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+          className="mt-1 block w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-gray-100 placeholder-gray-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 disabled:cursor-not-allowed disabled:bg-gray-700"
           placeholder="you@example.com"
         />
       </div>
@@ -118,7 +118,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="message"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-sm font-medium text-gray-300"
         >
           Message
         </label>
@@ -130,7 +130,7 @@ export function ContactForm() {
           rows={5}
           value={formData.message}
           onChange={handleChange}
-          className="mt-1 block w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-900 placeholder-gray-500 focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500 disabled:cursor-not-allowed disabled:bg-gray-100"
+          className="mt-1 block w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-3 text-gray-100 placeholder-gray-500 focus:border-brand-400 focus:outline-none focus:ring-1 focus:ring-brand-400 disabled:cursor-not-allowed disabled:bg-gray-700"
           placeholder="How can I help you?"
         />
       </div>

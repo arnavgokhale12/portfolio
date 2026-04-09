@@ -48,23 +48,23 @@ export default function HomePage() {
       </section>
 
       {/* Stats Section */}
-      <section className="border-b border-gray-200 bg-white py-12">
+      <section className="border-b border-gray-800 bg-gray-950 py-12">
         <div className="container-wide">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">5+</div>
+              <div className="text-3xl font-bold text-gray-100">5+</div>
               <div className="mt-1 text-sm text-gray-500">Projects Shipped</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">MS</div>
+              <div className="text-3xl font-bold text-gray-100">MS</div>
               <div className="mt-1 text-sm text-gray-500">Economics @ TAMU</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">Full Stack</div>
+              <div className="text-3xl font-bold text-gray-100">Full Stack</div>
               <div className="mt-1 text-sm text-gray-500">Data to Deploy</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">2026</div>
+              <div className="text-3xl font-bold text-gray-100">2026</div>
               <div className="mt-1 text-sm text-gray-500">Expected Grad</div>
             </div>
           </div>
@@ -72,20 +72,20 @@ export default function HomePage() {
       </section>
 
       {/* Featured Projects */}
-      <section className="bg-gray-50 py-20">
+      <section className="bg-gray-900 py-20">
         <div className="container-wide">
           <div className="mb-12 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
-              <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-600">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-400">
                 Portfolio
               </p>
-              <h2 className="text-3xl font-bold text-gray-900">
+              <h2 className="text-3xl font-bold text-gray-100">
                 Featured Projects
               </h2>
             </div>
             <Link
               href="/projects"
-              className="inline-flex items-center text-sm font-medium text-brand-600 hover:text-brand-700"
+              className="inline-flex items-center text-sm font-medium text-brand-400 hover:text-brand-300"
             >
               View all projects
               <svg className="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,7 +101,7 @@ export default function HomePage() {
               ))}
             </div>
           ) : (
-            <div className="rounded-2xl border-2 border-dashed border-gray-300 bg-white p-12 text-center">
+            <div className="rounded-2xl border-2 border-dashed border-gray-700 bg-gray-900 p-12 text-center">
               <p className="text-gray-500">
                 Featured projects will appear here.
               </p>
@@ -111,7 +111,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-white py-20">
+      <section className="bg-gray-950 py-20">
         <div className="container-narrow">
           <div className="rounded-2xl bg-gradient-to-r from-brand-600 to-brand-700 p-8 text-center md:p-12">
             <h2 className="mb-4 text-2xl font-bold text-white md:text-3xl">

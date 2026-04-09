@@ -13,19 +13,19 @@ const skills = [
 
 export default function ResumePage() {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-950 min-h-screen">
       {/* Header */}
-      <section className="bg-white border-b border-gray-200">
+      <section className="bg-gray-950 border-b border-gray-800">
         <div className="container-wide py-12 md:py-16">
           <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-600">
+              <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-400">
                 Resume
               </p>
-              <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">
+              <h1 className="text-3xl font-bold text-gray-100 md:text-4xl">
                 {siteConfig.name}
               </h1>
-              <p className="mt-2 text-gray-600">
+              <p className="mt-2 text-gray-400">
                 Data Analytics & Applied Economics
               </p>
             </div>
@@ -50,9 +50,9 @@ export default function ResumePage() {
             {/* Main Column */}
             <div className="lg:col-span-2 space-y-8">
               {/* Education */}
-              <div className="rounded-2xl bg-white p-6 md:p-8 shadow-sm border border-gray-100">
-                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-900">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-100 text-brand-600">
+              <div className="rounded-2xl bg-gray-900 p-6 md:p-8 border border-gray-800">
+                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-100">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-100 text-brand-400">
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
@@ -65,20 +65,20 @@ export default function ResumePage() {
                     <div className="flex-shrink-0 w-1 rounded-full bg-brand-500" />
                     <div className="flex-1">
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <h3 className="font-semibold text-gray-900">M.S. Economics</h3>
-                        <span className="text-sm font-medium text-brand-600">Dec 2026</span>
+                        <h3 className="font-semibold text-gray-100">M.S. Economics</h3>
+                        <span className="text-sm font-medium text-brand-400">Dec 2026</span>
                       </div>
-                      <p className="text-gray-600">Texas A&M University, College Station</p>
+                      <p className="text-gray-400">Texas A&M University, College Station</p>
                     </div>
                   </div>
                   <div className="flex gap-4">
                     <div className="flex-shrink-0 w-1 rounded-full bg-gray-300" />
                     <div className="flex-1">
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
-                        <h3 className="font-semibold text-gray-900">B.S. Electrical Engineering</h3>
+                        <h3 className="font-semibold text-gray-100">B.S. Electrical Engineering</h3>
                         <span className="text-sm text-gray-500">May 2025</span>
                       </div>
-                      <p className="text-gray-600">Texas A&M University, College Station</p>
+                      <p className="text-gray-400">Texas A&M University, College Station</p>
                       <p className="text-sm text-gray-500">Minor in Economics</p>
                     </div>
                   </div>
@@ -86,8 +86,8 @@ export default function ResumePage() {
               </div>
 
               {/* Projects */}
-              <div className="rounded-2xl bg-white p-6 md:p-8 shadow-sm border border-gray-100">
-                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-900">
+              <div className="rounded-2xl bg-gray-900 p-6 md:p-8 border border-gray-800">
+                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-100">
                   <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
@@ -129,13 +129,13 @@ export default function ResumePage() {
                       <div className="flex-shrink-0 w-1 rounded-full bg-purple-300" />
                       <div className="flex-1">
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <h3 className="font-semibold text-gray-900">{project.title}</h3>
+                          <h3 className="font-semibold text-gray-100">{project.title}</h3>
                           <span className="text-sm text-gray-500">{project.date}</span>
                         </div>
-                        <p className="text-sm text-purple-600 font-medium">{project.role}</p>
+                        <p className="text-sm text-purple-400 font-medium">{project.role}</p>
                         <ul className="mt-2 space-y-1">
                           {project.bullets.map((bullet, j) => (
-                            <li key={j} className="text-sm text-gray-600 flex gap-2">
+                            <li key={j} className="text-sm text-gray-400 flex gap-2">
                               <span className="text-gray-400">•</span>
                               {bullet}
                             </li>
@@ -148,8 +148,8 @@ export default function ResumePage() {
               </div>
 
               {/* Experience */}
-              <div className="rounded-2xl bg-white p-6 md:p-8 shadow-sm border border-gray-100">
-                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-900">
+              <div className="rounded-2xl bg-gray-900 p-6 md:p-8 border border-gray-800">
+                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-100">
                   <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-green-100 text-green-600">
                     <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -191,13 +191,13 @@ export default function ResumePage() {
                       <div className="flex-shrink-0 w-1 rounded-full bg-green-300" />
                       <div className="flex-1">
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <h3 className="font-semibold text-gray-900">{job.title}</h3>
+                          <h3 className="font-semibold text-gray-100">{job.title}</h3>
                           <span className="text-sm text-gray-500">{job.date}</span>
                         </div>
-                        <p className="text-sm text-gray-600">{job.company}</p>
+                        <p className="text-sm text-gray-400">{job.company}</p>
                         <ul className="mt-2 space-y-1">
                           {job.bullets.map((bullet, j) => (
-                            <li key={j} className="text-sm text-gray-600 flex gap-2">
+                            <li key={j} className="text-sm text-gray-400 flex gap-2">
                               <span className="text-gray-400">•</span>
                               {bullet}
                             </li>
@@ -213,7 +213,7 @@ export default function ResumePage() {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Skills */}
-              <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <div className="rounded-2xl bg-gray-900 p-6 border border-gray-800">
                 <h3 className="mb-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
                   Technical Skills
                 </h3>
@@ -221,7 +221,7 @@ export default function ResumePage() {
                   {skills.map((skill) => (
                     <span
                       key={skill}
-                      className="rounded-lg bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700"
+                      className="rounded-lg bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-300"
                     >
                       {skill}
                     </span>
@@ -230,13 +230,13 @@ export default function ResumePage() {
               </div>
 
               {/* Certifications */}
-              <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <div className="rounded-2xl bg-gray-900 p-6 border border-gray-800">
                 <h3 className="mb-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
                   Certifications
                 </h3>
                 <div>
-                  <div className="font-semibold text-gray-900">Google Data Analytics</div>
-                  <p className="text-sm text-gray-600">Professional Certificate</p>
+                  <div className="font-semibold text-gray-100">Google Data Analytics</div>
+                  <p className="text-sm text-gray-400">Professional Certificate</p>
                   <p className="mt-2 text-sm text-gray-500">
                     Data cleaning, visualization, SQL, R, and Tableau
                   </p>
@@ -244,20 +244,20 @@ export default function ResumePage() {
               </div>
 
               {/* Leadership */}
-              <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <div className="rounded-2xl bg-gray-900 p-6 border border-gray-800">
                 <h3 className="mb-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
                   Leadership
                 </h3>
                 <div>
-                  <div className="font-semibold text-gray-900">Academic Chair</div>
-                  <p className="text-sm text-gray-600">Phi Delta Theta</p>
+                  <div className="font-semibold text-gray-100">Academic Chair</div>
+                  <p className="text-sm text-gray-400">Phi Delta Theta</p>
                   <p className="text-sm text-gray-500">Fall 2021 - Fall 2024</p>
                   <ul className="mt-2 space-y-1">
-                    <li className="text-sm text-gray-600 flex gap-2">
+                    <li className="text-sm text-gray-400 flex gap-2">
                       <span className="text-gray-400">•</span>
                       Organized study sessions for ~70 members
                     </li>
-                    <li className="text-sm text-gray-600 flex gap-2">
+                    <li className="text-sm text-gray-400 flex gap-2">
                       <span className="text-gray-400">•</span>
                       Improved chapter GPA by 0.75
                     </li>
@@ -266,14 +266,14 @@ export default function ResumePage() {
               </div>
 
               {/* CTA */}
-              <div className="rounded-2xl bg-gradient-to-br from-gray-900 to-gray-800 p-6 text-white">
+              <div className="rounded-2xl bg-gradient-to-br from-gray-800 to-gray-700 p-6 text-white">
                 <h3 className="mb-2 font-semibold">Want to work together?</h3>
                 <p className="mb-4 text-sm text-gray-300">
                   I&apos;m open to internships, research, and full-time roles.
                 </p>
                 <Link
                   href="/contact"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-medium text-gray-900 transition-all hover:bg-gray-100"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-gray-100 px-4 py-2.5 text-sm font-medium text-gray-900 transition-all hover:bg-gray-200"
                 >
                   Get in Touch
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

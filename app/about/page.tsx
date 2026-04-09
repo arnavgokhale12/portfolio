@@ -16,18 +16,18 @@ const skills = {
 
 export default function AboutPage() {
   return (
-    <div className="bg-gray-50">
+    <div className="bg-gray-950">
       {/* Header */}
-      <section className="bg-white border-b border-gray-200">
+      <section className="bg-gray-950 border-b border-gray-800">
         <div className="container-wide py-16 md:py-20">
           <div className="max-w-3xl">
-            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-600">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-wider text-brand-400">
               About Me
             </p>
-            <h1 className="mb-6 text-4xl font-bold text-gray-900 md:text-5xl">
+            <h1 className="mb-6 text-4xl font-bold text-gray-100 md:text-5xl">
               Building products at the intersection of data and engineering
             </h1>
-            <p className="text-xl text-gray-600 leading-relaxed">
+            <p className="text-xl text-gray-400 leading-relaxed">
               MS Economics student at Texas A&M. I ship production-grade data products—not just analyses.
             </p>
           </div>
@@ -40,9 +40,9 @@ export default function AboutPage() {
           <div className="grid gap-12 lg:grid-cols-3">
             {/* Left Column - Bio */}
             <div className="lg:col-span-2 space-y-8">
-              <div className="rounded-2xl bg-white p-8 shadow-sm border border-gray-100">
-                <h2 className="mb-4 text-xl font-bold text-gray-900">Background</h2>
-                <div className="space-y-4 text-gray-600 leading-relaxed">
+              <div className="rounded-2xl bg-gray-900 p-8 border border-gray-800">
+                <h2 className="mb-4 text-xl font-bold text-gray-100">Background</h2>
+                <div className="space-y-4 text-gray-400 leading-relaxed">
                   <p>
                     I&apos;m pursuing my MS in Economics at Texas A&M University with a focus on
                     applied econometrics and machine learning. My work spans building real-time
@@ -50,7 +50,7 @@ export default function AboutPage() {
                     shipping mobile apps with production-quality code.
                   </p>
                   <p>
-                    <strong className="text-gray-900">What sets me apart:</strong> I don&apos;t just
+                    <strong className="text-gray-100">What sets me apart:</strong> I don&apos;t just
                     analyze data—I ship products. Whether it&apos;s a FastAPI backend serving real-time
                     supply-chain indicators, a React Native app with native iOS widgets, or an ML
                     system processing microhistological imagery, I own the full stack from data
@@ -59,9 +59,9 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              <div className="rounded-2xl bg-white p-8 shadow-sm border border-gray-100">
-                <h2 className="mb-4 text-xl font-bold text-gray-900">Current Focus</h2>
-                <div className="space-y-4 text-gray-600 leading-relaxed">
+              <div className="rounded-2xl bg-gray-900 p-8 border border-gray-800">
+                <h2 className="mb-4 text-xl font-bold text-gray-100">Current Focus</h2>
+                <div className="space-y-4 text-gray-400 leading-relaxed">
                   <p>
                     Currently collaborating with Texas A&M AgriLife Research on ML systems for
                     livestock dietary analysis, and building side projects that solve real
@@ -71,8 +71,8 @@ export default function AboutPage() {
               </div>
 
               {/* Skills Grid */}
-              <div className="rounded-2xl bg-white p-8 shadow-sm border border-gray-100">
-                <h2 className="mb-6 text-xl font-bold text-gray-900">Technical Skills</h2>
+              <div className="rounded-2xl bg-gray-900 p-8 border border-gray-800">
+                <h2 className="mb-6 text-xl font-bold text-gray-100">Technical Skills</h2>
                 <div className="grid gap-6 sm:grid-cols-2">
                   {Object.entries(skills).map(([category, items]) => (
                     <div key={category}>
@@ -83,7 +83,7 @@ export default function AboutPage() {
                         {items.map((skill) => (
                           <span
                             key={skill}
-                            className="rounded-lg bg-gray-100 px-3 py-1.5 text-sm font-medium text-gray-700"
+                            className="rounded-lg bg-gray-800 px-3 py-1.5 text-sm font-medium text-gray-300"
                           >
                             {skill}
                           </span>
@@ -98,32 +98,32 @@ export default function AboutPage() {
             {/* Right Column - Sidebar */}
             <div className="space-y-6">
               {/* Education Card */}
-              <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <div className="rounded-2xl bg-gray-900 p-8 border border-gray-800">
                 <h3 className="mb-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
                   Education
                 </h3>
                 <div className="space-y-4">
                   <div>
-                    <div className="font-semibold text-gray-900">M.S. Economics</div>
-                    <div className="text-sm text-gray-600">Texas A&M University</div>
-                    <div className="text-sm text-brand-600">Expected Dec 2026</div>
+                    <div className="font-semibold text-gray-100">M.S. Economics</div>
+                    <div className="text-sm text-gray-400">Texas A&M University</div>
+                    <div className="text-sm text-brand-400">Expected Dec 2026</div>
                   </div>
-                  <div className="border-t border-gray-100 pt-4">
-                    <div className="font-semibold text-gray-900">B.S. Electrical Engineering</div>
-                    <div className="text-sm text-gray-600">Texas A&M University</div>
+                  <div className="border-t border-gray-800 pt-4">
+                    <div className="font-semibold text-gray-100">B.S. Electrical Engineering</div>
+                    <div className="text-sm text-gray-400">Texas A&M University</div>
                     <div className="text-sm text-gray-500">Minor in Economics • May 2025</div>
                   </div>
                 </div>
               </div>
 
               {/* Certifications Card */}
-              <div className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100">
+              <div className="rounded-2xl bg-gray-900 p-8 border border-gray-800">
                 <h3 className="mb-4 text-sm font-semibold text-gray-500 uppercase tracking-wider">
                   Certifications
                 </h3>
                 <div>
-                  <div className="font-semibold text-gray-900">Google Data Analytics</div>
-                  <div className="text-sm text-gray-600">Professional Certificate</div>
+                  <div className="font-semibold text-gray-100">Google Data Analytics</div>
+                  <div className="text-sm text-gray-400">Professional Certificate</div>
                   <div className="text-sm text-gray-500">Aug 2025</div>
                 </div>
               </div>
@@ -172,7 +172,7 @@ export default function AboutPage() {
               {/* CTA */}
               <Link
                 href="/projects"
-                className="flex items-center justify-center gap-2 rounded-xl bg-gray-900 px-6 py-4 font-medium text-white transition-all hover:bg-gray-800"
+                className="flex items-center justify-center gap-2 rounded-xl bg-gray-800 px-6 py-4 font-medium text-white transition-all hover:bg-gray-700"
               >
                 View My Projects
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

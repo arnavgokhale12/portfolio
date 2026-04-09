@@ -11,11 +11,11 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-sm">
       <nav className="container-wide flex h-16 items-center justify-between">
         <Link
           href="/"
-          className="text-xl font-semibold text-gray-900 hover:text-brand-600"
+          className="text-xl font-semibold text-gray-100 hover:text-brand-400"
           aria-label={`${siteConfig.name} - Home`}
         >
           {siteConfig.name.split(" ").map((n) => n[0]).join("")}
@@ -28,11 +28,11 @@ export function Navbar() {
               <Link
                 href={link.href}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-brand-600",
+                  "text-sm font-medium transition-colors hover:text-brand-400",
                   pathname === link.href ||
                     (link.href !== "/" && pathname.startsWith(link.href))
-                    ? "text-brand-600"
-                    : "text-gray-600"
+                    ? "text-brand-400"
+                    : "text-gray-400"
                 )}
               >
                 {link.label}
@@ -44,7 +44,7 @@ export function Navbar() {
         {/* Mobile menu button */}
         <button
           type="button"
-          className="inline-flex items-center justify-center rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 md:hidden"
+          className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-800 hover:text-gray-100 md:hidden"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-expanded={mobileMenuOpen}
           aria-label="Toggle navigation menu"
@@ -77,7 +77,7 @@ export function Navbar() {
 
       {/* Mobile navigation */}
       {mobileMenuOpen && (
-        <div className="border-t border-gray-200 bg-white md:hidden">
+        <div className="border-t border-gray-800 bg-gray-950 md:hidden">
           <ul className="container-wide space-y-1 py-4">
             {siteConfig.navLinks.map((link) => (
               <li key={link.href}>
@@ -87,8 +87,8 @@ export function Navbar() {
                     "block rounded-md px-3 py-2 text-base font-medium transition-colors",
                     pathname === link.href ||
                       (link.href !== "/" && pathname.startsWith(link.href))
-                      ? "bg-brand-50 text-brand-600"
-                      : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                      ? "bg-brand-900/30 text-brand-400"
+                      : "text-gray-400 hover:bg-gray-800 hover:text-gray-100"
                   )}
                   onClick={() => setMobileMenuOpen(false)}
                 >

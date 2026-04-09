@@ -5,17 +5,17 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-gray-200 bg-gray-50">
+    <footer className="border-t border-gray-800 bg-gray-900">
       <div className="container-wide py-12">
         <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div className="flex flex-col items-center gap-2 md:items-start">
             <Link
               href="/"
-              className="text-lg font-semibold text-gray-900 hover:text-brand-600"
+              className="text-lg font-semibold text-gray-100 hover:text-brand-400"
             >
               {siteConfig.name}
             </Link>
-            <p className="text-sm text-gray-500">{siteConfig.title}</p>
+            <p className="text-sm text-gray-400">{siteConfig.title}</p>
           </div>
 
           <div className="flex items-center gap-6">
@@ -23,7 +23,7 @@ export function Footer() {
               href={siteConfig.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-900"
+              className="text-gray-500 hover:text-gray-100"
               aria-label="GitHub"
             >
               <svg
@@ -43,7 +43,7 @@ export function Footer() {
               href={siteConfig.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-500 hover:text-gray-900"
+              className="text-gray-500 hover:text-gray-100"
               aria-label="LinkedIn"
             >
               <svg
@@ -57,7 +57,7 @@ export function Footer() {
             </a>
             <a
               href={`mailto:${siteConfig.email}`}
-              className="text-gray-500 hover:text-gray-900"
+              className="text-gray-500 hover:text-gray-100"
               aria-label="Email"
             >
               <svg
@@ -78,7 +78,7 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 border-t border-gray-200 pt-8 text-center">
+        <div className="mt-8 border-t border-gray-800 pt-8 text-center">
           <p className="text-sm text-gray-500">
             &copy; {currentYear} {siteConfig.name}. All rights reserved.
           </p>
