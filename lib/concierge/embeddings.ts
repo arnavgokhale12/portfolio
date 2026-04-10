@@ -35,7 +35,7 @@ export async function retrieveRelevantChunks(
   const scored = chunks.map((chunk, index) => {
     const chunkTokens = tokenize(chunk.text);
     let score = 0;
-    for (const token of queryTokens) {
+    for (const token of Array.from(queryTokens)) {
       if (chunkTokens.has(token)) score++;
     }
     return { index, score };
