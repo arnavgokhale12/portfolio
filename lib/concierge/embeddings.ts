@@ -1,10 +1,49 @@
 import { ContentChunk } from "./content";
 
-const OPENAI_API_URL = "https://api.openai.com/v1";
+const GROQ_API_URL = "https://api.groq.com/openai/v1";
 
-interface EmbeddingResponse {
-  data: { embedding: number[]; index: number }[];
-  usage: { prompt_tokens: number; total_tokens: number };
+const STOP_WORDS = new Set([
+  "a", "an", "the", "is", "it", "in", "on", "at", "to", "for", "of", "and",
+  "or", "but", "not", "with", "this", "that", "are", "was", "be", "by",
+  "from", "as", "what", "which", "who", "how", "do", "did", "does", "can",
+  "could", "would", "should", "have", "has", "had", "will", "your", "his",
+  "her", "their", "about", "any", "me", "you", "i", "we", "they", "tell",
+]);
+
+function tokenize(text: string): Set<string> {
+  return new Set(
+    text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length > 1 && !STOP_WORDS.has(w))
+  );
+}
+
+/**
+ * Retrieve top-k most relevant chunks using keyword overlap scoring
+ */
+export async function retrieveRelevantChunks(
+  question: string,
+  chunks: ContentChunk[],
+  _apiKey: string,
+  topK = 5,
+  _embeddingModel?: string
+): Promise<ContentChunk[]> {
+  const queryTokens = tokenize(question);
+
+  const scored = chunks.map((chunk, index) => {
+    const chunkTokens = tokenize(chunk.text);
+    let score = 0;
+    for (const token of queryTokens) {
+      if (chunkTokens.has(token)) score++;
+    }
+    return { index, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  const topIndices = scored.slice(0, topK).map((s) => s.index);
+  return topIndices.map((i) => chunks[i]);
 }
 
 interface ChatMessage {
@@ -14,123 +53,16 @@ interface ChatMessage {
 
 interface ChatResponse {
   choices: { message: { content: string } }[];
-  usage: { prompt_tokens: number; completion_tokens: number };
 }
 
 /**
- * Get embedding for a single text
- */
-async function getEmbedding(
-  text: string,
-  apiKey: string,
-  model = "text-embedding-3-small"
-): Promise<number[]> {
-  const response = await fetch(`${OPENAI_API_URL}/embeddings`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      input: text,
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Embedding API error: ${response.status} ${error}`);
-  }
-
-  const data: EmbeddingResponse = await response.json();
-  return data.data[0].embedding;
-}
-
-/**
- * Get embeddings for multiple texts (batched)
- */
-async function getEmbeddings(
-  texts: string[],
-  apiKey: string,
-  model = "text-embedding-3-small"
-): Promise<number[][]> {
-  const response = await fetch(`${OPENAI_API_URL}/embeddings`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      model,
-      input: texts,
-    }),
-  });
-
-  if (!response.ok) {
-    const error = await response.text();
-    throw new Error(`Embedding API error: ${response.status} ${error}`);
-  }
-
-  const data: EmbeddingResponse = await response.json();
-  // Sort by index to maintain order
-  return data.data.sort((a, b) => a.index - b.index).map((d) => d.embedding);
-}
-
-/**
- * Cosine similarity between two vectors
- */
-function cosineSimilarity(a: number[], b: number[]): number {
-  let dotProduct = 0;
-  let normA = 0;
-  let normB = 0;
-
-  for (let i = 0; i < a.length; i++) {
-    dotProduct += a[i] * b[i];
-    normA += a[i] * a[i];
-    normB += b[i] * b[i];
-  }
-
-  return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
-}
-
-/**
- * Retrieve top-k most similar chunks
- */
-export async function retrieveRelevantChunks(
-  question: string,
-  chunks: ContentChunk[],
-  apiKey: string,
-  topK = 5,
-  embeddingModel = "text-embedding-3-small"
-): Promise<ContentChunk[]> {
-  // Get all embeddings in batch
-  const allTexts = [question, ...chunks.map((c) => c.text)];
-  const embeddings = await getEmbeddings(allTexts, apiKey, embeddingModel);
-
-  const questionEmbedding = embeddings[0];
-  const chunkEmbeddings = embeddings.slice(1);
-
-  // Calculate similarities
-  const similarities = chunkEmbeddings.map((emb, i) => ({
-    index: i,
-    score: cosineSimilarity(questionEmbedding, emb),
-  }));
-
-  // Sort by similarity and take top-k
-  similarities.sort((a, b) => b.score - a.score);
-  const topIndices = similarities.slice(0, topK).map((s) => s.index);
-
-  return topIndices.map((i) => chunks[i]);
-}
-
-/**
- * Generate answer using chat completion
+ * Generate answer using Groq chat completion
  */
 export async function generateAnswer(
   question: string,
   context: ContentChunk[],
   apiKey: string,
-  model = "gpt-4o-mini"
+  model = "llama-3.3-70b-versatile"
 ): Promise<string> {
   const contextText = context
     .map((c) => `[Source: ${c.source.title}]\n${c.text}`)
@@ -154,7 +86,7 @@ ${contextText}`;
     { role: "user", content: question },
   ];
 
-  const response = await fetch(`${OPENAI_API_URL}/chat/completions`, {
+  const response = await fetch(`${GROQ_API_URL}/chat/completions`, {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,

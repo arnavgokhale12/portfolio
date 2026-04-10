@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check for API key
-    const apiKey = process.env.OPENAI_API_KEY;
+    const apiKey = process.env.GROQ_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { error: "Concierge is not configured. Missing API key." },
@@ -90,18 +90,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get model configs from env or use defaults
-    const embeddingModel =
-      process.env.OPENAI_EMBEDDING_MODEL || "text-embedding-3-small";
-    const chatModel = process.env.OPENAI_MODEL || "gpt-4o-mini";
+    // Get model config from env or use default
+    const chatModel = process.env.GROQ_MODEL || "llama-3.3-70b-versatile";
 
     // Retrieve relevant chunks
     const relevantChunks = await retrieveRelevantChunks(
       question,
       chunks,
       apiKey,
-      5,
-      embeddingModel
+      5
     );
 
     // Generate answer
