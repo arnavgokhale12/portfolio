@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/siteConfig";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -22,24 +23,32 @@ export function Navbar() {
         </Link>
 
         {/* Desktop navigation */}
-        <ul className="hidden items-center gap-8 md:flex">
-          {siteConfig.navLinks.map((link) => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={cn(
-                  "text-sm font-medium transition-colors hover:text-brand-400",
-                  pathname === link.href ||
-                    (link.href !== "/" && pathname.startsWith(link.href))
-                    ? "text-brand-400"
-                    : "text-gray-400"
-                )}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <div className="hidden items-center gap-6 md:flex">
+          <ul className="flex items-center gap-8">
+            {siteConfig.navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  href={link.href}
+                  className={cn(
+                    "text-sm font-medium transition-colors hover:text-brand-600 dark:hover:text-brand-400",
+                    pathname === link.href ||
+                      (link.href !== "/" && pathname.startsWith(link.href))
+                      ? "text-brand-600 dark:text-brand-400"
+                      : "text-gray-600 dark:text-gray-400"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="flex items-center gap-2 border-l border-gray-200 pl-6 dark:border-gray-700">
+            <kbd className="hidden rounded bg-gray-100 px-2 py-1 text-xs text-gray-500 lg:inline-block dark:bg-gray-800 dark:text-gray-400">
+              ⌘K
+            </kbd>
+            <ThemeToggle />
+          </div>
+        </div>
 
         {/* Mobile menu button */}
         <button

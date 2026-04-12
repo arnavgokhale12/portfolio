@@ -133,7 +133,7 @@ export function ConciergeWidget() {
           {/* Messages */}
           <div className="h-80 overflow-y-auto p-4">
             {messages.length === 0 ? (
-              <div className="flex h-full flex-col items-center justify-center text-center">
+              <div className="flex h-full flex-col items-center justify-center text-center px-4">
                 <div className="mb-3 rounded-full bg-brand-100 p-3">
                   <svg
                     className="h-6 w-6 text-brand-600"
@@ -149,12 +149,25 @@ export function ConciergeWidget() {
                     />
                   </svg>
                 </div>
-                <p className="mb-2 text-sm font-medium text-gray-900">
-                  Hi! I can help you learn about Arnav.
+                <p className="mb-3 text-sm font-medium text-gray-900">
+                  Ask me anything about Arnav!
                 </p>
-                <p className="text-xs text-gray-500">
-                  Try: &quot;What projects has Arnav built?&quot;
-                </p>
+                <div className="space-y-2 w-full">
+                  {[
+                    "What's Arnav's education?",
+                    "What are his technical skills?",
+                    "Tell me about his work experience",
+                    "What projects has he built?",
+                  ].map((q) => (
+                    <button
+                      key={q}
+                      onClick={() => setInput(q)}
+                      className="block w-full rounded-lg bg-gray-100 px-3 py-2 text-left text-xs text-gray-700 hover:bg-gray-200 transition-colors"
+                    >
+                      {q}
+                    </button>
+                  ))}
+                </div>
               </div>
             ) : (
               <div className="space-y-4">

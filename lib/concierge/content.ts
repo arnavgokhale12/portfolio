@@ -160,32 +160,35 @@ Technical Skills:
  */
 function loadResumeContent(): ContentChunk[] {
   const resumeText = `
-Arnav Gokhale Resume
+Arnav Gokhale Resume and Background
 
 Education:
-- MS Economics at Texas A&M University, expected December 2026
-- BS Electrical Engineering at Texas A&M University, May 2025
-- Minor in Economics
+Arnav is pursuing his MS in Economics at Texas A&M University, expected graduation December 2026. He completed his BS in Electrical Engineering at Texas A&M University in May 2025, with a minor in Economics. His education combines technical engineering skills with economic analysis and data science.
 
 Academic Projects:
 - Investment Portfolio Performance Tracker (Aug 2025 - Present): Built an Excel-Python-Apps Script pipeline to compute daily returns, portfolio weights, and risk-adjusted metrics. Automated updates and dashboards to monitor performance, drawdowns, and margin usage.
-- Microhistological Sheep Project (Aug 2024 - Aug 2025): Implemented a SQL server to store microhistological images and dietary data for a machine learning pipeline. Developed parsing and subimage-splicing scripts for ROI extraction.
+- Microhistological Sheep Project (Aug 2024 - Aug 2025): Collaborated with Texas A&M AgriLife Research. Implemented a SQL server to store microhistological images and dietary data for a machine learning pipeline. Developed parsing and subimage-splicing scripts for ROI extraction.
 - QS World University Ranking Explorer (Jun 2025 - Aug 2025): Created an interactive Python dashboard with ipywidgets and pandas to explore QS 2026 rankings by region, discipline, and size.
 
-Work Experience:
+Work Experience and Jobs:
 - IT & Administrative Assistant at West Creek Dental, Austin TX (Summer 2024): IT and hardware support, insurance claims coordination.
 - Engineering Intern at Silicon Labs, Austin TX (Summer 2023): Built and tested circuits, designed an LED Pattern Generator using Atmel microcontroller.
-- Math & Reading Instructor at Kumon Learning Center (Summer 2022): Tutored students, created Excel-based tracking system.
+- Math & Reading Instructor at Kumon Learning Center (Summer 2022): Tutored students in math and reading, created Excel-based tracking system.
 
 Certifications:
-- Google Data Analytics Certificate (Aug 2025): Training in data cleaning, visualization, SQL, R, and Tableau.
+- Google Data Analytics Certificate (Aug 2025): Professional training in data cleaning, visualization, SQL, R, and Tableau.
 
-Leadership:
-- Academic Chair at Phi Delta Theta (Fall 2021 - Fall 2024): Organized study sessions for ~70 members, improved chapter GPA by 0.75.
+Leadership Experience:
+- Academic Chair at Phi Delta Theta fraternity (Fall 2021 - Fall 2024): Organized study sessions for approximately 70 members, improved chapter GPA by 0.75.
 
-Technical Skills: Python, SQL, R, Microsoft Excel, MATLAB, C++, Xilinx, Tableau, Apps Script
+Technical Skills and Programming Languages:
+Arnav is proficient in: Python, SQL, TypeScript, JavaScript, R, Microsoft Excel, MATLAB, C++, Xilinx, Tableau, Google Apps Script, React, Next.js, FastAPI, PostgreSQL, Docker, Tailwind CSS, Git.
 
-Arnav is open to internships, research collaborations, and full-time roles in data science, analytics, and applied economics.
+Career Goals:
+Arnav is open to internships, research collaborations, and full-time roles in software engineering, data science, machine learning, analytics, and applied economics. He is particularly interested in roles that combine technical skills with economic or business analysis.
+
+Why Hire Arnav:
+Arnav combines a unique background in both engineering and economics. He doesn't just analyze data—he ships production-quality products. He has experience with full-stack development, machine learning pipelines, and data analytics. He's collaborated with research institutions and has leadership experience managing academic programs for large groups.
   `.trim();
 
   return chunkText(resumeText, 500).map((chunk, i) => ({

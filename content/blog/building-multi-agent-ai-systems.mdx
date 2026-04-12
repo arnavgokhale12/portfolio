@@ -1,0 +1,48 @@
+---
+title: "Building Multi-Agent AI Systems: Lessons from Cortex"
+description: "What I learned building a visual multi-agent AI workspace with real-time streaming and task delegation."
+date: "2025-04-10"
+tags: ["AI", "Multi-Agent", "Next.js", "Vercel AI SDK"]
+---
+
+## The Problem with Single-Agent AI
+
+Most AI interactions are straightforward: you prompt, it responds. But complex tasks benefit from specialized reasoning—research, coding, critique, creative ideation—handled by different "agents" with distinct capabilities.
+
+The challenge? Making this orchestration **visible and engaging** rather than a black box.
+
+## Approach: Visual Agent Collaboration
+
+With Cortex, I set out to build a system where you can literally watch agents think, delegate, and solve problems together.
+
+### Architecture Decisions
+
+**1. Real-time Streaming**
+
+Using Vercel AI SDK's streaming capabilities, each agent's reasoning appears token-by-token. This isn't just eye candy—it helps users understand *how* agents approach problems.
+
+**2. Agent Specialization**
+
+Rather than one general-purpose agent, Cortex uses specialists:
+- **Researcher**: Gathers context and information
+- **Coder**: Writes and reviews code
+- **Critic**: Evaluates and improves outputs
+- **Creative**: Generates ideas and alternatives
+
+**3. Visual Task Graph**
+
+Framer Motion powers an animated network visualization showing agent relationships and task flow. Users see delegation happen in real-time.
+
+## Results
+
+- Built in 2 weeks as a proof of concept
+- Demonstrates that multi-agent UX can be intuitive
+- Open source for others to learn from
+
+## Key Takeaways
+
+1. **Show the work**: Users trust AI more when they can see reasoning
+2. **Specialize agents**: Focused roles outperform jack-of-all-trades
+3. **Stream everything**: Perceived latency matters as much as actual latency
+
+Multi-agent systems are the future of AI interfaces. The key is making complexity comprehensible.
