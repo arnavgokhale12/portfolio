@@ -1,0 +1,68 @@
+---
+title: "Bored Ape Generative Gallery"
+description: "Client-side generative NFT art engine with programmatic trait rendering, rarity scoring, and an immersive mint experience—no backend required."
+category: "engineering"
+tags: ["React", "Vite", "Canvas API", "Web Audio", "Framer Motion", "Tailwind CSS"]
+date: "2025-04-10"
+featured: true
+links:
+  github: "https://github.com/arnavgokhale12/BAYC"
+  demo: "https://bayc-gallery-arnavgokhale12s-projects.vercel.app"
+---
+
+## Overview
+
+A BAYC-inspired generative NFT collection built entirely client-side. Every ape is procedurally generated on HTML Canvas with no external assets, APIs, or backend—runs as a pure static site.
+
+## Problem
+
+NFT art generators typically rely on pre-made asset layers or external services. I wanted to demonstrate:
+
+- Fully programmatic art generation using Canvas draw calls
+- A complete "mint" experience with engaging animations and audio
+- Client-side persistence without a database
+
+## Approach
+
+### Generative Art Engine
+
+7 trait categories (Background, Body, Clothing, Eyes, Mouth, Hat, Accessory), each rendered through pure Canvas operations. No PNG sprites—every visual element is mathematically defined.
+
+### Rarity System
+
+- Common / Uncommon / Rare / Legendary tier weights
+- Per-trait rarity scoring aggregated to overall ape rarity
+- Gallery filtering and sorting by rarity tier
+
+### Mint Experience
+
+Slot-machine reel animation that locks traits one by one, complete with:
+- Synthesized sound effects via Web Audio API
+- Confetti burst on completion
+- Animated card transitions with Framer Motion
+
+### Audio & Visuals
+
+- All music and SFX generated via Web Audio API (no audio files)
+- 7-bar frequency visualizer next to the mute toggle
+- Drifting particle field background
+
+### Persistence
+
+20-ape collection generated on first load and stored in `localStorage`. "My Collection" ribbon persists owned apes across sessions.
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Framework | React 19 + Vite |
+| Animations | Framer Motion |
+| Audio | Web Audio API |
+| Art | HTML Canvas (procedural) |
+| Styling | Tailwind CSS v4 |
+| Confetti | canvas-confetti |
+| Storage | localStorage |
+
+## Results
+
+A fully self-contained portfolio piece demonstrating frontend engineering, creative coding, and UX polish—all without backend dependencies.

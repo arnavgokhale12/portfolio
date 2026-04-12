@@ -1,14 +1,38 @@
 ---
-title: "GHRM"
-description: "A web application — add a short description here."
+title: "GHRM — GitHub Activity Bot"
+description: "Automated GitHub contribution bot with a sleek landing page, keeping your contribution calendar active via scheduled commits."
 category: "engineering"
-tags: []
-date: "2024-01-01"
+tags: ["Python", "GitHub Actions", "Automation", "CI/CD"]
+date: "2024-06-15"
 featured: false
 links:
+  github: "https://github.com/arnavgokhale12/ghrm"
   demo: "https://ghrm-nine.vercel.app"
 ---
 
 ## Overview
 
-Add an overview of the GHRM project here.
+A lightweight automation tool that keeps your GitHub contribution calendar active by automatically committing timestamps to a heartbeat file. Includes a polished landing page with a GitHub-inspired dark theme.
+
+## Problem
+
+GitHub's contribution graph is often used as a proxy for developer activity, but gaps can appear during busy periods focused on private repos, non-coding work, or learning. GHRM solves this by maintaining consistent activity through scheduled commits.
+
+## Approach
+
+### Automation Engine
+
+- **Python script** (`activity_bot.py`) appends UTC timestamps to `heartbeat.txt` with randomized commit messages
+- **Random offset** (0-20 min) prevents commits from landing at exact scheduled times
+- **GitHub Actions workflow** runs twice daily (~9 AM and ~6 PM UTC)
+
+### Landing Page
+
+Built a GitHub-themed landing page deployed on Vercel that explains the project with:
+- Pulsing status indicator showing bot health
+- Dark mode design matching GitHub's aesthetic
+- Easy toggle instructions for pausing/resuming
+
+## Results
+
+Zero-maintenance solution running entirely on GitHub Actions with no external dependencies or API costs.
