@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { ProjectCard } from "./ProjectCard";
+import { AnimatedProjectCard } from "./AnimatedProjectCard";
 import { ProjectFilterTabs } from "./ProjectFilterTabs";
 import { ProjectMeta } from "@/types";
 
@@ -26,8 +26,8 @@ export function ProjectList({ projects }: ProjectListProps) {
 
       {filteredProjects.length > 0 ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.slug} project={project} />
+          {filteredProjects.map((project, index) => (
+            <AnimatedProjectCard key={project.slug} project={project} index={index} />
           ))}
         </div>
       ) : (

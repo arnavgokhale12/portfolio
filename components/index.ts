@@ -1,6 +1,8 @@
 export { Navbar } from "./Navbar";
 export { Footer } from "./Footer";
 export { ProjectCard } from "./ProjectCard";
+export { AnimatedProjectCard } from "./AnimatedProjectCard";
+export { AnimatedHero } from "./AnimatedHero";
 export { ProjectFilterTabs } from "./ProjectFilterTabs";
 export { ProjectList } from "./ProjectList";
 export { CaseStudyLayout } from "./CaseStudyLayout";

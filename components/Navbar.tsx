@@ -11,7 +11,7 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-800 bg-gray-950/80 backdrop-blur-sm">
+    <header className="sticky top-0 z-50 border-b border-white/10 bg-gray-950/70 backdrop-blur-xl">
       <nav className="container-wide flex h-16 items-center justify-between">
         <Link
           href="/"
