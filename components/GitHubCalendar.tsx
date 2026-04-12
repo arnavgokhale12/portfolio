@@ -1,76 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
-interface ContributionDay {
-  date: string;
-  count: number;
-  level: number;
-}
 
 interface GitHubCalendarProps {
   username: string;
 }
 
 export function GitHubCalendar({ username }: GitHubCalendarProps) {
-  const [contributions, setContributions] = useState<ContributionDay[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [totalContributions, setTotalContributions] = useState(0);
-
-  useEffect(() => {
-    async function fetchContributions() {
-      try {
-        // Using GitHub's GraphQL API via a proxy service
-        const response = await fetch(
-          `https://github-contributions-api.jogruber.de/v4/${username}?y=last`
-        );
-        const data = await response.json();
-
-        if (data.contributions) {
-          const allDays: ContributionDay[] = [];
-          data.contributions.forEach((week: { days: ContributionDay[] }) => {
-            week.days.forEach((day: ContributionDay) => {
-              allDays.push(day);
-            });
-          });
-          setContributions(allDays.slice(-365)); // Last year
-          setTotalContributions(data.total?.lastYear || allDays.reduce((sum, d) => sum + d.count, 0));
-        }
-      } catch (error) {
-        console.error("Failed to fetch contributions:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchContributions();
-  }, [username]);
-
-  const getLevelColor = (level: number) => {
-    const colors = [
-      "bg-gray-800", // 0
-      "bg-green-900", // 1
-      "bg-green-700", // 2
-      "bg-green-500", // 3
-      "bg-green-400", // 4
-    ];
-    return colors[level] || colors[0];
-  };
-
-  // Group by weeks for display
-  const weeks: ContributionDay[][] = [];
-  for (let i = 0; i < contributions.length; i += 7) {
-    weeks.push(contributions.slice(i, i + 7));
-  }
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-brand-500 border-t-transparent" />
-      </div>
-    );
-  }
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -80,38 +16,38 @@ export function GitHubCalendar({ username }: GitHubCalendarProps) {
     >
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-white">GitHub Activity</h3>
-        <span className="text-sm text-gray-400">
-          {totalContributions.toLocaleString()} contributions in the last year
-        </span>
+        <a
+          href={`https://github.com/${username}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-sm text-brand-400 hover:text-brand-300 transition-colors"
+        >
+          View Profile
+        </a>
       </div>
 
       <div className="overflow-x-auto">
-        <div className="flex gap-[3px] min-w-max">
-          {weeks.map((week, weekIndex) => (
-            <div key={weekIndex} className="flex flex-col gap-[3px]">
-              {week.map((day, dayIndex) => (
-                <div
-                  key={`${weekIndex}-${dayIndex}`}
-                  className={`h-[10px] w-[10px] rounded-sm ${getLevelColor(day.level)} transition-colors hover:ring-1 hover:ring-white/30`}
-                  title={`${day.date}: ${day.count} contribution${day.count !== 1 ? "s" : ""}`}
-                />
-              ))}
-            </div>
-          ))}
-        </div>
+        {/* GitHub contribution graph embed */}
+        <img
+          src={`https://ghchart.rshah.org/22c55e/${username}`}
+          alt={`${username}'s GitHub contribution chart`}
+          className="w-full max-w-3xl mx-auto"
+          style={{ filter: "brightness(1.1)" }}
+        />
       </div>
 
-      <div className="mt-4 flex items-center justify-end gap-2 text-xs text-gray-500">
-        <span>Less</span>
-        <div className="flex gap-[3px]">
-          {[0, 1, 2, 3, 4].map((level) => (
-            <div
-              key={level}
-              className={`h-[10px] w-[10px] rounded-sm ${getLevelColor(level)}`}
-            />
-          ))}
-        </div>
-        <span>More</span>
+      <div className="mt-4 flex items-center justify-center gap-4 text-sm text-gray-400">
+        <a
+          href={`https://github.com/${username}?tab=repositories`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 hover:text-white transition-colors"
+        >
+          <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+            <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
+          </svg>
+          View Repositories
+        </a>
       </div>
     </motion.div>
   );
