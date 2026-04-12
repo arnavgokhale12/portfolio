@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AnimatedHero, AnimatedProjectCard } from "@/components";
+import { AnimatedHero, AnimatedProjectCard, GitHubCalendar } from "@/components";
 import { getFeaturedProjects } from "@/lib/projects";
 
 export default function HomePage() {
@@ -11,32 +11,24 @@ export default function HomePage() {
       <AnimatedHero />
 
       {/* Stats Section */}
-      <section className="border-b border-white/10 bg-gray-950 py-12">
+      <section className="border-b border-white/10 bg-gray-900/50 py-12">
         <div className="container-wide">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-brand-400 to-purple-400 bg-clip-text text-transparent">
-                10+
-              </div>
-              <div className="mt-1 text-sm text-gray-500">Projects Shipped</div>
+              <div className="text-3xl font-bold text-white">10+</div>
+              <div className="mt-1 text-sm text-gray-400">Projects Shipped</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent">
-                MS
-              </div>
-              <div className="mt-1 text-sm text-gray-500">Economics @ TAMU</div>
+              <div className="text-3xl font-bold text-white">MS</div>
+              <div className="mt-1 text-sm text-gray-400">Economics @ TAMU</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-orange-400 to-amber-400 bg-clip-text text-transparent">
-                Full Stack
-              </div>
-              <div className="mt-1 text-sm text-gray-500">Data to Deploy</div>
+              <div className="text-3xl font-bold text-white">Full Stack</div>
+              <div className="mt-1 text-sm text-gray-400">Data to Deploy</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold bg-gradient-to-r from-pink-400 to-rose-400 bg-clip-text text-transparent">
-                2026
-              </div>
-              <div className="mt-1 text-sm text-gray-500">Expected Grad</div>
+              <div className="text-3xl font-bold text-white">2026</div>
+              <div className="mt-1 text-sm text-gray-400">Expected Grad</div>
             </div>
           </div>
         </div>
@@ -92,6 +84,21 @@ export default function HomePage() {
               </p>
             </div>
           )}
+        </div>
+      </section>
+
+      {/* GitHub Activity Section */}
+      <section className="bg-gray-950 py-16">
+        <div className="container-wide">
+          <div className="mb-8">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-brand-400">
+              Activity
+            </p>
+            <h2 className="text-2xl font-bold text-gray-100">
+              GitHub Contributions
+            </h2>
+          </div>
+          <GitHubCalendar username="arnavgokhale12" />
         </div>
       </section>
 

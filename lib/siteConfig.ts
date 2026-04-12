@@ -15,7 +15,7 @@ export const siteConfig = {
   siteUrl: "https://arnavgokhale.com",
 
   // Social links
-  email: "arnavgokhale@gmail.com",
+  email: "arnavgokhale216@gmail.com",
   github: "https://github.com/arnavgokhale12",
   linkedin: "https://www.linkedin.com/in/arnavgokhale/",
 

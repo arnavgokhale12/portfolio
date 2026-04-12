@@ -7,3 +7,4 @@ export { ProjectFilterTabs } from "./ProjectFilterTabs";
 export { ProjectList } from "./ProjectList";
 export { CaseStudyLayout } from "./CaseStudyLayout";
 export { ContactForm } from "./ContactForm";
+export { GitHubCalendar } from "./GitHubCalendar";
