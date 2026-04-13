@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { ProjectMeta } from "@/types";
 import { formatDate, cn } from "@/lib/utils";
@@ -59,14 +60,27 @@ export function AnimatedProjectCard({ project, index = 0 }: AnimatedProjectCardP
         category.glow
       )}
     >
+      {/* Project thumbnail */}
+      {project.image && (
+        <div className="relative h-40 w-full overflow-hidden">
+          <Image
+            src={project.image}
+            alt={project.title}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
+        </div>
+      )}
+
       {/* Gradient overlay on hover */}
       <div className={cn(
-        "absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100",
+        "absolute inset-0 bg-gradient-to-br opacity-0 transition-opacity duration-300 group-hover:opacity-100 pointer-events-none",
         category.gradient
       )} />
 
       {/* Category Badge */}
-      <div className="absolute top-4 left-4 z-10">
+      <div className={cn("absolute left-4 z-10", project.image ? "top-4" : "top-4")}>
         <span
           className={cn(
             "rounded-full bg-gray-900/80 backdrop-blur-sm px-3 py-1 text-xs font-semibold border border-white/10",

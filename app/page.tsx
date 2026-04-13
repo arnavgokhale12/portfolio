@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AnimatedHero, AnimatedProjectCard, GitHubCalendar, CurrentlyWorkingOn, SpotifyReading } from "@/components";
+import { AnimatedHero, AnimatedProjectCard, GitHubCalendar, CurrentlyWorkingOn, SpotifyReading, SocialFeed } from "@/components";
 import { getFeaturedProjects } from "@/lib/projects";
 
 export default function HomePage() {
@@ -104,6 +104,9 @@ export default function HomePage() {
           <GitHubCalendar username="arnavgokhale12" />
         </div>
       </section>
+
+      {/* Social Feed */}
+      <SocialFeed />
 
       {/* Spotify & Reading */}
       <SpotifyReading />

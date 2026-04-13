@@ -14,3 +14,4 @@ export { CommandPalette } from "./CommandPalette";
 export { CurrentlyWorkingOn } from "./CurrentlyWorkingOn";
 export { SpotifyReading } from "./SpotifyReading";
 export { TechIcon, TechStackDisplay } from "./TechStackIcons";
+export { SocialFeed } from "./SocialFeed";
