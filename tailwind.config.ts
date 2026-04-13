@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: "class",
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -27,9 +28,37 @@ const config: Config = {
           950: "#082f49",
         },
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: "none",
+            table: {
+              width: "100%",
+              borderCollapse: "collapse",
+            },
+            "thead th": {
+              borderBottom: "2px solid",
+              borderColor: "var(--tw-prose-th-borders)",
+              padding: "0.75rem",
+              textAlign: "left",
+            },
+            "tbody td": {
+              borderBottom: "1px solid",
+              borderColor: "var(--tw-prose-td-borders)",
+              padding: "0.75rem",
+            },
+          },
+        },
+        invert: {
+          css: {
+            "--tw-prose-th-borders": "#374151",
+            "--tw-prose-td-borders": "#1f2937",
+          },
+        },
+      },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
 
 export default config;
