@@ -1,0 +1,45 @@
+---
+title: "Bluesky Autoposter"
+description: "Daily Bluesky poster driven by GitHub Actions — posts from a queue and auto-announces portfolio projects via the AT Protocol SDK, with per-project dedup tracking."
+category: "engineering"
+tags: ["Python", "GitHub Actions", "AT Protocol", "Automation"]
+date: "2026-05-10"
+featured: false
+links:
+  github: "https://github.com/arnavgokhale12/bluesky-autoposter"
+---
+
+## Overview
+
+Automated daily posting to Bluesky using GitHub Actions and the AT Protocol SDK. Zero API costs, zero infrastructure — runs entirely on GitHub's free compute tier.
+
+## Problem
+
+Maintaining a social presence around portfolio projects is time-consuming. Manually announcing each project update or new build means either falling behind or spending time on repetitive posting rather than building.
+
+## Approach
+
+### Two Post Sources
+
+The bot pulls from two queues on each run:
+
+- **`posts_queue.json`** — manually scheduled posts, consumed one per run
+- **Portfolio project discovery** — scans `content/projects/*.mdx` from the portfolio repo, detects newly added projects, and generates announcement posts automatically
+
+### Dedup Tracking
+
+Published project slugs are recorded in `project_posts.json`. The bot skips any project it has already announced, so re-runs never double-post.
+
+### GitHub Actions Schedule
+
+A workflow runs daily at 2 PM UTC (9 AM EST). The AT Protocol SDK handles authentication via a Bluesky App Password stored as a GitHub Secret — no OAuth, no token refresh, no backend.
+
+## Tech Stack
+
+- **Python** with the `atproto` SDK
+- **GitHub Actions** for scheduled execution
+- **JSON state files** for post queue and dedup tracking
+
+## Results
+
+Fully automated social presence with zero recurring cost. New portfolio projects are announced within 24 hours of their MDX file being added to the repo.

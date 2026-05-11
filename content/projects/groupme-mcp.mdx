@@ -1,0 +1,48 @@
+---
+title: "GroupMe MCP Server"
+description: "MCP server wrapping the GroupMe v3 API — lets Claude and other AI assistants read messages, send to groups, and manage direct chats natively."
+category: "engineering"
+tags: ["Python", "MCP", "AI Tools", "API Integration"]
+date: "2026-04-15"
+featured: false
+links:
+  github: "https://github.com/arnavgokhale12/groupme-mcp"
+---
+
+## Overview
+
+An MCP (Model Context Protocol) server that wraps the GroupMe v3 REST API, making group messaging accessible to Claude and any other MCP-compatible AI assistant as a native tool.
+
+## Problem
+
+GroupMe has no official AI integration. Asking Claude to read or send GroupMe messages requires manually copying message content in and out of the conversation — a friction point for any workflow that involves group coordination.
+
+## Approach
+
+### MCP Tool Surface
+
+The server exposes GroupMe's core operations as MCP tools:
+
+- **List groups** — returns all group memberships with names and IDs
+- **Read messages** — fetches recent messages from a group
+- **Send message** — posts to a group
+- **List direct chats** — returns active DM threads
+- **Send direct message** — posts to a specific user
+
+### Authentication
+
+A GroupMe access token is passed via environment variable at server startup. The token is obtained from the GroupMe developer portal in seconds — no OAuth flow required.
+
+### Installation
+
+Configured in Claude's MCP settings as a local server. Once installed, Claude can read and send GroupMe messages directly within any conversation.
+
+## Tech Stack
+
+- **Python** with the `mcp` SDK
+- **GroupMe v3 API** via HTTP requests
+- **uv** for dependency management
+
+## Results
+
+Claude can now participate in GroupMe group coordination natively — reading thread context, drafting replies, and sending messages without leaving the conversation.

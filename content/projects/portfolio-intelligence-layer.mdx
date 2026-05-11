@@ -1,9 +1,9 @@
 ---
 title: "Portfolio Project Intelligence Layer"
-description: "Self-updating operations dashboard that tracks local projects, Git activity, live deployment status, screenshots, stack signals, case-study readiness, and proof points."
+description: "Self-updating operations dashboard that tracks local projects, Git activity, live deployment status, screenshots, stack signals, case-study readiness, and proof points — now with category filtering, GitHub links, and a stack breakdown chart."
 category: "engineering"
 tags: ["Next.js", "TypeScript", "Git", "Vercel", "Portfolio Ops", "Automation"]
-date: "2026-05-10"
+date: "2026-05-11"
 featured: true
 image: "/project-previews/portfolio-intelligence-layer.png"
 links:
@@ -44,12 +44,13 @@ Each project record includes:
 - active branches
 - current branch
 - last updated timestamp
+- GitHub remote URL (handles both HTTPS and SSH remotes)
 
 This makes the dashboard useful as an operations view, not just a gallery.
 
 ### Deployment Detection
 
-The first version checks for deployment URLs in project docs, local Vercel project links, and live links already published on `arnavgokhale.com/projects`.
+Checks for deployment URLs in project docs, local Vercel project links, and live links already published on `arnavgokhale.com/projects`.
 
 That lets the system recognize that projects like Cortex, BAYC, GHRM, SelfRPG, LexiStack, Supply Chain Dashboard, and Euro Style Clusters are already live.
 
@@ -57,20 +58,28 @@ That lets the system recognize that projects like Cortex, BAYC, GHRM, SelfRPG, L
 
 The dashboard detects whether a project has a case study and pulls TODO, roadmap, WIP, and review notes from source files and documentation. This turns hidden maintenance work into visible next actions.
 
+### Category Intelligence & Filtering
+
+Each project is classified into a category — Web, AI, Mobile, Data, Automation, or Tools — inferred from stack keywords at scan time. The dashboard UI exposes category and health filter pills so viewers can slice the 12-project list by type or status without page reloads.
+
+### Stack Breakdown Chart
+
+The sidebar aggregates technology frequency across all projects and renders a ranked bar chart. Tallying Next.js, Python, GitHub Actions, TypeScript, and other labels across 12 repos makes the portfolio's actual technology distribution visible at a glance.
+
 ## Tech Stack
 
-- **Next.js 16** with App Router
+- **Next.js 16** with App Router (server + client components)
 - **TypeScript** for structured project signals
 - **Node.js filesystem APIs** for local workspace scanning
-- **Git CLI** for commit and branch metadata
+- **Git CLI** for commit, branch, and remote metadata
 - **Tailwind CSS** for a dense operations-dashboard interface
 - **Lucide icons** for compact controls and status indicators
 
 ## Results
 
-The dashboard currently tracks local portfolio projects and outputs a unified snapshot with live counts, branches, open work, deployment status, screenshot assets, stack tags, and case-study status.
+The dashboard tracks 12 portfolio projects and outputs a unified snapshot with live counts, branches, open work, deployment status, screenshot assets, stack tags, case-study status, and GitHub links. Category and health filters let viewers drill into specific project types instantly.
 
-It also exposes the same intelligence through a JSON API, making it possible to connect the data back into the public portfolio later.
+A JSON API at `/api/projects` exposes the same intelligence, making it possible to connect the data back into the public portfolio or other tools.
 
 ## What This Proves
 
@@ -78,3 +87,4 @@ It also exposes the same intelligence through a JSON API, making it possible to 
 - I can build backend data extraction around real developer workflows.
 - I can design dashboards that surface operational state instead of just presenting content.
 - I can connect local development, Git history, deployment metadata, and portfolio storytelling into one system.
+- I can ship iterative improvements to production tools with full spec/quality review cycles.

@@ -1,0 +1,43 @@
+---
+title: "X Autoposter"
+description: "Playwright-driven X (Twitter) autoposter with browser session persistence, interval scheduling, and zero dependency on the official API."
+category: "engineering"
+tags: ["Python", "Playwright", "Automation", "Browser Automation"]
+date: "2026-04-12"
+featured: false
+links:
+  github: "https://github.com/arnavgokhale12/x-autoposter"
+---
+
+## Overview
+
+A Python automation tool that posts to X (Twitter) using Playwright browser automation — no API keys, no Tweepy, no OAuth dance. Session state is saved after a one-time login so subsequent runs post silently without re-authenticating.
+
+## Problem
+
+X's official API is expensive and rate-limited for posting. For personal automation at low volume — announcing projects, sharing links, scheduled thoughts — the API cost and setup overhead are disproportionate to the task.
+
+## Approach
+
+### Session Persistence
+
+A one-time `save_session.py` script opens a real browser, lets the user log in interactively, and saves the authenticated session state to disk. All subsequent runs load that session — no re-login required.
+
+### Modular Post Scripts
+
+- **`post_once.py`** — single one-shot post from the command line or `.env` default
+- **`scheduler.py`** — interval-based posting loop for recurring content
+
+### No API Keys
+
+The project uses no X API credentials whatsoever. Playwright drives a real Chromium instance, so the post looks like a human action from a logged-in browser session.
+
+## Tech Stack
+
+- **Python** with Playwright
+- **`.env`** for default post text and config
+- **`pyproject.toml`** for dependency management
+
+## Results
+
+Working X posting automation with a single `python post_once.py` command after the initial session setup. No API billing, no rate limit headaches for low-volume personal use.
