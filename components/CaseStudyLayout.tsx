@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ProjectMeta } from "@/types";
 import { formatDate } from "@/lib/utils";
 
@@ -110,6 +111,19 @@ export function CaseStudyLayout({ meta, children }: CaseStudyLayoutProps) {
                   Paper
                 </a>
               )}
+            </div>
+          )}
+
+          {meta.image && (
+            <div className="mt-8 overflow-hidden rounded-2xl border border-gray-200 bg-gray-100 dark:border-gray-800 dark:bg-gray-900">
+              <Image
+                src={meta.image}
+                alt={`${meta.title} preview`}
+                width={1200}
+                height={675}
+                className="aspect-video w-full object-cover"
+                priority
+              />
             </div>
           )}
         </header>

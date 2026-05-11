@@ -1,0 +1,80 @@
+---
+title: "Portfolio Project Intelligence Layer"
+description: "Self-updating operations dashboard that tracks local projects, Git activity, live deployment status, screenshots, stack signals, case-study readiness, and proof points."
+category: "engineering"
+tags: ["Next.js", "TypeScript", "Git", "Vercel", "Portfolio Ops", "Automation"]
+date: "2026-05-10"
+featured: true
+image: "/project-previews/portfolio-intelligence-layer.png"
+links:
+  demo: "https://portfolio-intelligence-layer.vercel.app"
+  github: "https://github.com/arnavgokhale12/portfolio-intelligence-layer"
+---
+
+## Overview
+
+The Portfolio Project Intelligence Layer turns a static portfolio into a project operations dashboard. It scans a local workspace of project folders and builds a live snapshot of what each project is, how recently it changed, whether it is deployed, what stack it uses, and what it proves.
+
+This is not a chatbot. It is backend infrastructure for keeping portfolio work honest, current, and easier to maintain.
+
+## Problem
+
+Portfolio sites tend to drift out of date. Live projects move, GitHub activity changes, case studies lag behind implementation, and unfinished features get buried inside local repos.
+
+The goal was to make project maintenance visible:
+
+- Which projects are actually live?
+- Which repos have active branches?
+- Which projects still need case studies?
+- Which features are unfinished?
+- Which screenshots and stack signals already exist?
+- What should each project communicate to a recruiter or collaborator?
+
+## Approach
+
+### Workspace Scanner
+
+The backend scans sibling project folders from a configurable `PROJECTS_ROOT`. For each candidate project, it checks for Git history, package metadata, README content, screenshots, and deployment hints.
+
+### Git Intelligence
+
+Each project record includes:
+
+- latest commits
+- active branches
+- current branch
+- last updated timestamp
+
+This makes the dashboard useful as an operations view, not just a gallery.
+
+### Deployment Detection
+
+The first version checks for deployment URLs in project docs, local Vercel project links, and live links already published on `arnavgokhale.com/projects`.
+
+That lets the system recognize that projects like Cortex, BAYC, GHRM, SelfRPG, LexiStack, Supply Chain Dashboard, and Euro Style Clusters are already live.
+
+### Portfolio Readiness Signals
+
+The dashboard detects whether a project has a case study and pulls TODO, roadmap, WIP, and review notes from source files and documentation. This turns hidden maintenance work into visible next actions.
+
+## Tech Stack
+
+- **Next.js 16** with App Router
+- **TypeScript** for structured project signals
+- **Node.js filesystem APIs** for local workspace scanning
+- **Git CLI** for commit and branch metadata
+- **Tailwind CSS** for a dense operations-dashboard interface
+- **Lucide icons** for compact controls and status indicators
+
+## Results
+
+The dashboard currently tracks local portfolio projects and outputs a unified snapshot with live counts, branches, open work, deployment status, screenshot assets, stack tags, and case-study status.
+
+It also exposes the same intelligence through a JSON API, making it possible to connect the data back into the public portfolio later.
+
+## What This Proves
+
+- I can turn a vague product idea into a working internal tool quickly.
+- I can build backend data extraction around real developer workflows.
+- I can design dashboards that surface operational state instead of just presenting content.
+- I can connect local development, Git history, deployment metadata, and portfolio storytelling into one system.

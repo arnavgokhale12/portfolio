@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, RefreshCw } from "lucide-react";
 
@@ -10,25 +11,20 @@ interface SocialPost {
   link: string;
 }
 
-// These would ideally come from an API, but for now we'll show recent activity
-const recentPosts: SocialPost[] = [
+const fallbackPosts: SocialPost[] = [
   {
     platform: "bluesky",
-    content: "Just shipped a new update to the portfolio site - dark mode, command palette (Cmd+K), and an AI concierge. Built with Next.js and Vercel AI SDK.",
-    date: "2026-04-12",
-    link: "https://bsky.app/profile/arnavgokhale.bsky.social",
-  },
-  {
-    platform: "x",
-    content: "Multi-agent AI systems are fascinating. Working on Cortex - a visual workspace where you can watch agents reason and collaborate in real-time.",
-    date: "2026-04-11",
-    link: "https://x.com/arnavgokhale",
+    content:
+      "Things I've rebuilt from scratch just to understand them: a neural net, key-value store, HTTP server, and React-like component system.",
+    date: "2026-05-08T14:35:08.144565+00:00",
+    link: "https://bsky.app/profile/arnavgo.bsky.social",
   },
   {
     platform: "bluesky",
-    content: "Generative NFT art without any external assets - BAYC Gallery renders everything on HTML Canvas. Check it out!",
-    date: "2026-04-10",
-    link: "https://bsky.app/profile/arnavgokhale.bsky.social",
+    content:
+      "Hot take: the best projects come from actually needing the thing you're building. Scratch your own itch.",
+    date: "2026-05-07T14:55:38.599971+00:00",
+    link: "https://bsky.app/profile/arnavgo.bsky.social",
   },
 ];
 
@@ -56,6 +52,33 @@ const platformConfig = {
 };
 
 export function SocialFeed() {
+  const [posts, setPosts] = useState<SocialPost[]>(fallbackPosts);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadPosts() {
+      setIsLoading(true);
+      try {
+        const response = await fetch("/api/social/bluesky");
+        if (!response.ok) return;
+        const data = (await response.json()) as { posts?: SocialPost[] };
+        if (isMounted && data.posts?.length) {
+          setPosts(data.posts);
+        }
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+
+    loadPosts();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <section className="bg-gray-100 py-16 dark:bg-gray-900">
       <div className="container-wide">
@@ -70,7 +93,7 @@ export function SocialFeed() {
           </div>
           <div className="flex gap-3">
             <a
-              href="https://bsky.app/profile/arnavgokhale.bsky.social"
+              href="https://bsky.app/profile/arnavgo.bsky.social"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 rounded-lg bg-blue-500/10 px-3 py-1.5 text-sm font-medium text-blue-600 transition-colors hover:bg-blue-500/20 dark:text-blue-400"
@@ -78,6 +101,23 @@ export function SocialFeed() {
               {platformConfig.bluesky.icon}
               Bluesky
             </a>
+            <button
+              type="button"
+              onClick={async () => {
+                setIsLoading(true);
+                try {
+                  const response = await fetch("/api/social/bluesky", { cache: "no-store" });
+                  const data = (await response.json()) as { posts?: SocialPost[] };
+                  if (data.posts?.length) setPosts(data.posts);
+                } finally {
+                  setIsLoading(false);
+                }
+              }}
+              className="inline-flex items-center gap-2 rounded-lg bg-gray-500/10 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-500/20 dark:text-gray-400"
+              aria-label="Refresh recent Bluesky posts"
+            >
+              <RefreshCw className={`h-4 w-4 ${isLoading ? "animate-spin" : ""}`} />
+            </button>
             <a
               href="https://x.com/arnavgokhale"
               target="_blank"
@@ -91,7 +131,7 @@ export function SocialFeed() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          {recentPosts.map((post, index) => {
+          {posts.map((post, index) => {
             const platform = platformConfig[post.platform];
             return (
               <motion.a
@@ -114,7 +154,7 @@ export function SocialFeed() {
                 <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-3">
                   {post.content}
                 </p>
-                <p className="mt-3 text-xs text-gray-500">{post.date}</p>
+                <p className="mt-3 text-xs text-gray-500">{formatPostDate(post.date)}</p>
               </motion.a>
             );
           })}
@@ -126,4 +166,12 @@ export function SocialFeed() {
       </div>
     </section>
   );
+}
+
+function formatPostDate(date: string) {
+  return new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(new Date(date));
 }

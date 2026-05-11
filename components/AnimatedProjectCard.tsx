@@ -3,8 +3,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Activity, Radio, ShieldCheck } from "lucide-react";
 import { ProjectMeta } from "@/types";
 import { formatDate, cn } from "@/lib/utils";
+import { getProjectOps } from "@/lib/projectOps";
 
 interface AnimatedProjectCardProps {
   project: ProjectMeta;
@@ -39,6 +41,7 @@ const categoryConfig: Record<string, { gradient: string; text: string; label: st
 };
 
 export function AnimatedProjectCard({ project, index = 0 }: AnimatedProjectCardProps) {
+  const ops = getProjectOps(project);
   const category = categoryConfig[project.category] || {
     gradient: "from-gray-500/20 to-gray-600/20",
     text: "text-gray-300",
@@ -60,18 +63,46 @@ export function AnimatedProjectCard({ project, index = 0 }: AnimatedProjectCardP
         category.glow
       )}
     >
-      {/* Project thumbnail */}
-      {project.image && (
-        <div className="relative h-40 w-full overflow-hidden">
+      <div className="relative h-40 w-full overflow-hidden border-b border-white/10 bg-gray-950">
+        {project.image ? (
           <Image
             src={project.image}
             alt={project.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/80 to-transparent" />
-        </div>
-      )}
+        ) : (
+          <div className={cn("flex h-full flex-col justify-between bg-gradient-to-br p-5", category.gradient)}>
+            <div className="flex items-center justify-between gap-3">
+              <span className={cn("text-xs font-semibold uppercase tracking-wider", category.text)}>
+                {category.label}
+              </span>
+              {ops.isLive && (
+                <span className="inline-flex items-center gap-1 rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-300">
+                  <Radio className="h-3 w-3" />
+                  Live
+                </span>
+              )}
+            </div>
+            <div className="max-w-[85%]">
+              <div className="mb-3 text-lg font-bold leading-tight text-white line-clamp-2">
+                {project.title}
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {project.tags.slice(0, 3).map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-md border border-white/10 bg-black/20 px-2 py-0.5 text-xs text-gray-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent" />
+      </div>
 
       {/* Gradient overlay on hover */}
       <div className={cn(
@@ -79,29 +110,24 @@ export function AnimatedProjectCard({ project, index = 0 }: AnimatedProjectCardP
         category.gradient
       )} />
 
-      {/* Category Badge */}
-      <div className={cn("absolute left-4 z-10", project.image ? "top-4" : "top-4")}>
-        <span
-          className={cn(
-            "rounded-full bg-gray-900/80 backdrop-blur-sm px-3 py-1 text-xs font-semibold border border-white/10",
-            category.text
-          )}
-        >
-          {category.label}
-        </span>
-      </div>
-
-      {/* Featured badge */}
-      {project.featured && (
-        <div className="absolute top-4 right-4 z-10">
-          <span className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 py-0.5 text-xs font-bold text-white shadow-lg shadow-orange-500/30">
-            Featured
-          </span>
-        </div>
-      )}
-
       {/* Card Content */}
-      <Link href={`/projects/${project.slug}`} className="relative flex flex-1 flex-col p-6 pt-14">
+      <Link href={`/projects/${project.slug}`} className="relative flex flex-1 flex-col p-6">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <span
+            className={cn(
+              "rounded-full bg-gray-900/80 px-3 py-1 text-xs font-semibold border border-white/10",
+              category.text
+            )}
+          >
+            {category.label}
+          </span>
+          {project.featured && (
+            <span className="rounded-full bg-gradient-to-r from-amber-500 to-orange-500 px-2.5 py-0.5 text-xs font-bold text-white shadow-lg shadow-orange-500/30">
+              Featured
+            </span>
+          )}
+        </div>
+
         <div className="flex-1">
           <h3 className="mb-3 text-xl font-bold text-gray-100 transition-colors group-hover:text-white">
             {project.title}
@@ -109,6 +135,25 @@ export function AnimatedProjectCard({ project, index = 0 }: AnimatedProjectCardP
           <p className="mb-4 text-sm text-gray-400 line-clamp-2 leading-relaxed">
             {project.description}
           </p>
+        </div>
+
+        <div className="mb-4 flex flex-wrap gap-2">
+          {ops.isLive && (
+            <span className="inline-flex items-center gap-1 rounded-md bg-emerald-500/10 px-2 py-1 text-xs font-medium text-emerald-300">
+              <Radio className="h-3 w-3" />
+              Live
+            </span>
+          )}
+          {ops.hasCaseStudy && (
+            <span className="inline-flex items-center gap-1 rounded-md bg-blue-500/10 px-2 py-1 text-xs font-medium text-blue-300">
+              <ShieldCheck className="h-3 w-3" />
+              Case study
+            </span>
+          )}
+          <span className="inline-flex items-center gap-1 rounded-md bg-gray-800/80 px-2 py-1 text-xs font-medium text-gray-300">
+            <Activity className="h-3 w-3" />
+            {ops.stackCount} stack signals
+          </span>
         </div>
 
         {/* Tags */}

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 interface GitHubCalendarProps {
@@ -28,10 +29,13 @@ export function GitHubCalendar({ username }: GitHubCalendarProps) {
 
       <div className="overflow-x-auto">
         {/* GitHub contribution graph embed */}
-        <img
+        <Image
           src={`https://ghchart.rshah.org/22c55e/${username}`}
           alt={`${username}'s GitHub contribution chart`}
-          className="w-full max-w-3xl mx-auto"
+          width={900}
+          height={150}
+          unoptimized
+          className="mx-auto w-full max-w-3xl"
           style={{ filter: "brightness(1.1)" }}
         />
       </div>

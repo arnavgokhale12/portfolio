@@ -1,9 +1,12 @@
 import Link from "next/link";
-import { AnimatedHero, AnimatedProjectCard, GitHubCalendar, CurrentlyWorkingOn, SpotifyReading, SocialFeed } from "@/components";
-import { getFeaturedProjects } from "@/lib/projects";
+import { AnimatedHero, AnimatedProjectCard, GitHubCalendar, CurrentlyWorkingOn, LiveSystems, SpotifyReading, SocialFeed } from "@/components";
+import { getAllProjects, getFeaturedProjects } from "@/lib/projects";
+import { getLiveProjects } from "@/lib/projectOps";
 
 export default function HomePage() {
+  const allProjects = getAllProjects();
   const featuredProjects = getFeaturedProjects().slice(0, 3);
+  const liveProjects = getLiveProjects(allProjects);
 
   return (
     <>
@@ -15,7 +18,7 @@ export default function HomePage() {
         <div className="container-wide">
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">10+</div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">{allProjects.length}</div>
               <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">Projects Shipped</div>
             </div>
             <div className="text-center">
@@ -23,8 +26,8 @@ export default function HomePage() {
               <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">Economics @ TAMU</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900 dark:text-white">Full Stack</div>
-              <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">Data to Deploy</div>
+              <div className="text-3xl font-bold text-gray-900 dark:text-white">{liveProjects.length}</div>
+              <div className="mt-1 text-sm text-gray-600 dark:text-gray-400">Live Systems</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-gray-900 dark:text-white">2026</div>
@@ -33,6 +36,8 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      <LiveSystems projects={allProjects} />
 
       {/* Currently Working On */}
       <CurrentlyWorkingOn />

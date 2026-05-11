@@ -1,12 +1,12 @@
 export const siteConfig = {
   // Personal info
   name: "Arnav Gokhale",
-  title: "Full-Stack Developer & ML Engineer",
+  title: "Full-stack developer building AI, data, and automation products",
   description:
-    "Building AI-powered applications, data pipelines, and automation tools. From generative art to multi-agent systems—I ship end-to-end.",
+    "I ship end-to-end systems: AI workspaces, data dashboards, mobile apps, and automation tools that run in production.",
 
   // Short bio for hero
-  shortBio: "MS Economics @ Texas A&M • Full-stack with an ML edge",
+  shortBio: "MS Economics @ Texas A&M • B.S. Electrical Engineering • Full-stack with an ML edge",
 
   // Tech stack highlights
   techStack: ["Next.js", "React", "TypeScript", "Python", "Tailwind CSS", "Vercel AI SDK"],

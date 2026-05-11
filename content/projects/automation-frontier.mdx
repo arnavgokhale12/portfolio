@@ -1,0 +1,104 @@
+---
+title: "Automation Frontier Dashboard"
+description: "Interactive labor-automation dashboard that explains where AI can automate work, where human bottlenecks remain, and how different roles are exposed."
+category: "economics"
+tags: ["Next.js", "TypeScript", "Labor Economics", "Automation", "Vercel", "Data Visualization"]
+date: "2026-05-10"
+featured: true
+links:
+  demo: "https://automation-frontier.vercel.app"
+  github: "https://github.com/arnavgokhale12/automation-frontier"
+---
+
+## Overview
+
+Automation Frontier is an interactive dashboard for thinking about AI and labor-market change. It ranks industries by automation risk, explains bottlenecks like trust and regulation, and lets users test specific job titles in a sandbox.
+
+The project is built to be understandable without needing an API key or paid model provider. Curated examples use hand-written analysis, and custom jobs fall back to a local rules-based estimator.
+
+## Problem
+
+Most automation discourse is either too abstract or too alarmist. A useful tool needs to separate several questions:
+
+- Can AI perform the knowledge-work layer?
+- Does the job require physical execution?
+- Is there regulation, licensing, or legal liability?
+- Do customers or institutions still require a human?
+- Is the realistic outcome replacement, augmentation, or workflow compression?
+
+The product goal was to make those tradeoffs visible in a dashboard that a non-technical user could scan quickly.
+
+## Approach
+
+### Bottleneck Index
+
+The main dashboard ranks industries across five dimensions:
+
+| Dimension | Meaning |
+|-----------|---------|
+| AI capability | How much of the work current AI can assist or perform |
+| Physical friction | How much real-world execution slows automation |
+| Regulation | How much law, licensing, audit, or safety review matters |
+| Trust | How much users expect human accountability |
+| Automation risk | Composite exposure after capability and bottlenecks |
+
+Each row expands into occupation-level examples with plain-language explanations, visible exposure scores, and bottleneck notes.
+
+### Automation Sandbox
+
+The sandbox lets users enter a job title and get a structured automation profile across seven dimensions:
+
+- knowledge work
+- judgment
+- trust
+- physical execution
+- legal liability
+- human preference
+- cost to deploy
+
+The first version used an Anthropic API route for unknown roles. I replaced that hard dependency with a free local analyzer so the feature remains usable in production without paying for inference.
+
+### Local Analysis Fallback
+
+The local fallback maps a job title to the closest industry, pulls related occupation signals, scores the role, and returns a readable summary with a confidence label.
+
+This makes the product more robust:
+
+- no API key required for users
+- no runtime failure when model calls fail
+- deterministic outputs for common searches
+- optional AI enrichment can be added later without blocking the core feature
+
+## Tech Stack
+
+- **Next.js** App Router
+- **TypeScript** for scoring types and API contracts
+- **Tailwind CSS** for the dashboard UI
+- **Vercel** for deployment
+- **Local JSON datasets** for industry and occupation signals
+- **Optional Vercel AI SDK path** for future model-backed analysis
+
+## Results
+
+The deployed dashboard supports:
+
+- industry-level automation ranking
+- hover explanations for metrics
+- expanded occupation examples
+- local job-title analysis without paid model APIs
+- confidence/source labels for sandbox outputs
+- a case-study ready interface that explains what users are seeing
+
+## What This Proves
+
+- I can turn an economics concept into an interactive product.
+- I can design around user comprehension, not just data display.
+- I can remove paid API dependencies while preserving core product behavior.
+- I can build practical AI-adjacent tools that degrade gracefully.
+
+## Next Steps
+
+- Add more occupation data from BLS/O*NET.
+- Add confidence bands and source citations per score.
+- Let users compare two roles side by side.
+- Add downloadable summaries for career planning or workforce analysis.

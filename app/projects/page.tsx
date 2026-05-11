@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { ProjectList } from "@/components/ProjectList";
 import { getAllProjects } from "@/lib/projects";
+import { getLiveProjects } from "@/lib/projectOps";
 
 export const metadata: Metadata = {
   title: "Projects",
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   const projects = getAllProjects();
+  const liveProjects = getLiveProjects(projects);
 
   return (
     <div className="bg-gray-950 min-h-screen">
@@ -28,6 +30,14 @@ export default function ProjectsPage() {
               mobile apps and dashboards. Each project includes context, approach,
               and outcomes.
             </p>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-sm font-medium text-emerald-300">
+                {liveProjects.length} live demos
+              </span>
+              <span className="rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1 text-sm font-medium text-blue-300">
+                {projects.length} case studies
+              </span>
+            </div>
           </div>
         </div>
       </section>

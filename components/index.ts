@@ -15,3 +15,4 @@ export { CurrentlyWorkingOn } from "./CurrentlyWorkingOn";
 export { SpotifyReading } from "./SpotifyReading";
 export { TechIcon, TechStackDisplay } from "./TechStackIcons";
 export { SocialFeed } from "./SocialFeed";
+export { LiveSystems } from "./LiveSystems";

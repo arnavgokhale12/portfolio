@@ -53,7 +53,7 @@ export function AnimatedHero() {
           {/* Title with gradient text */}
           <motion.p
             variants={fadeInUp}
-            className="mb-4 text-2xl font-bold md:text-3xl text-violet-400"
+            className="mb-4 max-w-3xl text-2xl font-bold leading-tight text-violet-400 md:text-3xl"
           >
             {siteConfig.title}
           </motion.p>
