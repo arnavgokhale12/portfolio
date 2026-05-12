@@ -483,7 +483,7 @@ main {
   color: var(--ink);
 }
 
-.course-card.locked .course-title span,
+.course-card.locked .course-title > span,
 .course-card.locked .course-meta,
 .course-card.locked > div:not(.course-title):not(.course-meta) {
   color: var(--muted);
@@ -530,6 +530,10 @@ main {
 .type-badge.core { color: var(--maroon); }
 .type-badge.elective { color: var(--blue); }
 .type-badge.support { color: var(--green); }
+
+.course-card.locked .type-badge.core { color: var(--maroon); }
+.course-card.locked .type-badge.elective { color: var(--blue); }
+.course-card.locked .type-badge.support { color: var(--green); }
 
 .course-card > div:not(.course-title):not(.course-meta) {
   font-size: 0.78rem;
