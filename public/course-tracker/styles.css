@@ -636,80 +636,6 @@ main {
   font-size: 0.76rem;
 }
 
-/* ── Schedule ── */
-
-.schedule-wrap {
-  display: grid;
-  grid-template-columns: 50px 1fr;
-  gap: 8px;
-  min-height: 470px;
-}
-
-.time-rail {
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  padding-top: 37px;
-  font-size: 0.7rem;
-  color: var(--muted);
-}
-
-.schedule-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(110px, 1fr));
-  gap: 7px;
-  min-width: 0;
-}
-
-.day-column {
-  position: relative;
-  min-height: 470px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  background:
-    linear-gradient(to bottom, var(--line) 1px, transparent 1px) 0 0 / 100% 58.75px,
-    var(--surface-soft);
-  overflow: hidden;
-}
-
-.day-label {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  padding: 8px 10px;
-  background: var(--surface);
-  border-bottom: 1px solid var(--line);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.schedule-block {
-  position: absolute;
-  left: 5px;
-  right: 5px;
-  padding: 7px 9px;
-  border-radius: 6px;
-  overflow: hidden;
-  border-left: 2px solid currentColor;
-  background: rgba(255, 255, 255, 0.04);
-}
-
-.schedule-block strong {
-  display: block;
-  overflow-wrap: anywhere;
-  font-size: 0.74rem;
-  font-weight: 600;
-}
-
-.schedule-block span {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.68rem;
-  color: var(--ink-soft);
-}
-
 /* ── Requirements ── */
 
 .requirements-grid {
@@ -974,6 +900,4 @@ main {
   .nav-list, .metrics-grid, .semester-grid, .task-board, .reference-grid, .evidence-grid, .syllabus-grid {
     grid-template-columns: 1fr;
   }
-  .schedule-wrap { overflow-x: auto; }
-  .schedule-grid { min-width: 700px; }
 }

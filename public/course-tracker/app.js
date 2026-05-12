@@ -122,73 +122,6 @@ const defaultTasks = [
   { text: "Save syllabi and major assignments in one folder", done: true, lane: "Done" },
 ];
 
-const schedule = [
-  {
-    day: "Monday",
-    start: 8.5,
-    end: 9.75,
-    course: "ECON 471",
-    detail: "ALLN 1004",
-    color: "#5888c4",
-  },
-  {
-    day: "Wednesday",
-    start: 8.5,
-    end: 9.75,
-    course: "ECON 471",
-    detail: "ALLN 1004",
-    color: "#5888c4",
-  },
-  {
-    day: "Tuesday",
-    start: 10.083,
-    end: 11.333,
-    course: "ECON 689",
-    detail: "ALLN 1002",
-    color: "#c8943e",
-  },
-  {
-    day: "Thursday",
-    start: 10.083,
-    end: 11.333,
-    course: "ECON 689",
-    detail: "ALLN 1002",
-    color: "#c8943e",
-  },
-  {
-    day: "Tuesday",
-    start: 14.333,
-    end: 15.583,
-    course: "ECON 607",
-    detail: "ILCB 111",
-    color: "#b85868",
-  },
-  {
-    day: "Thursday",
-    start: 14.333,
-    end: 15.583,
-    course: "ECON 607",
-    detail: "ILCB 111",
-    color: "#b85868",
-  },
-  {
-    day: "Monday",
-    start: 16.166,
-    end: 17.416,
-    course: "ECMT 673",
-    detail: "CHEM 100",
-    color: "#38a8b0",
-  },
-  {
-    day: "Wednesday",
-    start: 16.166,
-    end: 17.416,
-    course: "ECMT 673",
-    detail: "CHEM 100",
-    color: "#38a8b0",
-  },
-];
-
 const gradePoints = {
   A: 4,
   B: 3,
@@ -490,39 +423,6 @@ function codeForType(type) {
   }[type];
 }
 
-function renderSchedule() {
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-  const startHour = 8;
-  const endHour = 18;
-  const height = 470;
-  const pxPerHour = height / (endHour - startHour);
-
-  document.getElementById("scheduleGrid").innerHTML = days
-    .map((day) => {
-      const blocks = schedule
-        .filter((item) => item.day === day)
-        .map((item) => {
-          const top = (item.start - startHour) * pxPerHour + 37;
-          const blockHeight = Math.max(58, (item.end - item.start) * pxPerHour);
-          return `
-            <div class="schedule-block" style="top:${top}px;height:${blockHeight}px;color:${item.color}">
-              <strong>${item.course}</strong>
-              <span>${item.detail}</span>
-            </div>
-          `;
-        })
-        .join("");
-
-      return `
-        <div class="day-column">
-          <div class="day-label">${day}</div>
-          ${blocks}
-        </div>
-      `;
-    })
-    .join("");
-}
-
 function renderTasks() {
   document.getElementById("taskList").innerHTML = state.tasks
     .slice(0, 5)
@@ -581,7 +481,6 @@ function renderAll() {
   renderMetrics();
   renderGpa();
   renderSemesterPlan();
-  renderSchedule();
   renderTasks();
 }
 
