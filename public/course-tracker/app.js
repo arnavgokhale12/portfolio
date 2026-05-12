@@ -340,6 +340,17 @@ function completedCredits(course) {
   return course.grade ? course.credits : 0;
 }
 
+function gpaForCourses(courses) {
+  const graded = courses.filter((course) => course.grade && gradePoints[course.grade] !== undefined);
+  const quality = graded.reduce((sum, course) => sum + gradePoints[course.grade] * course.credits, 0);
+  const credits = graded.reduce((sum, course) => sum + course.credits, 0);
+
+  return {
+    credits,
+    value: credits ? quality / credits : 0,
+  };
+}
+
 function setProgress(id, current, target) {
   const value = Math.min(100, Math.round((current / target) * 100));
   const el = document.getElementById(id);
@@ -377,11 +388,27 @@ function renderMetrics() {
 
 function renderGpa() {
   const graded = state.courses.filter((course) => course.grade && gradePoints[course.grade] !== undefined);
-  const quality = graded.reduce((sum, course) => sum + gradePoints[course.grade] * course.credits, 0);
-  const credits = graded.reduce((sum, course) => sum + course.credits, 0);
-  const gpa = credits ? quality / credits : 0;
+  const { value: gpa } = gpaForCourses(graded);
+  const completedCourses = state.courses.filter((course) => course.status === "Complete" && course.grade);
+  const semesterRows = ["Fall 2025", "Spring 2026"].map((semester) => {
+    const { credits, value } = gpaForCourses(completedCourses.filter((course) => course.semester === semester));
+    return { label: semester, credits, value };
+  });
+  const cumulative = gpaForCourses(completedCourses);
 
   document.getElementById("gpaValue").textContent = gpa.toFixed(2);
+  document.getElementById("semesterGpas").innerHTML = [
+    ...semesterRows,
+    { label: "Current cumulative", credits: cumulative.credits, value: cumulative.value },
+  ]
+    .map((row) => `
+      <div class="semester-gpa-row">
+        <span>${row.label}</span>
+        <strong>${row.credits ? row.value.toFixed(2) : "—"}</strong>
+      </div>
+    `)
+    .join("");
+
   document.getElementById("gradeBars").innerHTML = ["A", "B", "C", "D", "F"]
     .map((grade) => {
       const count = graded.filter((course) => course.grade === grade).length;
