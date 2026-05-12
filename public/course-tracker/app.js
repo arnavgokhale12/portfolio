@@ -420,7 +420,7 @@ function renderSemesterPlan() {
                   </div>
                   <div>${course.name}</div>
                   <div class="course-meta">
-                    <span>${course.status} · ${labelForType(course.type)}${course.locked ? " · Locked" : ""}</span>
+                    <span>${course.status} · ${labelForType(course.type)}</span>
                     <select data-grade-index="${index}" aria-label="Grade for ${course.code}" ${course.locked ? "disabled" : ""}>
                       ${["", "A", "B", "C", "D", "F"]
                         .map((grade) => `<option value="${grade}" ${course.grade === grade ? "selected" : ""}>${grade || "Grade"}</option>`)
