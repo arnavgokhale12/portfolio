@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>MS Econ Course Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Course tracker navigation">
+        <div class="brand">
+          <span class="brand-mark">MS</span>
+          <div>
+            <h1>Course Tracker</h1>
+            <p>MS Economics plan</p>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <a href="#dashboard" class="active">Dashboard</a>
+          <a href="#semester-plan">Semester plan</a>
+          <a href="#schedule">Schedule</a>
+          <a href="#requirements">Requirements</a>
+          <a href="#tasks">Tasks</a>
+          <a href="#references">References</a>
+        </nav>
+
+        <div class="sidebar-note">
+          <span>Current focus</span>
+          <strong>Spring 2026 wrap-up</strong>
+          <p>Grades, summer internship credit, and Fall 2026 capstone prep.</p>
+        </div>
+      </aside>
+
+      <main>
+        <section id="dashboard" class="topbar">
+          <div>
+            <p class="eyebrow">Texas A&amp;M MS Economics</p>
+            <h2>Plan the degree, semester by semester.</h2>
+          </div>
+          <button class="ghost-button" id="resetData" type="button">Reset saved edits</button>
+        </section>
+
+        <section class="metrics-grid" aria-label="Degree progress summary">
+          <article class="metric">
+            <span>Total Credits</span>
+            <strong id="totalCredits">0 / 36</strong>
+            <div class="progress"><span id="totalProgress"></span></div>
+          </article>
+          <article class="metric">
+            <span>Core Credits</span>
+            <strong id="coreCredits">0 / 15</strong>
+            <div class="progress"><span id="coreProgress"></span></div>
+          </article>
+          <article class="metric">
+            <span>ECON/ECMT Electives</span>
+            <strong id="electiveCredits">0 / 6</strong>
+            <div class="progress"><span id="electiveProgress"></span></div>
+          </article>
+          <article class="metric">
+            <span>Supporting Credits</span>
+            <strong id="supportCredits">0 / 15</strong>
+            <div class="progress"><span id="supportProgress"></span></div>
+          </article>
+        </section>
+
+        <section class="content-grid">
+          <article class="panel gpa-panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Academic standing</p>
+                <h3>GPA forecast</h3>
+              </div>
+              <strong id="gpaValue">0.00</strong>
+            </div>
+            <p class="muted">Update grades in the course plan. Blank planned courses are excluded from GPA.</p>
+            <div id="gradeBars" class="grade-bars"></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-head">
+              <div>
+                <p class="eyebrow">Next steps</p>
+                <h3>Priority queue</h3>
+              </div>
+              <button id="addTask" class="icon-button" type="button" aria-label="Add task">+</button>
+            </div>
+            <div id="taskList" class="task-list"></div>
+          </article>
+        </section>
+
+        <section id="semester-plan" class="panel wide-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Degree map</p>
+              <h3>Semester plan</h3>
+            </div>
+            <div class="legend">
+              <span><i class="dot core"></i>Core</span>
+              <span><i class="dot elective"></i>ECON/ECMT elective</span>
+              <span><i class="dot support"></i>Supporting</span>
+            </div>
+          </div>
+          <div id="semesterGrid" class="semester-grid"></div>
+        </section>
+
+        <section id="schedule" class="panel wide-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Weekly rhythm</p>
+              <h3>Spring 2026 class schedule</h3>
+            </div>
+            <span class="tag">12 credits</span>
+          </div>
+          <div class="schedule-wrap">
+            <div class="time-rail">
+              <span>8 AM</span><span>10 AM</span><span>12 PM</span><span>2 PM</span><span>4 PM</span><span>6 PM</span>
+            </div>
+            <div id="scheduleGrid" class="schedule-grid" aria-label="Spring 2026 weekly schedule"></div>
+          </div>
+        </section>
+
+        <section id="requirements" class="panel wide-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Curriculum rules</p>
+              <h3>Requirement checklist</h3>
+            </div>
+          </div>
+          <div class="requirements-grid">
+            <div>
+              <h4>Degree minimums</h4>
+              <ul class="clean-list">
+                <li>36 credit hours total</li>
+                <li>15 credit hours of core courses</li>
+                <li>6 credit hours of ECON/ECMT electives</li>
+                <li>15 credit hours of supporting coursework</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Notes to track</h4>
+              <ul class="clean-list">
+                <li>Summer 2026: ECON 684 Professional Internship is approved for 6 supporting credits.</li>
+                <li>Fall 2026: ECON 675 Capstone plus STAT 656 Applied Analytics completes the 36-credit plan.</li>
+                <li>STAT 656 Section 700 is online with no scheduled meeting days or times.</li>
+                <li>Directed studies require faculty approval.</li>
+                <li>Final audit: 15 core, 6 ECON/ECMT electives, and 15 supporting credits.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel wide-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Final term evidence</p>
+              <h3>Austin plan checkpoints</h3>
+            </div>
+            <span class="tag">Fall 2026</span>
+          </div>
+          <div class="evidence-grid">
+            <article class="evidence-card">
+              <span>ECON 684</span>
+              <h4>Internship approved</h4>
+              <p>Approval is already received for the 6-credit professional internship. Next useful check is the syllabus, reporting cadence, and exact deliverables before summer starts.</p>
+            </article>
+            <article class="evidence-card">
+              <span>ECON 675</span>
+              <h4>Capstone attendance</h4>
+              <p>Section 602 syllabus lists no meeting days or times, but does require three presentations. Confirm whether those can be completed remotely.</p>
+            </article>
+            <article class="evidence-card">
+              <span>STAT 656</span>
+              <h4>Online supporting course</h4>
+              <p>Section 700 syllabus lists ONLINE ONLINE, Zoom office location, no scheduled meeting days or times, Canvas quizzes, R homework, and video project deliverables.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="panel wide-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Fall 2026 syllabi</p>
+              <h3>What the two final classes actually require</h3>
+            </div>
+            <span class="tag">6 credits</span>
+          </div>
+          <div class="syllabus-grid">
+            <article class="syllabus-card core">
+              <div class="syllabus-topline">
+                <div>
+                  <span>ECON 675 · Section 602</span>
+                  <h4>Capstone for Financial Economics / Financial Econometrics</h4>
+                </div>
+                <strong>C</strong>
+              </div>
+              <dl class="syllabus-meta">
+                <div>
+                  <dt>Instructor</dt>
+                  <dd>Li Gan</dd>
+                </div>
+                <div>
+                  <dt>Credits</dt>
+                  <dd>3</dd>
+                </div>
+                <div>
+                  <dt>Meetings</dt>
+                  <dd>No days or times listed</dd>
+                </div>
+                <div>
+                  <dt>Textbook</dt>
+                  <dd>No required textbook</dd>
+                </div>
+              </dl>
+              <div class="syllabus-focus">
+                <h4>Main work</h4>
+                <p>Original research project using economic theory, empirical methods, academic literature, and data. The syllabus lists three mandatory presentations, proposals, and revised papers.</p>
+              </div>
+              <div class="syllabus-scale">
+                <span>A >= 90</span>
+                <span>B 80-89</span>
+                <span>C 70-79</span>
+              </div>
+            </article>
+
+            <article class="syllabus-card support">
+              <div class="syllabus-topline">
+                <div>
+                  <span>STAT 656 · Section 700</span>
+                  <h4>Applied Analytics</h4>
+                </div>
+                <strong>SC</strong>
+              </div>
+              <dl class="syllabus-meta">
+                <div>
+                  <dt>Instructor</dt>
+                  <dd>Runmin Wang</dd>
+                </div>
+                <div>
+                  <dt>Credits</dt>
+                  <dd>3</dd>
+                </div>
+                <div>
+                  <dt>Location</dt>
+                  <dd>ONLINE ONLINE</dd>
+                </div>
+                <div>
+                  <dt>Office hours</dt>
+                  <dd>Tuesday 2-3 PM on Zoom</dd>
+                </div>
+              </dl>
+              <div class="weight-list">
+                <div>
+                  <span>Homework</span>
+                  <strong>50%</strong>
+                </div>
+                <div>
+                  <span>Canvas quizzes</span>
+                  <strong>10%</strong>
+                </div>
+                <div>
+                  <span>Video project</span>
+                  <strong>40%</strong>
+                </div>
+              </div>
+              <div class="syllabus-focus">
+                <h4>Format notes</h4>
+                <p>R Markdown homework, open-book individual quizzes, and staged project videos replace a midterm or final exam.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="tasks" class="panel wide-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Work tracker</p>
+              <h3>Course tasks</h3>
+            </div>
+          </div>
+          <div class="task-board" id="taskBoard"></div>
+        </section>
+
+        <section id="references" class="panel wide-panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">Source material</p>
+              <h3>Context snapshots</h3>
+            </div>
+          </div>
+          <div class="reference-grid">
+            <a href="assets/MS%20ECON%20Curriculum.png" target="_blank" rel="noreferrer">
+              <img src="assets/MS%20ECON%20Curriculum.png" alt="MS Economics curriculum sheet">
+              <span>Curriculum sheet</span>
+            </a>
+            <a href="assets/MS-ECON-Course-Plan-Handwritten-Notes.png" target="_blank" rel="noreferrer">
+              <img src="assets/MS-ECON-Course-Plan-Handwritten-Notes.png" alt="Handwritten MS Econ course plan">
+              <span>Handwritten plan</span>
+            </a>
+            <a href="assets/Spring%20'26%20Classes%20%26%20Schedule.jpg" target="_blank" rel="noreferrer">
+              <img src="assets/Spring%20'26%20Classes%20%26%20Schedule.jpg" alt="Spring 2026 classes and schedule">
+              <span>Spring 2026 schedule</span>
+            </a>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
