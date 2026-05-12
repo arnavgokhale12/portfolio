@@ -48,8 +48,9 @@ const defaultCourses = [
     name: "Foundations of Microeconomic Theory",
     type: "core",
     credits: 3,
-    grade: "",
-    status: "In progress",
+    grade: "B",
+    status: "Complete",
+    locked: true,
   },
   {
     semester: "Spring 2026",
@@ -57,8 +58,9 @@ const defaultCourses = [
     name: "Economic Analytics",
     type: "core",
     credits: 3,
-    grade: "",
-    status: "In progress",
+    grade: "A",
+    status: "Complete",
+    locked: true,
   },
   {
     semester: "Spring 2026",
@@ -66,8 +68,9 @@ const defaultCourses = [
     name: "Data Science for Future Decision Makers",
     type: "support",
     credits: 3,
-    grade: "",
-    status: "In progress",
+    grade: "A",
+    status: "Complete",
+    locked: true,
   },
   {
     semester: "Spring 2026",
@@ -75,8 +78,9 @@ const defaultCourses = [
     name: "International Macroeconomics",
     type: "support",
     credits: 3,
-    grade: "",
-    status: "In progress",
+    grade: "A",
+    status: "Complete",
+    locked: true,
   },
   {
     semester: "Summer 2026",
@@ -109,7 +113,7 @@ const defaultCourses = [
 
 const defaultTasks = [
   { text: "Fall 2025 final grades verified: ECMT 674 A, ECON 611 A, ECON 663 B, ECON 680 A", done: true, lane: "Done" },
-  { text: "Enter final Spring 2026 grades when posted", done: false, lane: "Now" },
+  { text: "Spring 2026 final grades verified: ECMT 673 A, ECON 471 A, ECON 607 B, ECON 689 A", done: true, lane: "Done" },
   { text: "ECON 684 internship approval received for 6 credits", done: true, lane: "Done" },
   { text: "Ask for the ECON 684 syllabus and 6-credit deliverables", done: false, lane: "Now" },
   { text: "Confirm whether ECON 675 presentations can be completed remotely", done: false, lane: "Now" },
@@ -193,6 +197,13 @@ const gradePoints = {
   F: 0,
 };
 
+const finalizedSpring2026Grades = {
+  "ECON 607": "B",
+  "ECMT 673": "A",
+  "ECON 471": "A",
+  "ECON 689": "A",
+};
+
 const requirements = {
   total: 36,
   core: 15,
@@ -219,39 +230,45 @@ function loadState() {
 function normalizeState(nextState) {
   nextState.courses = nextState.courses
     .map((course) => {
-      if (course.status === "Complete" && course.grade) {
-        return { ...course, locked: true };
-      }
+      let normalized = course;
 
       if (course.code === "ECON 684") {
-        return { ...course, name: "Professional Internship", type: "support", credits: 6, status: course.grade ? course.status : "Approved" };
+        normalized = { ...course, name: "Professional Internship", type: "support", credits: 6, status: course.grade ? course.status : "Approved" };
       }
 
       if (course.code === "ECON 685" && course.semester === "Summer 2026") {
-        return { ...course, code: "ECON 684", name: "Professional Internship", type: "support", credits: 6, status: course.grade ? course.status : "Approved" };
+        normalized = { ...course, code: "ECON 684", name: "Professional Internship", type: "support", credits: 6, status: course.grade ? course.status : "Approved" };
       }
 
       if (course.code === "ECON 675") {
-        return { ...course, name: "Capstone", type: "core", credits: 3 };
+        normalized = { ...course, name: "Capstone", type: "core", credits: 3 };
       }
 
       if (course.code === "ECON 471") {
-        return { ...course, name: "Data Science for Future Decision Makers", type: "support", credits: 3 };
+        normalized = { ...course, name: "Data Science for Future Decision Makers", type: "support", credits: 3 };
       }
 
       if (course.code === "ECON 689") {
-        return { ...course, name: "International Macroeconomics", type: "support", credits: 3 };
+        normalized = { ...course, name: "International Macroeconomics", type: "support", credits: 3 };
       }
 
       if (course.code === "ECON 685" && course.semester === "Fall 2026") {
-        return { ...course, code: "ECON 675", name: "Capstone", type: "core", credits: 3 };
+        normalized = { ...course, code: "ECON 675", name: "Capstone", type: "core", credits: 3 };
       }
 
       if (course.code === "Support 1") {
-        return { ...course, code: "STAT 656", name: "Applied Analytics", type: "support", credits: 3 };
+        normalized = { ...course, code: "STAT 656", name: "Applied Analytics", type: "support", credits: 3 };
       }
 
-      return course;
+      if (normalized.semester === "Spring 2026" && finalizedSpring2026Grades[normalized.code]) {
+        return { ...normalized, grade: finalizedSpring2026Grades[normalized.code], status: "Complete", locked: true };
+      }
+
+      if (normalized.grade && normalized.status === "Complete") {
+        return { ...normalized, status: "Complete", locked: true };
+      }
+
+      return normalized;
     })
     .filter((course) => course.code !== "Support 2");
 
@@ -270,6 +287,15 @@ function normalizeState(nextState) {
 
     if (task.text === "Ask for the ECON 684 syllabus and 6-credit deliverables after approval") {
       return { ...task, text: "Ask for the ECON 684 syllabus and 6-credit deliverables" };
+    }
+
+    if (task.text === "Enter final Spring 2026 grades when posted") {
+      return {
+        ...task,
+        text: "Spring 2026 final grades verified: ECMT 673 A, ECON 471 A, ECON 607 B, ECON 689 A",
+        done: true,
+        lane: "Done",
+      };
     }
 
     if (task.text === "Prepare capstone topic ideas for ECON 675") {
@@ -293,6 +319,7 @@ function normalizeState(nextState) {
 
   [
     { text: "Fall 2025 final grades verified: ECMT 674 A, ECON 611 A, ECON 663 B, ECON 680 A", done: true, lane: "Done" },
+    { text: "Spring 2026 final grades verified: ECMT 673 A, ECON 471 A, ECON 607 B, ECON 689 A", done: true, lane: "Done" },
     { text: "ECON 684 internship approval received for 6 credits", done: true, lane: "Done" },
     { text: "Ask for the ECON 684 syllabus and 6-credit deliverables", done: false, lane: "Now" },
     { text: "Confirm whether ECON 675 presentations can be completed remotely", done: false, lane: "Now" },
