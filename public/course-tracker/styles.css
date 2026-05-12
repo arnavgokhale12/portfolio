@@ -193,6 +193,12 @@ main {
   color: var(--ink);
 }
 
+.last-updated {
+  margin: 10px 0 0;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+}
+
 .ghost-button,
 .icon-button {
   border: 1px solid var(--line-up);
