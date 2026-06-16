@@ -1,0 +1,73 @@
+---
+title: "FoodFinder — Open Right Now, Near You"
+description: "Mobile-first PWA that shows only restaurants, bars, and cafes confirmed open right now, with viewport-driven search, drive times, and cuisine filters."
+category: "engineering"
+tags: ["React", "TypeScript", "MapLibre GL", "Express", "OpenStreetMap", "Tailwind CSS", "PWA"]
+date: "2026-06-16"
+featured: true
+links:
+  github: "https://github.com/arnavgokhale12/foodfinder"
+  demo: "https://foodfinder-client.vercel.app"
+---
+
+## Overview
+
+FoodFinder answers one question: *what's open near me right now?* It pulls live place data from OpenStreetMap, parses real opening hours, and shows only confirmed-open restaurants, bars, and cafes on a dark map. Pan or zoom and the results refresh automatically for the new viewport.
+
+## Problem
+
+Most food discovery apps surface places regardless of whether they're open, burying the answer you actually need. Yelp and Google Maps both default to "all hours" — you have to remember to filter. FoodFinder makes "open now" the only mode.
+
+## Approach
+
+### Viewport-Driven Search
+
+The map viewport is the query. On every pan or zoom (debounced 500ms), the visible bounding box is sent to the backend, which queries the Overpass API for OSM nodes and ways with `opening_hours` tags. A zoom gate at level 13 prevents queries over areas too large for Overpass to handle responsibly.
+
+### Opening Hours Parsing
+
+OSM's `opening_hours` format covers complex schedules: `Mo-Fr 08:00-22:00; Sa-Su 10:00-23:00`. A custom parser converts these into closing-minutes-from-now values, driving both the open/closed gate and the yellow "closing soon" pulse animation on pins.
+
+### Drive Times
+
+OSRM's public routing table API provides drive-time estimates in a single batch request per viewport load — one call for up to 50 places. No API key required.
+
+### Architecture
+
+```
+client/ (React PWA)
+  └── /api/places?north&south&east&west&type&userLat&userLng
+        └── server/ (Express proxy)
+              ├── Overpass API  → OSM places + opening_hours
+              └── OSRM table API → batch drive times
+```
+
+The backend exists to keep Overpass and OSRM calls server-side, centralize rate-limit handling, and avoid exposing query logic to the client.
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 19, TypeScript, Vite, Tailwind CSS |
+| Map | MapLibre GL JS (CDN), MapTiler dark tiles |
+| Places data | OpenStreetMap via Overpass API |
+| Drive times | OSRM public routing table API |
+| Backend | Express, TypeScript |
+| Deployment | Vercel (client), Render (server) |
+
+## Features
+
+- **Filters**: All, Restaurants, Bars, Coffee, Late Night, Vegan, Vegetarian, Saved
+- **Cuisine sub-filters**: dynamically generated from OSM `cuisine` tags per viewport
+- **List view**: sortable by nearest or closing soonest
+- **Pick for me**: random selection from visible open places, flies the map to it
+- **Saved places**: persisted to localStorage, browsable offline
+- **Pin tooltips**: hover to see name + closing time without clicking
+- **Restaurant logos**: pulls from Clearbit logo API via `website` OSM tag, falls back to category icon
+- **PWA**: installable, service worker, manifest, safe-area handling for notch/home-bar
+
+## Key Learnings
+
+1. **MapLibre 5.x changed `Marker.addTo()`** — it now calls `_update()` immediately, requiring `setLngLat()` to be called first. React 19 propagates uncaught effect errors to unmount the tree, so this one-line ordering issue caused a full black screen.
+2. **OSM coverage is uneven** — `opening_hours` tags exist on roughly 40–60% of places in dense urban areas. A zoom gate and graceful empty state handle sparse areas without confusing the user.
+3. **`@latest` CDN tags are dangerous** — pinning the CDN script version to match the npm package eliminated a class of subtle version-mismatch bugs.
