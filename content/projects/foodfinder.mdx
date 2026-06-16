@@ -28,9 +28,9 @@ The map viewport is the query. On every pan or zoom (debounced 500ms), the visib
 
 OSM's `opening_hours` format covers complex schedules: `Mo-Fr 08:00-22:00; Sa-Su 10:00-23:00`. A custom parser converts these into closing-minutes-from-now values, driving both the open/closed gate and the yellow "closing soon" pulse animation on pins.
 
-### Drive Times
+### Drive / Walk Times
 
-OSRM's public routing table API provides drive-time estimates in a single batch request per viewport load — one call for up to 50 places. No API key required.
+OSRM's public routing table API provides travel-time estimates in a single batch request per viewport load — one call for up to 50 places. A Drive/Walk toggle switches the routing profile between `/driving` and `/foot`, re-fetching times for the current viewport when the mode changes. No API key required.
 
 ### Architecture
 
@@ -57,12 +57,14 @@ The backend exists to keep Overpass and OSRM calls server-side, centralize rate-
 
 ## Features
 
-- **Filters**: All, Restaurants, Bars, Coffee, Late Night, Vegan, Vegetarian, Saved
+- **Filters**: All, Restaurants, Bars, Coffee, Late Night, Last Call (≤30 min), Outdoor seating, Vegan, Vegetarian, Saved
+- **Drive/Walk toggle**: switches OSRM routing profile; all travel times update globally
+- **Happy hour**: detects `happy_hours` OSM tag server-side — pins get a cyan ring, detail sheet shows a live banner
 - **Cuisine sub-filters**: dynamically generated from OSM `cuisine` tags per viewport
 - **List view**: sortable by nearest or closing soonest
 - **Pick for me**: random selection from visible open places, flies the map to it
 - **Saved places**: persisted to localStorage, browsable offline
-- **Pin tooltips**: hover to see name + closing time without clicking
+- **Pin tooltips**: hover to see name, happy hour status, and closing time
 - **Restaurant logos**: pulls from Clearbit logo API via `website` OSM tag, falls back to category icon
 - **PWA**: installable, service worker, manifest, safe-area handling for notch/home-bar
 
