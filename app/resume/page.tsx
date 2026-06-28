@@ -8,7 +8,10 @@ export const metadata: Metadata = {
 };
 
 const skills = [
-  "Python", "SQL", "R", "TypeScript", "Excel", "MATLAB", "C++", "Tableau", "Apps Script"
+  "Python", "SQL", "TypeScript", "JavaScript", "R", "MATLAB", "C++",
+  "React", "Node.js", "Express", "pandas",
+  "Apache Superset", "PostgreSQL", "Azure Blob Storage", "Tableau", "Microsoft Excel",
+  "Git", "GitHub Actions", "Playwright", "Vitest",
 ];
 
 export default function ResumePage() {
@@ -26,7 +29,7 @@ export default function ResumePage() {
                 {siteConfig.name}
               </h1>
               <p className="mt-2 text-gray-400">
-                Data Analytics & Applied Economics
+                Data Engineering &amp; Applied Economics
               </p>
             </div>
             <a
@@ -72,7 +75,7 @@ export default function ResumePage() {
                     </div>
                   </div>
                   <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-1 rounded-full bg-gray-300" />
+                    <div className="flex-shrink-0 w-1 rounded-full bg-gray-600" />
                     <div className="flex-1">
                       <div className="flex flex-wrap items-baseline justify-between gap-2">
                         <h3 className="font-semibold text-gray-100">B.S. Electrical Engineering</h3>
@@ -82,68 +85,6 @@ export default function ResumePage() {
                       <p className="text-sm text-gray-500">Minor in Economics</p>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Projects */}
-              <div className="rounded-2xl bg-gray-900 p-6 md:p-8 border border-gray-800">
-                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-100">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-                    </svg>
-                  </span>
-                  Academic Projects
-                </h2>
-                <div className="space-y-6">
-                  {[
-                    {
-                      title: "Investment Portfolio Performance Tracker",
-                      role: "Developer",
-                      date: "Aug 2025 - Present",
-                      bullets: [
-                        "Built an Excel–Python–Apps Script pipeline to compute daily returns, portfolio weights, and risk-adjusted metrics",
-                        "Automated updates and dashboards to monitor performance, drawdowns, and margin usage"
-                      ]
-                    },
-                    {
-                      title: "Microhistological Sheep Project",
-                      role: "Data Scientist",
-                      date: "Aug 2024 - Aug 2025",
-                      bullets: [
-                        "Implemented a SQL server to store microhistological images and dietary data for a machine learning pipeline",
-                        "Developed parsing and subimage-splicing scripts to improve speed and accuracy of ROI extraction"
-                      ]
-                    },
-                    {
-                      title: "QS World University Ranking Explorer",
-                      role: "Data Analyst",
-                      date: "Jun 2025 - Aug 2025",
-                      bullets: [
-                        "Created an interactive Python dashboard (ipywidgets, pandas) to explore QS 2026 rankings",
-                        "Implemented sorting and tie-breaking logic using AR score and filters"
-                      ]
-                    }
-                  ].map((project, i) => (
-                    <div key={i} className="flex gap-4">
-                      <div className="flex-shrink-0 w-1 rounded-full bg-purple-300" />
-                      <div className="flex-1">
-                        <div className="flex flex-wrap items-baseline justify-between gap-2">
-                          <h3 className="font-semibold text-gray-100">{project.title}</h3>
-                          <span className="text-sm text-gray-500">{project.date}</span>
-                        </div>
-                        <p className="text-sm text-purple-400 font-medium">{project.role}</p>
-                        <ul className="mt-2 space-y-1">
-                          {project.bullets.map((bullet, j) => (
-                            <li key={j} className="text-sm text-gray-400 flex gap-2">
-                              <span className="text-gray-400">•</span>
-                              {bullet}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  ))}
                 </div>
               </div>
 
@@ -157,38 +98,45 @@ export default function ResumePage() {
                   </span>
                   Work Experience
                 </h2>
-                <div className="space-y-6">
+                <div className="space-y-8">
                   {[
+                    {
+                      title: "Data Engineer Intern",
+                      company: "Southern Careers Institute, Austin, TX",
+                      date: "May 2026 – Present",
+                      accent: "bg-green-400",
+                      bullets: [
+                        "Engineered a CRM data pipeline — Azure Blob Storage → PostgreSQL → Apache Superset — processing 6,700+ leads and 50,000+ events with exact-match validation across 8 campuses.",
+                        "Replaced 3-day manual Excel workflows with a production React 19 + TypeScript revenue-ops dashboard (SCI Flight Deck); iterated directly with CEO, CFO, and COO across 10+ campus locations.",
+                        "Deployed 8+ embedded Superset BI dashboards with multi-tenant row-level security and guest-token access control per campus.",
+                        "Cut dashboard load times 9–12× via PostgreSQL materialized views (1,405 ms → 157 ms) and BI query caching (5,498 ms → 607 ms).",
+                        "Merged 120+ pull requests at 100% CI pass rate (482 unit tests, 222 Playwright E2E); triaged and resolved 28 of 33 security findings including credential exposure and auth fail-open bugs.",
+                        "Shipped an AI assistant (Claude API, streaming, 3 model tiers) surfacing proactive enrollment and rep-performance insights within the dashboard.",
+                      ],
+                    },
                     {
                       title: "IT & Administrative Assistant",
                       company: "West Creek Dental, Austin, TX",
                       date: "Summer 2024",
+                      accent: "bg-green-300",
                       bullets: [
-                        "Provided general IT and hardware support across the clinic",
-                        "Coordinated with insurance providers to streamline claims"
-                      ]
+                        "Provided general IT and hardware support across the clinic.",
+                        "Coordinated with insurance providers to streamline claims processing.",
+                      ],
                     },
                     {
                       title: "Engineering Intern",
                       company: "Silicon Labs, Austin, TX",
                       date: "Summer 2023",
+                      accent: "bg-green-300",
                       bullets: [
-                        "Built and tested circuits using soldering, breadboarding, and embedded programming",
-                        "Designed an LED Pattern Generator using an Atmel microcontroller"
-                      ]
+                        "Built and tested circuits using soldering, breadboarding, and embedded programming.",
+                        "Designed an LED Pattern Generator using an Atmel microcontroller.",
+                      ],
                     },
-                    {
-                      title: "Math & Reading Instructor",
-                      company: "Kumon Learning Center, Austin, TX",
-                      date: "Summer 2022",
-                      bullets: [
-                        "Tutored students in math and reading, reinforcing foundational concepts",
-                        "Created an Excel-based tracking system to monitor student progress"
-                      ]
-                    }
                   ].map((job, i) => (
                     <div key={i} className="flex gap-4">
-                      <div className="flex-shrink-0 w-1 rounded-full bg-green-300" />
+                      <div className={`flex-shrink-0 w-1 rounded-full ${job.accent}`} />
                       <div className="flex-1">
                         <div className="flex flex-wrap items-baseline justify-between gap-2">
                           <h3 className="font-semibold text-gray-100">{job.title}</h3>
@@ -198,7 +146,60 @@ export default function ResumePage() {
                         <ul className="mt-2 space-y-1">
                           {job.bullets.map((bullet, j) => (
                             <li key={j} className="text-sm text-gray-400 flex gap-2">
-                              <span className="text-gray-400">•</span>
+                              <span className="text-gray-600 flex-shrink-0">•</span>
+                              {bullet}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Projects */}
+              <div className="rounded-2xl bg-gray-900 p-6 md:p-8 border border-gray-800">
+                <h2 className="mb-6 flex items-center gap-3 text-lg font-bold text-gray-100">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-purple-100 text-purple-600">
+                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                    </svg>
+                  </span>
+                  Projects
+                </h2>
+                <div className="space-y-6">
+                  {[
+                    {
+                      title: "Supply Chain Stress Dashboard",
+                      role: "Developer",
+                      date: "2025 – Present",
+                      bullets: [
+                        "Built a FastAPI + SQLAlchemy backend ingesting 7 macroeconomic indicators (FRED, NY Fed GSCPI, Cass Freight Index, Baltic Dry, yfinance) into a dynamic composite stress index.",
+                        "Applied Z-score normalization with a 36-month rolling window and regime classification (low / normal / elevated / crisis) to drive a Streamlit market-impact dashboard showing sector ETF and stock returns by supply chain regime.",
+                      ],
+                    },
+                    {
+                      title: "FoodFinder — Restaurant Discovery PWA",
+                      role: "Developer",
+                      date: "2025 – Present",
+                      bullets: [
+                        "Built a full-stack React + TypeScript + Express PWA querying OpenStreetMap (Overpass API) for currently-open restaurants; integrated OSRM batch routing for real-time drive/walk times on every pin.",
+                        "Shipped with 11 filters, happy-hour detection from OSM tags, viewport-driven search, GPS re-centering, and offline installability — deployed on Vercel with a separate Express backend on Render.",
+                      ],
+                    },
+                  ].map((project, i) => (
+                    <div key={i} className="flex gap-4">
+                      <div className="flex-shrink-0 w-1 rounded-full bg-purple-400" />
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-baseline justify-between gap-2">
+                          <h3 className="font-semibold text-gray-100">{project.title}</h3>
+                          <span className="text-sm text-gray-500">{project.date}</span>
+                        </div>
+                        <p className="text-sm text-purple-400 font-medium">{project.role}</p>
+                        <ul className="mt-2 space-y-1">
+                          {project.bullets.map((bullet, j) => (
+                            <li key={j} className="text-sm text-gray-400 flex gap-2">
+                              <span className="text-gray-600 flex-shrink-0">•</span>
                               {bullet}
                             </li>
                           ))}
@@ -236,9 +237,9 @@ export default function ResumePage() {
                 </h3>
                 <div>
                   <div className="font-semibold text-gray-100">Google Data Analytics</div>
-                  <p className="text-sm text-gray-400">Professional Certificate</p>
+                  <p className="text-sm text-gray-400">Professional Certificate · Aug 2025</p>
                   <p className="mt-2 text-sm text-gray-500">
-                    Data cleaning, visualization, SQL, R, and Tableau
+                    Data cleaning, visualization, SQL, R, and Tableau — end-to-end case studies on real-world analytics problems.
                   </p>
                 </div>
               </div>
@@ -251,15 +252,15 @@ export default function ResumePage() {
                 <div>
                   <div className="font-semibold text-gray-100">Academic Chair</div>
                   <p className="text-sm text-gray-400">Phi Delta Theta</p>
-                  <p className="text-sm text-gray-500">Fall 2021 - Fall 2024</p>
+                  <p className="text-sm text-gray-500">Fall 2021 – Fall 2024</p>
                   <ul className="mt-2 space-y-1">
                     <li className="text-sm text-gray-400 flex gap-2">
-                      <span className="text-gray-400">•</span>
-                      Organized study sessions for ~70 members
+                      <span className="text-gray-600 flex-shrink-0">•</span>
+                      Organized weekly study sessions for ~70 members across engineering and economics courses.
                     </li>
                     <li className="text-sm text-gray-400 flex gap-2">
-                      <span className="text-gray-400">•</span>
-                      Improved chapter GPA by 0.75
+                      <span className="text-gray-600 flex-shrink-0">•</span>
+                      Raised chapter GPA by 0.75 points through structured schedules, exam calendars, and peer tutoring.
                     </li>
                   </ul>
                 </div>
