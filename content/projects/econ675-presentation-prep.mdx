@@ -1,0 +1,48 @@
+---
+title: "ECON 675 Presentation Prep"
+description: "Private capstone proposal prep site with a slide deck, speaker scripts, audio briefing mode, clickable transcript, and project files."
+category: "economics"
+tags: ["Economics", "Asset Pricing", "Fama-French", "Presentation Prep", "Vercel"]
+date: "2026-08-30"
+featured: false
+links:
+  demo: "/project-access/econ675-presentation-prep"
+---
+
+## Overview
+
+This private prep site supports an ECON 675 capstone proposal presentation on whether Fama-French factors explain the returns of AI-related stocks.
+
+The site packages the proposal, slide deck, syllabus context, speaker notes, and a browser-based audio briefing mode into one phone-accessible project page.
+
+## Problem
+
+The group needed a fast way to rehearse the presentation and share the same prep materials across members before the proposal presentation.
+
+The practical requirements were:
+
+- A shareable site that works on mobile
+- A concise project explanation and speaking guide
+- Slide-by-slide role assignments
+- Audio briefing controls for passive review
+- A light access gate before opening the private prep site
+
+## Approach
+
+The prep guide was built as a static HTML site and deployed on Vercel. It includes a transcript-driven audio briefing mode that uses the browser speech engine, plus segmented prep sections for Arnav, Mustafa, and Rinad.
+
+The portfolio link routes through a simple access-code page before sending viewers to the prep site.
+
+## Stack
+
+| Layer | Technology |
+|-------|------------|
+| Prep Site | HTML, CSS, JavaScript |
+| Audio | Browser SpeechSynthesis API |
+| Hosting | Vercel |
+| Portfolio Gate | Next.js App Router |
+| Source Control | GitHub |
+
+## Result
+
+The project created a compact rehearsal system for the capstone team, including a Google Slides-ready deck, speaker notes, proposal files, and an audio briefing mode for review while commuting.
